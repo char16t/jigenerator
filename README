@@ -1,0 +1,15 @@
+Used grammars:
+
+program  := rule (rule)*
+rule     := NONTERM EQ or
+or       := repeat ("|" repeat)*
+repeat   := factor | LPAREN factor RPAREN STAR
+factor   := atom (atom)* | LPAREN or RPAREN
+atom     := NONTERM | TERM
+
+NONTERM  := ('A'..'Z')+
+TERM     := ('a'..'z')+
+EQ       := ':='
+LPAREN   := '('
+RPAREN   := ')'
+STAR     := '*'
