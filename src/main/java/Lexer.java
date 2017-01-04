@@ -48,4 +48,16 @@ public class Lexer {
         return result;
     }
 
+    public String eq() throws Exception {
+        String result = "";
+        if (this.currentChar.equals(':')) {
+            this.advance();
+            if (this.currentChar.equals('=')) {
+                return ":=";
+            }
+        }
+        error();
+        return result;
+    }
+
 }
