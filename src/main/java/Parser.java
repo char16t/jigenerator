@@ -21,4 +21,46 @@ public class Parser {
             this.error();
         }
     }
+
+    public AST program() throws Exception {
+        AST node = this.rule();
+        while (this.currentToken.type == TokenType.NONTERM) {
+            this.eat(TokenType.NONTERM);
+            // TODO: Make and return ast-tree node
+        }
+        return node;
+    }
+
+    public AST rule() throws Exception {
+        Token nonterm = this.currentToken;
+        this.eat(TokenType.NONTERM);
+        this.eat(TokenType.EQ);
+        this.or();
+        // TODO: Make and return ast-tree node
+    }
+
+    public AST or() throws Exception {
+        AST node = this.repeat();
+        while (this.currentToken.type == TokenType.LINE) {
+            Token token = this.currentToken;
+            this.eat(TokenType.LINE);
+            // TODO: Make and return ast-tree node
+        }
+        return node;
+    }
+
+    public AST repeat() throws Exception {
+        if (this.currentToken.type == TokenType.LPAREN) {
+            this.eat(TokenType.LPAREN);
+            this.factor();
+            this.eat(TokenType.RPAREN);
+            this.eat(TokenType.STAR);
+            // TODO: Make and return ast-tree node
+        }
+        else {
+            this.factor();
+            // TODO: Make and return ast-tree node
+        }
+    }
+
 }

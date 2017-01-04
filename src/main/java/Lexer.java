@@ -99,6 +99,10 @@ public class Lexer {
                 return new Token(TokenType.TERM, this.term());
             }
 
+            if (this.currentChar.equals(':')) {
+                return new Token(TokenType.EQ, this.eq());
+            }
+
             if (this.currentChar.equals('|')) {
                 this.advance();
                 return new Token(TokenType.LINE, "|");
