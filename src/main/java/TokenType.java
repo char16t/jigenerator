@@ -8,5 +8,6 @@ public enum TokenType {
     LPAREN,
     RPAREN,
     STAR,
+    LINE,
     EOF
 }

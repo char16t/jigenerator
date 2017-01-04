@@ -84,4 +84,43 @@ public class Lexer {
         return null;
     }
 
+    public Token getNextToken() throws Exception {
+        while (this.currentChar != null) {
+            if (Character.isSpaceChar(this.currentChar)) {
+                this.skipWhitespace();
+                continue;
+            }
+
+            if (Character.isUpperCase(this.currentChar)) {
+                return new Token(TokenType.NONTERM, this.nonterm());
+            }
+
+            if (Character.isLowerCase(this.currentChar)) {
+                return new Token(TokenType.TERM, this.term());
+            }
+
+            if (this.currentChar.equals('|')) {
+                this.advance();
+                return new Token(TokenType.LINE, "|");
+            }
+
+            if (this.currentChar.equals('*')) {
+                this.advance();
+                return new Token(TokenType.STAR, "*");
+            }
+
+            if (this.currentChar.equals('(')) {
+                this.advance();
+                return new Token(TokenType.LPAREN, "(");
+            }
+
+            if (this.currentChar.equals(')')) {
+                this.advance();
+                return new Token(TokenType.RPAREN, ")");
+            }
+            this.error();
+        }
+
+        return new Token(TokenType.EOF, null);
+    }
 }
