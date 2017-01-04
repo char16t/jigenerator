@@ -2,7 +2,7 @@ Used grammars:
 
 program  := rule (rule)*
 rule     := NONTERM EQ or
-or       := repeat ("|" repeat)*
+or       := repeat (LINE repeat)*
 repeat   := factor | LPAREN factor RPAREN STAR
 factor   := atom (atom)* | LPAREN or RPAREN
 atom     := NONTERM | TERM
@@ -13,3 +13,4 @@ EQ       := ':='
 LPAREN   := '('
 RPAREN   := ')'
 STAR     := '*'
+LINE     := '|'
