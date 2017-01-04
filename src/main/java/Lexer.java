@@ -28,4 +28,24 @@ public class Lexer {
         }
     }
 
+    public String nonterm() {
+        String result = "";
+        // TODO: Is space character a uppercase symbol?
+        while (this.currentChar != null && Character.isUpperCase(this.currentChar)) {
+            result += this.currentChar;
+            this.advance();
+        }
+        return result;
+    }
+
+    public String term() {
+        String result = "";
+        // TODO: Is space character a lowercase symbol?
+        while (this.currentChar != null && Character.isLowerCase(this.currentChar)) {
+            result += this.currentChar;
+            this.advance();
+        }
+        return result;
+    }
+
 }
