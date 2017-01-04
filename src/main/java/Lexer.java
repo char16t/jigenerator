@@ -60,4 +60,28 @@ public class Lexer {
         return result;
     }
 
+    public String lparen() throws Exception {
+        if (this.currentChar.equals('(')) {
+            return "(";
+        }
+        error();
+        return null;
+    }
+
+    public String rparen() throws Exception {
+        if (this.currentChar.equals(')')) {
+            return ")";
+        }
+        error();
+        return null;
+    }
+
+    public String star() throws Exception {
+        if (this.currentChar.equals('*')) {
+            return "*";
+        }
+        error();
+        return null;
+    }
+
 }
