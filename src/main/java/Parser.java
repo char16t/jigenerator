@@ -63,4 +63,34 @@ public class Parser {
         }
     }
 
+    public AST factor() throws Exception {
+        if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
+            this.atom();
+            // TODO: Make and return ast-tree node
+            while (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
+                this.atom();
+                // TODO: Make and return ast-tree node
+            }
+        }
+
+        if (this.currentToken.type == TokenType.LPAREN) {
+            this.eat(TokenType.LPAREN);
+            this.or();
+            this.eat(TokenType.RPAREN);
+            // TODO: Make and return ast-tree node
+        }
+    }
+
+    public AST atom() throws Exception {
+        if (this.currentToken.type == TokenType.NONTERM) {
+            this.eat(TokenType.NONTERM);
+            // TODO: Make and return ast-tree node
+        }
+
+        if (this.currentToken.type == TokenType.TERM) {
+            this.eat(TokenType.TERM);
+            // TODO: Make and return ast-tree node
+        }
+    }
+
 }
