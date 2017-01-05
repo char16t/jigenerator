@@ -22,7 +22,7 @@ Version 2.0
 program := (rule)*
 rule    := NONTERM EQ expr
 expr    := (expr2)* (LINE expr)*
-expr2   := expr3 | STAR LPAREN expr3 RPAREN
+expr2   := expr3 | STAR LPAREN expr3 (expr)* RPAREN
 expr3   := atom | LPAREN expr RPAREN
 atom    := NONTERM | TERM
 ============================================

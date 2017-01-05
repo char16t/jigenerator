@@ -47,24 +47,26 @@ public class Parser {
                 this.currentToken.type == TokenType.TERM ||
                 this.currentToken.type == TokenType.LPAREN) {
             AST node = this.expr2();
-            value = node.value;
+            value += node.value;
         }
 
         while (this.currentToken.type == TokenType.LINE) {
             this.eat(TokenType.LINE);
             AST node = this.expr();
-            value = "| " + node.value;
+            value += " | " + node.value;
         }
         return new AST(value);
     }
 
     public AST expr2() throws Exception {
         String value = "";
+        String subvalue = "";
+
         if (this.currentToken.type == TokenType.NONTERM ||
                 this.currentToken.type == TokenType.TERM ||
                 this.currentToken.type == TokenType.LPAREN) {
             AST expr3Node = this.expr3();
-            value = expr3Node.value;
+            value += expr3Node.value;
         }
         if (this.currentToken.type == TokenType.STAR) {
             this.eat(TokenType.STAR);
@@ -73,11 +75,14 @@ public class Parser {
             // TODO: Dirty hack, but it works! Need to fix grammar rule
             if (this.currentToken.type == TokenType.NONTERM ||
                     this.currentToken.type == TokenType.TERM ||
-                    this.currentToken.type == TokenType.LPAREN) {
-                this.expr3();
+                    this.currentToken.type == TokenType.LPAREN ||
+                    this.currentToken.type == TokenType.STAR ||
+                    this.currentToken.type == TokenType.LINE) {
+                AST t = this.expr();
+                subvalue += t.value;
             }
             this.eat(TokenType.RPAREN);
-            value = "*(" + expr3Node.value + ")";
+            value += "*(" + expr3Node.value + " " + subvalue + ") ";
         }
 
         return new AST(value);
@@ -87,13 +92,13 @@ public class Parser {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
             AST atomNode = this.atom();
-            value = atomNode.value;
+            value += atomNode.value;
         }
         else if (this.currentToken.type == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
             AST exprNode = this.expr();
             this.eat(TokenType.RPAREN);
-            value = "(" + exprNode.value + ")";
+            value += "(" + exprNode.value + ")";
         }
 
         AST node = new AST(value);
@@ -103,12 +108,12 @@ public class Parser {
     public AST atom() throws Exception {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM) {
-            value = this.currentToken.value;
+            value += this.currentToken.value;
             this.eat(TokenType.NONTERM);
         }
 
         if (this.currentToken.type == TokenType.TERM) {
-            value = this.currentToken.value;
+            value += this.currentToken.value;
             this.eat(TokenType.TERM);
         }
 
