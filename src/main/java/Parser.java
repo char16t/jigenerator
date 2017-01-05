@@ -23,74 +23,104 @@ public class Parser {
     }
 
     public AST program() throws Exception {
-        AST node = this.rule();
+        String value = "";
         while (this.currentToken.type == TokenType.NONTERM) {
-            this.eat(TokenType.NONTERM);
-            // TODO: Make and return ast-tree node
+            AST node = this.rule();
+            value += " " + node.value;
         }
-        return node;
+        return new AST(value);
     }
 
     public AST rule() throws Exception {
-        Token nonterm = this.currentToken;
         this.eat(TokenType.NONTERM);
         this.eat(TokenType.EQ);
-        this.or();
-        // TODO: Make and return ast-tree node
+        AST exprNode = this.expr();
+        this.eat(TokenType.SEMI);
+        String value = "NONTERM := " + exprNode.value + "\n";
+        return new AST(value);
     }
 
-    public AST or() throws Exception {
-        AST node = this.repeat();
-        while (this.currentToken.type == TokenType.LINE) {
-            Token token = this.currentToken;
-            this.eat(TokenType.LINE);
-            // TODO: Make and return ast-tree node
+    public AST expr() throws Exception {
+        String value = "";
+        while (this.currentToken.type == TokenType.STAR ||
+                this.currentToken.type == TokenType.NONTERM ||
+                this.currentToken.type == TokenType.TERM ||
+                this.currentToken.type == TokenType.LPAREN) {
+            AST node = this.expr2();
+            value = node.value;
         }
+
+        while (this.currentToken.type == TokenType.LINE) {
+            this.eat(TokenType.LINE);
+            AST node = this.expr();
+            value = "| " + node.value;
+        }
+        return new AST(value);
+    }
+
+    public AST expr2() throws Exception {
+        String value = "";
+        if (this.currentToken.type == TokenType.NONTERM ||
+                this.currentToken.type == TokenType.TERM ||
+                this.currentToken.type == TokenType.LPAREN) {
+            AST expr3Node = this.expr3();
+            value = expr3Node.value;
+        }
+        if (this.currentToken.type == TokenType.STAR) {
+            this.eat(TokenType.STAR);
+            this.eat(TokenType.LPAREN);
+            AST expr3Node = this.expr3();
+            // TODO: Dirty hack, but it works! Need to fix grammar rule
+            if (this.currentToken.type == TokenType.NONTERM ||
+                    this.currentToken.type == TokenType.TERM ||
+                    this.currentToken.type == TokenType.LPAREN) {
+                this.expr3();
+            }
+            this.eat(TokenType.RPAREN);
+            value = "*(" + expr3Node.value + ")";
+        }
+
+        return new AST(value);
+    }
+
+    public AST expr3() throws Exception {
+        String value = "";
+        if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
+            AST atomNode = this.atom();
+            value = atomNode.value;
+        }
+        else if (this.currentToken.type == TokenType.LPAREN) {
+            this.eat(TokenType.LPAREN);
+            AST exprNode = this.expr();
+            this.eat(TokenType.RPAREN);
+            value = "(" + exprNode.value + ")";
+        }
+
+        AST node = new AST(value);
         return node;
     }
 
-    public AST repeat() throws Exception {
-        if (this.currentToken.type == TokenType.LPAREN) {
-            this.eat(TokenType.LPAREN);
-            this.factor();
-            this.eat(TokenType.RPAREN);
-            this.eat(TokenType.STAR);
-            // TODO: Make and return ast-tree node
-        }
-        else {
-            this.factor();
-            // TODO: Make and return ast-tree node
-        }
-    }
-
-    public AST factor() throws Exception {
-        if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
-            this.atom();
-            // TODO: Make and return ast-tree node
-            while (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
-                this.atom();
-                // TODO: Make and return ast-tree node
-            }
-        }
-
-        if (this.currentToken.type == TokenType.LPAREN) {
-            this.eat(TokenType.LPAREN);
-            this.or();
-            this.eat(TokenType.RPAREN);
-            // TODO: Make and return ast-tree node
-        }
-    }
-
     public AST atom() throws Exception {
+        String value = "";
         if (this.currentToken.type == TokenType.NONTERM) {
+            value = this.currentToken.value;
             this.eat(TokenType.NONTERM);
-            // TODO: Make and return ast-tree node
         }
 
         if (this.currentToken.type == TokenType.TERM) {
+            value = this.currentToken.value;
             this.eat(TokenType.TERM);
-            // TODO: Make and return ast-tree node
         }
+
+        return new AST(value);
+    }
+
+    public AST parse() throws Exception {
+        AST node = this.program();
+        if (this.currentToken.type != TokenType.EOF) {
+            this.error();
+        }
+        return node;
     }
 
 }

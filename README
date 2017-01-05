@@ -1,10 +1,10 @@
 Used grammars:
 
 program  := rule (rule)*
-rule     := NONTERM EQ or
+rule     := NONTERM EQ or SEMI
 or       := repeat (LINE repeat)*
-repeat   := factor | LPAREN factor RPAREN STAR
-factor   := atom (atom)* | LPAREN or RPAREN
+repeat   := factor | STAR factor
+factor   := atom (or)* | LPAREN or RPAREN
 atom     := NONTERM | TERM
 
 NONTERM  := ('A'..'Z')+
@@ -14,3 +14,28 @@ LPAREN   := '('
 RPAREN   := ')'
 STAR     := '*'
 LINE     := '|'
+SEMI     := ';'
+
+============================================
+Version 2.0
+
+program := (rule)*
+rule    := NONTERM EQ expr
+expr    := (expr2)* (LINE expr)*
+expr2   := expr3 | STAR LPAREN expr3 RPAREN
+expr3   := atom | LPAREN expr RPAREN
+atom    := NONTERM | TERM
+============================================
+
+==============================================================
+expr   := term ((PLUS | MINUS) term)*
+term   := factor ((MUL | DIV) factor)*
+factor := (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
+
+program  := rule (rule)*
+rule     := NONTERM EQ or
+
+or       := repeat (LINE term)*
+repeat   := STAR factor | factor
+factor   := atom (atom)* | LPAREN or RPAREN
+atom     := TERM | NONTERM

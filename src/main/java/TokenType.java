@@ -9,5 +9,6 @@ public enum TokenType {
     RPAREN,
     STAR,
     LINE,
+    SEMI,
     EOF
 }

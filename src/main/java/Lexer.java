@@ -23,12 +23,12 @@ public class Lexer {
     }
 
     public void skipWhitespace() {
-        while (this.currentChar != null && Character.isSpaceChar(this.currentChar)) {
+        while (this.currentChar != null && Character.isWhitespace(this.currentChar)) {
             this.advance();
         }
     }
 
-    public String nonterm() {
+    public String term() {
         String result = "";
         // TODO: Is space character a uppercase symbol?
         while (this.currentChar != null && Character.isUpperCase(this.currentChar)) {
@@ -38,7 +38,7 @@ public class Lexer {
         return result;
     }
 
-    public String term() {
+    public String nonterm() {
         String result = "";
         // TODO: Is space character a lowercase symbol?
         while (this.currentChar != null && Character.isLowerCase(this.currentChar)) {
@@ -53,6 +53,7 @@ public class Lexer {
         if (this.currentChar.equals(':')) {
             this.advance();
             if (this.currentChar.equals('=')) {
+                this.advance();
                 return ":=";
             }
         }
@@ -86,17 +87,17 @@ public class Lexer {
 
     public Token getNextToken() throws Exception {
         while (this.currentChar != null) {
-            if (Character.isSpaceChar(this.currentChar)) {
+            if (Character.isWhitespace(this.currentChar)) {
                 this.skipWhitespace();
                 continue;
             }
 
             if (Character.isUpperCase(this.currentChar)) {
-                return new Token(TokenType.NONTERM, this.nonterm());
+                return new Token(TokenType.TERM, this.term());
             }
 
             if (Character.isLowerCase(this.currentChar)) {
-                return new Token(TokenType.TERM, this.term());
+                return new Token(TokenType.NONTERM, this.nonterm());
             }
 
             if (this.currentChar.equals(':')) {
@@ -122,6 +123,12 @@ public class Lexer {
                 this.advance();
                 return new Token(TokenType.RPAREN, ")");
             }
+
+            if (this.currentChar.equals(';')) {
+                this.advance();
+                return new Token(TokenType.SEMI, ";");
+            }
+
             this.error();
         }
 
