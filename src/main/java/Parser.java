@@ -72,7 +72,6 @@ public class Parser {
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
             AST expr3Node = this.expr3();
-            // TODO: Dirty hack, but it works! Need to fix grammar rule
             if (this.currentToken.type == TokenType.NONTERM ||
                     this.currentToken.type == TokenType.TERM ||
                     this.currentToken.type == TokenType.LPAREN ||
