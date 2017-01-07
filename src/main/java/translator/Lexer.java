@@ -1,3 +1,5 @@
+package translator;
+
 public class Lexer {
     String text;
     Integer pos;
