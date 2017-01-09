@@ -12,5 +12,6 @@ public enum TokenType {
     STAR,
     LINE,
     SEMI,
+    SINGLE_QUOTE,
     EOF
 }

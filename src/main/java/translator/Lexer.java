@@ -100,6 +100,11 @@ public class Lexer {
                 return new Token(TokenType.NONTERM, this.nonterm());
             }
 
+            if (this.currentChar.equals('\'')) {
+                this.advance();
+                return new Token(TokenType.SINGLE_QUOTE, "'");
+            }
+
             if (this.currentChar.equals(':')) {
                 return new Token(TokenType.EQ, this.eq());
             }
