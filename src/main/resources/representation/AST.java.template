@@ -1,0 +1,7 @@
+public class AST {
+    String value;
+
+    public AST(String value) {
+        this.value = value;
+    }
+}
