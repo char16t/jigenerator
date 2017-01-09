@@ -85,6 +85,23 @@ public class Lexer {
         return null;
     }
 
+    private String quoted() throws Exception {
+        String result = "";
+
+        if (this.currentChar != '\'') {
+            this.error();
+        }
+        this.advance();
+
+        while (this.currentChar != '\'') {
+            result += this.currentChar.toString();
+            this.advance();
+        }
+        this.advance();
+
+        return result;
+    }
+
     public Token getNextToken() throws Exception {
         while (this.currentChar != null) {
             if (Character.isWhitespace(this.currentChar)) {
@@ -101,8 +118,7 @@ public class Lexer {
             }
 
             if (this.currentChar.equals('\'')) {
-                this.advance();
-                return new Token(TokenType.SINGLE_QUOTE, "'");
+                return new Token(TokenType.QUOTED, this.quoted());
             }
 
             if (this.currentChar.equals(':')) {
@@ -139,4 +155,5 @@ public class Lexer {
 
         return new Token(TokenType.EOF, null);
     }
+
 }

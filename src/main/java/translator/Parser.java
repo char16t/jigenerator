@@ -30,6 +30,12 @@ public class Parser {
             AST node = this.rule();
             value += " " + node.value;
         }
+
+        while (this.currentToken.type == TokenType.TERM) {
+            AST node = this.termdef();
+            value += " " + node.value;
+        }
+
         return new AST(value);
     }
 
@@ -116,6 +122,88 @@ public class Parser {
         if (this.currentToken.type == TokenType.TERM) {
             value += this.currentToken.value;
             this.eat(TokenType.TERM);
+        }
+
+        return new AST(value);
+    }
+
+    public AST termdef() throws Exception {
+        this.eat(TokenType.TERM);
+        this.eat(TokenType.EQ);
+        AST exprNode = this.termexpr();
+        this.eat(TokenType.SEMI);
+        String value = "TERM := " + exprNode.value + "\n";
+        return new AST(value);
+    }
+
+    public AST termexpr() throws Exception {
+        String value = "";
+        while (this.currentToken.type == TokenType.STAR ||
+                this.currentToken.type == TokenType.QUOTED ||
+                this.currentToken.type == TokenType.LPAREN) {
+            AST node = this.termexpr2();
+            value += node.value;
+        }
+
+        while (this.currentToken.type == TokenType.LINE) {
+            this.eat(TokenType.LINE);
+            AST node = this.termexpr();
+            value += " | " + node.value;
+        }
+        return new AST(value);
+    }
+
+    public AST termexpr2() throws Exception {
+        String value = "";
+        String subvalue = "";
+
+        if (this.currentToken.type == TokenType.QUOTED ||
+                this.currentToken.type == TokenType.LPAREN) {
+            AST expr3Node = this.termexpr3();
+            value += expr3Node.value;
+        }
+        if (this.currentToken.type == TokenType.STAR) {
+            this.eat(TokenType.STAR);
+            this.eat(TokenType.LPAREN);
+            AST expr3Node = this.termexpr3();
+            if (this.currentToken.type == TokenType.QUOTED ||
+                    this.currentToken.type == TokenType.LPAREN ||
+                    this.currentToken.type == TokenType.STAR ||
+                    this.currentToken.type == TokenType.LINE) {
+                AST t = this.termexpr();
+                subvalue += t.value;
+            }
+            this.eat(TokenType.RPAREN);
+            value += "*(" + expr3Node.value + " " + subvalue + ") ";
+        }
+
+        return new AST(value);
+    }
+
+    public AST termexpr3() throws Exception {
+        String value = "";
+
+        if (this.currentToken.type == TokenType.LPAREN) {
+            this.eat(TokenType.LPAREN);
+            AST exprNode = this.termexpr();
+            this.eat(TokenType.RPAREN);
+            value += "(" + exprNode.value + ")";
+        } else {
+            AST atomNode = this.termatom();
+            value += atomNode.value;
+        }
+
+        AST node = new AST(value);
+        return node;
+    }
+
+    // TODO: fix me!!!
+    public AST termatom() throws Exception {
+        String value = "";
+
+        if (this.currentToken.type == TokenType.QUOTED) {
+            value += this.currentToken.value;
+            this.eat(TokenType.QUOTED);
         }
 
         return new AST(value);
