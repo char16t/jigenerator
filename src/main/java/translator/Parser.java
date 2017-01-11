@@ -27,25 +27,25 @@ public class Parser {
     public AST program() throws Exception {
         String value = "";
         while (this.currentToken.type == TokenType.NONTERM) {
-            AST node = this.rule();
+            ASTOther node = (ASTOther) this.rule();
             value += " " + node.value;
         }
 
         while (this.currentToken.type == TokenType.TERM) {
-            AST node = this.termdef();
+            ASTOther node = (ASTOther) this.termdef();
             value += " " + node.value;
         }
 
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST rule() throws Exception {
         this.eat(TokenType.NONTERM);
         this.eat(TokenType.EQ);
-        AST exprNode = this.expr();
+        ASTOther exprNode = (ASTOther) this.expr();
         this.eat(TokenType.SEMI);
         String value = "NONTERM := " + exprNode.value + "\n";
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST expr() throws Exception {
@@ -54,16 +54,16 @@ public class Parser {
                 this.currentToken.type == TokenType.NONTERM ||
                 this.currentToken.type == TokenType.TERM ||
                 this.currentToken.type == TokenType.LPAREN) {
-            AST node = this.expr2();
+            ASTOther node = (ASTOther) this.expr2();
             value += node.value;
         }
 
         while (this.currentToken.type == TokenType.LINE) {
             this.eat(TokenType.LINE);
-            AST node = this.expr();
+            ASTOther node = (ASTOther) this.expr();
             value += " | " + node.value;
         }
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST expr2() throws Exception {
@@ -73,42 +73,42 @@ public class Parser {
         if (this.currentToken.type == TokenType.NONTERM ||
                 this.currentToken.type == TokenType.TERM ||
                 this.currentToken.type == TokenType.LPAREN) {
-            AST expr3Node = this.expr3();
+            ASTOther expr3Node = (ASTOther) this.expr3();
             value += expr3Node.value;
         }
         if (this.currentToken.type == TokenType.STAR) {
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
-            AST expr3Node = this.expr3();
+            ASTOther expr3Node = (ASTOther) this.expr3();
             if (this.currentToken.type == TokenType.NONTERM ||
                     this.currentToken.type == TokenType.TERM ||
                     this.currentToken.type == TokenType.LPAREN ||
                     this.currentToken.type == TokenType.STAR ||
                     this.currentToken.type == TokenType.LINE) {
-                AST t = this.expr();
+                ASTOther t = (ASTOther) this.expr();
                 subvalue += t.value;
             }
             this.eat(TokenType.RPAREN);
             value += "*(" + expr3Node.value + " " + subvalue + ") ";
         }
 
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST expr3() throws Exception {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
-            AST atomNode = this.atom();
+            ASTOther atomNode = (ASTOther) this.atom();
             value += atomNode.value;
         }
         else if (this.currentToken.type == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
-            AST exprNode = this.expr();
+            ASTOther exprNode = (ASTOther) this.expr();
             this.eat(TokenType.RPAREN);
             value += "(" + exprNode.value + ")";
         }
 
-        AST node = new AST(value);
+        AST node = new ASTOther(value);
         return node;
     }
 
@@ -124,16 +124,16 @@ public class Parser {
             this.eat(TokenType.TERM);
         }
 
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST termdef() throws Exception {
         this.eat(TokenType.TERM);
         this.eat(TokenType.EQ);
-        AST exprNode = this.termexpr();
+        ASTOther exprNode = (ASTOther) this.termexpr();
         this.eat(TokenType.SEMI);
         String value = "TERM := " + exprNode.value + "\n";
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST termexpr() throws Exception {
@@ -141,16 +141,16 @@ public class Parser {
         while (this.currentToken.type == TokenType.STAR ||
                 this.currentToken.type == TokenType.QUOTED ||
                 this.currentToken.type == TokenType.LPAREN) {
-            AST node = this.termexpr2();
+            ASTOther node = (ASTOther) this.termexpr2();
             value += node.value;
         }
 
         while (this.currentToken.type == TokenType.LINE) {
             this.eat(TokenType.LINE);
-            AST node = this.termexpr();
+            ASTOther node = (ASTOther) this.termexpr();
             value += " | " + node.value;
         }
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST termexpr2() throws Exception {
@@ -159,25 +159,25 @@ public class Parser {
 
         if (this.currentToken.type == TokenType.QUOTED ||
                 this.currentToken.type == TokenType.LPAREN) {
-            AST expr3Node = this.termexpr3();
+            ASTOther expr3Node = (ASTOther) this.termexpr3();
             value += expr3Node.value;
         }
         if (this.currentToken.type == TokenType.STAR) {
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
-            AST expr3Node = this.termexpr3();
+            ASTOther expr3Node = (ASTOther) this.termexpr3();
             if (this.currentToken.type == TokenType.QUOTED ||
                     this.currentToken.type == TokenType.LPAREN ||
                     this.currentToken.type == TokenType.STAR ||
                     this.currentToken.type == TokenType.LINE) {
-                AST t = this.termexpr();
+                ASTOther t = (ASTOther) this.termexpr();
                 subvalue += t.value;
             }
             this.eat(TokenType.RPAREN);
             value += "*(" + expr3Node.value + " " + subvalue + ") ";
         }
 
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST termexpr3() throws Exception {
@@ -185,19 +185,18 @@ public class Parser {
 
         if (this.currentToken.type == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
-            AST exprNode = this.termexpr();
+            ASTOther exprNode = (ASTOther) this.termexpr();
             this.eat(TokenType.RPAREN);
             value += "(" + exprNode.value + ")";
         } else {
-            AST atomNode = this.termatom();
+            ASTOther atomNode = (ASTOther) this.termatom();
             value += atomNode.value;
         }
 
-        AST node = new AST(value);
+        AST node = new ASTOther(value);
         return node;
     }
 
-    // TODO: fix me!!!
     public AST termatom() throws Exception {
         String value = "";
 
@@ -206,7 +205,7 @@ public class Parser {
             this.eat(TokenType.QUOTED);
         }
 
-        return new AST(value);
+        return new ASTOther(value);
     }
 
     public AST parse() throws Exception {

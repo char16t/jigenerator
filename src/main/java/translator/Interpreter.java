@@ -11,7 +11,11 @@ public class Interpreter {
     }
 
     public static String visit(AST node) {
-        return node.value;
+        if (node instanceof ASTOther) {
+            return ((ASTOther) node).value;
+        } else {
+            return "";
+        }
     }
 
     public String interpret() throws Exception {
