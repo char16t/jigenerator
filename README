@@ -15,3 +15,62 @@ termexpr3   := termatom | LPAREN termexpr RPAREN
 termatom    := SQ <any symbols except single quote> SQ
 
 SQ  := '\''
+
+AST tree for `futureSource1`:
+
+Program
+  NontermDefenition
+
+    Nonterm { term }
+    Repeat
+      Or
+        Expression
+          Or
+            Expression
+              Term { PLUS }
+              Term { MINUS }
+        Expression
+          Nonterm { term }
+  NontermDefenition
+    Nonterm { factor }
+    Repeat
+      Or
+        Expression
+          Or
+            Expression
+              Term { MUL }
+            Expression
+              Term { DIV }
+          Nonterm { factor }
+  Nontermdefenition
+    Or
+      Expression
+        Or
+          Expression
+            Term { FACTOR }
+          Expression
+            Term { FACTOR }
+        Nonterm { factor }
+      Expression
+        Term { INTEGER }
+      Expression
+        Term { LPAREN }
+        Nonterm { expr }
+        Term { RPAREN }
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+  TermDefenition
+    ...
+

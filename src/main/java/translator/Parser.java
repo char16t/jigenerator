@@ -183,18 +183,19 @@ public class Parser {
     public AST termexpr3() throws Exception {
         String value = "";
 
+        ASTNewNode node;
         if (this.currentToken.type == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
-            ASTOther exprNode = (ASTOther) this.termexpr();
+            node = (ASTNewNode) this.termexpr();
             this.eat(TokenType.RPAREN);
-            value += "(" + exprNode.value + ")";
+            value += "(" + node.value + ")";
         } else {
-            ASTOther atomNode = (ASTOther) this.termatom();
-            value += atomNode.value;
+            node = (ASTNewNode) this.termatom();
+            value += node.value;
         }
 
-        AST node = new ASTOther(value);
-        return node;
+        AST retNode = new ASTNewNode(value, node);
+        return retNode;
     }
 
     public AST termatom() throws Exception {
@@ -205,7 +206,7 @@ public class Parser {
             this.eat(TokenType.QUOTED);
         }
 
-        return new ASTOther(value);
+        return new ASTNewNode(value);
     }
 
     public AST parse() throws Exception {
