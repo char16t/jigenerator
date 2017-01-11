@@ -1,4 +1,4 @@
-Version 2.0
+Version 3.0
 
 program := (rule)* (termdef)*
 
@@ -14,4 +14,4 @@ termexpr2   := termexpr3 | STAR LPAREN termexpr3 (termexpr)* RPAREN
 termexpr3   := termatom | LPAREN termexpr RPAREN
 termatom    := SQ <any symbols except single quote> SQ
 
-SQ  := "'"
+SQ  := '\''

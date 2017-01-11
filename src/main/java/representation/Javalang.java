@@ -44,5 +44,8 @@ public class Javalang {
         FileUtils.copyFile(
                 new File("./src/main/resources/representation/Parser.java.template"),
                 new File(OUTPUT_DIRECTORY + "/src/main/java/Parser.java"));
+        FileUtils.copyFile(
+                new File("./src/main/resources/representation/Interpreter.java.template"),
+                new File(OUTPUT_DIRECTORY + "/src/main/java/Interpreter.java"));
     }
 }
