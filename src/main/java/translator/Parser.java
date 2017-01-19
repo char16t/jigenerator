@@ -63,7 +63,7 @@ public class Parser {
             childsGroup.add(this.expr2());
         }
 
-        childs.add(new ASTOrExpr(childsGroup));
+        childs.add(new ASTExpression(childsGroup));
         while (this.currentToken.type == TokenType.LINE) {
             this.eat(TokenType.LINE);
             childs.add(this.expr());
@@ -151,7 +151,7 @@ public class Parser {
             childsGroup.add(this.termexpr2());
         }
 
-        childs.add(new ASTOrExpr(childsGroup));
+        childs.add(new ASTExpression(childsGroup));
         while (this.currentToken.type == TokenType.LINE) {
             this.eat(TokenType.LINE);
             childs.add(this.termexpr());

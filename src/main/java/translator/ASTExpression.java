@@ -3,10 +3,10 @@ package translator;
 import java.util.List;
 
 
-public class ASTOrExpr implements AST {
+public class ASTExpression implements AST {
     List<AST> childs;
 
-    public ASTOrExpr(List<AST> childsGroup) {
+    public ASTExpression(List<AST> childsGroup) {
         this.childs = childsGroup;
     }
 }
