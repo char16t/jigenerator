@@ -68,7 +68,11 @@ public class Parser {
             this.eat(TokenType.LINE);
             childs.add(this.expr());
         }
-        return new ASTOr(childs);
+        if (childs.size() > 1 || childs.size() == 0) {
+            return new ASTOr(childs);
+        } else {
+            return childs.get(0);
+        }
     }
 
     public AST expr2() throws Exception {
@@ -96,7 +100,7 @@ public class Parser {
             return new ASTRepeat(childs);
         }
 
-        return new ASTOther(value);
+        throw new Exception("[expr2] Sorry...");
     }
 
     public AST expr3() throws Exception {
@@ -111,8 +115,7 @@ public class Parser {
             return node;
         }
 
-        AST node = new ASTOther(value);
-        return node;
+        throw new Exception("[expr3] Sorry...");
     }
 
     public AST atom() throws Exception {
@@ -156,7 +159,12 @@ public class Parser {
             this.eat(TokenType.LINE);
             childs.add(this.termexpr());
         }
-        return new ASTOr(childs);
+
+        if (childs.size() > 1 || childs.size() == 0) {
+            return new ASTOr(childs);
+        } else {
+            return childs.get(0);
+        }
     }
 
     public AST termexpr2() throws Exception {
@@ -172,7 +180,6 @@ public class Parser {
 
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
-            ASTOther t = null;
             childs.add(this.termexpr3());
             if (this.currentToken.type == TokenType.QUOTED ||
                     this.currentToken.type == TokenType.LPAREN ||
