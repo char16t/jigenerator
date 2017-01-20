@@ -11,6 +11,16 @@ public class Main {
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
     private static final String OUTPUT_PATH = "output/";
 
+    private static final List<String> nonterminals = new LinkedList<String>(Arrays.asList(
+            "expr", "term", "factor"
+    ));
+
+    private static final Map<String, String> nonterminalsSourceCode = new HashMap<String, String>() {{
+        put("expr", "// todo: fill me");
+        put("term", "// todo: fill me");
+        put("factor", "// todo: fill me");
+    }};
+
     private static final List<String> terminals = new LinkedList<String>(Arrays.asList(
             "PLUS", "MINUS", "MUL", "DIV", "EQ", "RPAREN", "LPAREN", "INTEGER"
     ));
@@ -25,6 +35,17 @@ public class Main {
         put("INTEGER", "1234567890");
     }};
 
+    private static final Map<String, String> terminalsSourceCode = new HashMap<String, String>() {{
+        put("PLUS", "// todo: fill me");
+        put("MINUS", "// todo: fill me");
+        put("MUL", "// todo: fill me");
+        put("DIV", "// todo: fill me");
+        put("EQ", "// todo: fill me");
+        put("LPAREN", "// todo: fill me");
+        put("RPAREN", "// todo: fill me");
+        put("INTEGER", "// todo: fill me");
+    }};
+
     public static void main(String[] args) {
         try {
             FileUtils.deleteDirectory(new File(OUTPUT_PATH));
@@ -37,6 +58,8 @@ public class Main {
         createFile("src/main/java/", "Main.java", "Main.java");
         createTokenTypeFile();
         createLexerFile();
+        createFile("src/main/java/", "AST.java", "AST");
+        createParserFile();
     }
 
     public static void createTokenTypeFile() {
@@ -55,7 +78,7 @@ public class Main {
                             terminal.toLowerCase() +
                             "() throws Exception {\n" +
                             "    this.advance();\n" +
-                            "    // todo: fill me\n" +
+                            terminalsSourceCode.get(terminal) + "\n" +
                             "    this.error();\n" +
                             "    }\n\n";
             appendFile("src/main/java/", "Lexer.java", line);
@@ -86,6 +109,26 @@ public class Main {
         appendFile("src/main/java/", "Lexer.java", "        return new Token(TokenType.EOF, null);\n");
         appendFile("src/main/java/", "Lexer.java", "    }\n");
         appendFileWithTemplate("src/main/java/", "Lexer.java", "LexerFooter");
+    }
+
+    public static void createParserFile() {
+        createFile("src/main/java/", "Parser.java", "ParserHeader");
+
+        appendFile("src/main/java/", "Parser.java",
+                "    public AST parse() throws Exception {\n" +
+                "        AST node = this." + nonterminals.get(0) + "();\n" +
+                "        if (this.currentToken.type != TokenType.EOF) {\n" +
+                "            this.error();\n" +
+                "        }\n" +
+                "        return node;\n" +
+                "    }\n");
+        for (String nonterminal : nonterminals) {
+            String str = "public AST " + nonterminal + "() throws Exception {\n" +
+                    nonterminalsSourceCode.get(nonterminal) + "\n" +
+                    "}\n\n";
+            appendFile("src/main/java/", "Parser.java", str);
+        }
+        appendFileWithTemplate("src/main/java/", "Parser.java", "ParserFooter");
     }
 
     public static void createFile(String path, String name, String template) {
