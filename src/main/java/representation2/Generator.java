@@ -7,46 +7,33 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class Main {
+public class Generator {
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
     private static final String OUTPUT_PATH = "output/";
 
-    private static final List<String> nonterminals = new LinkedList<String>(Arrays.asList(
-            "expr", "term", "factor"
-    ));
+    private List<String> nonterminals = new LinkedList<String>();
+    private Map<String, String> nonterminalsSourceCode = new HashMap<String, String>();
+    private List<String> terminals = new LinkedList<String>();
+    private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();
+    private Map<String, String> terminalsSourceCode = new HashMap<String, String>();
 
-    private static final Map<String, String> nonterminalsSourceCode = new HashMap<String, String>() {{
-        put("expr", "// todo: fill me");
-        put("term", "// todo: fill me");
-        put("factor", "// todo: fill me");
-    }};
+    public Generator(List<String> nonterminals, Map<String, String> nonterminalsSourceCode, List<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode) {
+        this.nonterminals = nonterminals;
+        this.nonterminalsSourceCode = nonterminalsSourceCode;
+        this.terminals = terminals;
+        this.terminalsCanStartsWith = terminalsCanStartsWith;
+        this.terminalsSourceCode = terminalsSourceCode;
+    }
 
-    private static final List<String> terminals = new LinkedList<String>(Arrays.asList(
-            "PLUS", "MINUS", "MUL", "DIV", "EQ", "RPAREN", "LPAREN", "INTEGER"
-    ));
-    private static final Map<String, String> terminalsCanStartsWith = new HashMap<String, String>() {{
-        put("PLUS", "+");
-        put("MINUS", "-");
-        put("MUL", "*");
-        put("DIV", "/");
-        put("EQ", ":");
-        put("LPAREN", "(");
-        put("RPAREN", ")");
-        put("INTEGER", "1234567890");
-    }};
+    public Generator(GeneratorData generatorData) {
+        this.nonterminals = generatorData.getNonterminals();
+        this.nonterminalsSourceCode = generatorData.getNonterminalsSourceCode();
+        this.terminals = generatorData.getTerminals();
+        this.terminalsCanStartsWith = generatorData.getTerminalsCanStartsWith();
+        this.terminalsSourceCode = generatorData.getTerminalsSourceCode();
+    }
 
-    private static final Map<String, String> terminalsSourceCode = new HashMap<String, String>() {{
-        put("PLUS", "// todo: fill me");
-        put("MINUS", "// todo: fill me");
-        put("MUL", "// todo: fill me");
-        put("DIV", "// todo: fill me");
-        put("EQ", "// todo: fill me");
-        put("LPAREN", "// todo: fill me");
-        put("RPAREN", "// todo: fill me");
-        put("INTEGER", "// todo: fill me");
-    }};
-
-    public static void main(String[] args) {
+    public void generate() {
         try {
             FileUtils.deleteDirectory(new File(OUTPUT_PATH));
         } catch (IOException e) {
@@ -62,7 +49,7 @@ public class Main {
         createParserFile();
     }
 
-    public static void createTokenTypeFile() {
+    public void createTokenTypeFile() {
         createFile("src/main/java/", "TokenType.java", "TokenTypeHeader");
         for (String t : terminals) {
             appendFile("src/main/java/", "TokenType.java", "    " + t + ",\n");
@@ -70,7 +57,7 @@ public class Main {
         appendFile("src/main/java/", "TokenType.java", "    EOF\n}");
     }
 
-    public static void createLexerFile() {
+    public void createLexerFile() {
         createFile("src/main/java/", "Lexer.java", "LexerHeader");
         for (String terminal : terminals) {
             String line =
@@ -111,7 +98,7 @@ public class Main {
         appendFileWithTemplate("src/main/java/", "Lexer.java", "LexerFooter");
     }
 
-    public static void createParserFile() {
+    public void createParserFile() {
         createFile("src/main/java/", "Parser.java", "ParserHeader");
 
         appendFile("src/main/java/", "Parser.java",
