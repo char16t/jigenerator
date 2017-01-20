@@ -27,17 +27,3 @@ public class Lexer {
             this.advance();
         }
     }
-
-    public Token getNextToken() throws Exception {
-        while (this.currentChar != null) {
-            if (Character.isWhitespace(this.currentChar)) {
-                this.skipWhitespace();
-                continue;
-            }
-
-            this.error();
-        }
-
-        return new Token(TokenType.EOF, null);
-    }
-}
