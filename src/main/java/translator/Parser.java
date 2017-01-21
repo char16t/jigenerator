@@ -43,11 +43,12 @@ public class Parser {
     }
 
     public AST rule() throws Exception {
+        String head = this.currentToken.value;
         this.eat(TokenType.NONTERM);
         this.eat(TokenType.EQ);
         AST exprNode = this.expr();
         this.eat(TokenType.SEMI);
-        return new ASTNonermDef(exprNode);
+        return new ASTNonermDef(head, exprNode);
     }
 
     public AST expr() throws Exception {
@@ -136,11 +137,12 @@ public class Parser {
     }
 
     public AST termdef() throws Exception {
+        String head = this.currentToken.value;
         this.eat(TokenType.TERM);
         this.eat(TokenType.EQ);
         AST node = this.termexpr();
         this.eat(TokenType.SEMI);
-        return new ASTTermDef(node);
+        return new ASTTermDef(head, node);
     }
 
     public AST termexpr() throws Exception {

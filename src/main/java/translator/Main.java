@@ -41,9 +41,9 @@ public class Main {
         System.out.println(result);
 
 
-        List<String> nonterminals = new LinkedList<String>(Arrays.asList(
+        /*Set<String> nonterminals = new LinkedHashSet<String>(Arrays.asList(
                 "expr", "term", "factor"
-        ));
+        ));*/
 
         Map<String, String> nonterminalsSourceCode = new HashMap<String, String>() {{
             put("expr", "// todo: fill me");
@@ -51,9 +51,9 @@ public class Main {
             put("factor", "// todo: fill me");
         }};
 
-        List<String> terminals = new LinkedList<String>(Arrays.asList(
+        /*Set<String> terminals = new LinkedHashSet<String>(Arrays.asList(
                 "PLUS", "MINUS", "MUL", "DIV", "EQ", "RPAREN", "LPAREN", "INTEGER"
-        ));
+        ));*/
 
         Map<String, String> terminalsCanStartsWith = new HashMap<String, String>() {{
             put("PLUS", "+");
@@ -78,9 +78,9 @@ public class Main {
         }};
 
         GeneratorData generatorData = new GeneratorData(
-                nonterminals,
+                interpreter.getGeneratorData().getNonterminals(),
                 nonterminalsSourceCode,
-                terminals,
+                interpreter.getGeneratorData().getTerminals(),
                 terminalsCanStartsWith,
                 terminalsSourceCode);
 

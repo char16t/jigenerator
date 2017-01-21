@@ -1,16 +1,28 @@
 package translator;
 
+import representation2.GeneratorData;
+
 /**
  * Created by user on 1/5/17.
  */
 public class Interpreter {
+    private GeneratorData generatorData;
     Parser parser;
 
     public Interpreter(Parser parser) {
         this.parser = parser;
+        this.generatorData = new GeneratorData();
     }
 
-    public static String visit(AST node) {
+    public GeneratorData getGeneratorData() {
+        return generatorData;
+    }
+
+    public void setGeneratorData(GeneratorData generatorData) {
+        this.generatorData = generatorData;
+    }
+
+    public String visit(AST node) {
         if (node instanceof ASTExpression) {
             return visitExpression((ASTExpression) node);
         } else if (node instanceof ASTNonermDef) {
@@ -34,7 +46,7 @@ public class Interpreter {
         }
     }
 
-    public static String visitExpression(ASTExpression node) {
+    public String visitExpression(ASTExpression node) {
         String result =  "ASTExpression:\n";
         for (AST child : node.childs) {
             result += "            " + visit(child);
@@ -42,20 +54,21 @@ public class Interpreter {
         return result;
     }
 
-    public static String visitNonermDef(ASTNonermDef node) {
+    public String visitNonermDef(ASTNonermDef node) {
+        generatorData.getNonterminals().add(node.name);
         String result = "ASTNontermDef:\n        " + visit(node.expr);
         return result;
     }
 
-    public static String visitNonterm(ASTNonterm node) {
+    public String visitNonterm(ASTNonterm node) {
         return "ASTNonterm\n";
     }
 
-    public static String visitOr(ASTOr node) {
+    public String visitOr(ASTOr node) {
         return "ASTOr\n";
     }
 
-    public static String visitProgram(ASTProgram node) {
+    public String visitProgram(ASTProgram node) {
         String result = "ASTProgram:\n";
         for (AST child : node.childs) {
             result += "    " + visit(child);
@@ -63,19 +76,20 @@ public class Interpreter {
         return result;
     }
 
-    public static String visitQuoted(ASTQuoted node) {
+    public String visitQuoted(ASTQuoted node) {
         return "ASTQuoted\n";
     }
 
-    public static String visitRepeat(ASTRepeat node) {
+    public String visitRepeat(ASTRepeat node) {
         return "ASTRepeat\n";
     }
 
-    public static String visitTerm(ASTTerm node) {
+    public String visitTerm(ASTTerm node) {
         return "ASTTerm\n";
     }
 
-    public static String visitTermDef(ASTTermDef node) {
+    public String visitTermDef(ASTTermDef node) {
+        generatorData.getTerminals().add(node.head);
         String result = "ASTTermDef:\n        " + visit(node.expr);
         return result;
     }

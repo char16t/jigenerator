@@ -11,13 +11,13 @@ public class Generator {
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
     private static final String OUTPUT_PATH = "output/";
 
-    private List<String> nonterminals = new LinkedList<String>();
+    private Set<String> nonterminals = new LinkedHashSet<String>();
     private Map<String, String> nonterminalsSourceCode = new HashMap<String, String>();
-    private List<String> terminals = new LinkedList<String>();
+    private Set<String> terminals = new LinkedHashSet<String>();
     private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();
     private Map<String, String> terminalsSourceCode = new HashMap<String, String>();
 
-    public Generator(List<String> nonterminals, Map<String, String> nonterminalsSourceCode, List<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode) {
+    public Generator(Set<String> nonterminals, Map<String, String> nonterminalsSourceCode, Set<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode) {
         this.nonterminals = nonterminals;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
         this.terminals = terminals;
@@ -103,7 +103,7 @@ public class Generator {
 
         appendFile("src/main/java/", "Parser.java",
                 "    public AST parse() throws Exception {\n" +
-                "        AST node = this." + nonterminals.get(0) + "();\n" +
+                "        AST node = this." + nonterminals.iterator().next() + "();\n" +
                 "        if (this.currentToken.type != TokenType.EOF) {\n" +
                 "            this.error();\n" +
                 "        }\n" +

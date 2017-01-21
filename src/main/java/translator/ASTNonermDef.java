@@ -1,8 +1,11 @@
 package translator;
 
 public class ASTNonermDef implements AST {
+    String name;
     AST expr;
-    public ASTNonermDef(AST termexpr) {
-        this.expr = termexpr;
+
+    public ASTNonermDef(String name, AST expr) {
+        this.name = name;
+        this.expr = expr;
     }
 }

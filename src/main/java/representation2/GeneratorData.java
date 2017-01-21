@@ -1,16 +1,23 @@
 package representation2;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GeneratorData {
-    private List<String> nonterminals;
+    private Set<String> nonterminals;
     private Map<String, String> nonterminalsSourceCode;
-    private List<String> terminals;
+    private Set<String> terminals;
     private Map<String, String> terminalsCanStartsWith;
     private Map<String, String> terminalsSourceCode;
 
-    public GeneratorData(List<String> nonterminals, Map<String, String> nonterminalsSourceCode, List<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode) {
+    public GeneratorData() {
+        this.nonterminals = new LinkedHashSet<String>();
+        this.nonterminalsSourceCode = new HashMap<String, String>();
+        this.terminals = new LinkedHashSet<String>();
+        this.terminalsCanStartsWith = new HashMap<String, String>();
+        this.terminalsSourceCode = new HashMap<String, String>();
+    }
+
+    public GeneratorData(Set<String> nonterminals, Map<String, String> nonterminalsSourceCode, Set<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode) {
         this.nonterminals = nonterminals;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
         this.terminals = terminals;
@@ -18,11 +25,11 @@ public class GeneratorData {
         this.terminalsSourceCode = terminalsSourceCode;
     }
 
-    public List<String> getNonterminals() {
+    public Set<String> getNonterminals() {
         return nonterminals;
     }
 
-    public void setNonterminals(List<String> nonterminals) {
+    public void setNonterminals(Set<String> nonterminals) {
         this.nonterminals = nonterminals;
     }
 
@@ -34,11 +41,11 @@ public class GeneratorData {
         this.nonterminalsSourceCode = nonterminalsSourceCode;
     }
 
-    public List<String> getTerminals() {
+    public Set<String> getTerminals() {
         return terminals;
     }
 
-    public void setTerminals(List<String> terminals) {
+    public void setTerminals(Set<String> terminals) {
         this.terminals = terminals;
     }
 
