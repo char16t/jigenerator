@@ -81,7 +81,7 @@ public class Main {
                 interpreter.getGeneratorData().getNonterminals(),
                 nonterminalsSourceCode,
                 interpreter.getGeneratorData().getTerminals(),
-                terminalsCanStartsWith,
+                interpreter.getGeneratorData().getTerminalsCanStartsWith(),
                 terminalsSourceCode);
 
         Generator generator = new Generator(generatorData);

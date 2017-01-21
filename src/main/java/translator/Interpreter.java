@@ -9,6 +9,8 @@ public class Interpreter {
     private GeneratorData generatorData;
     Parser parser;
 
+    String currentTerm = "";
+
     public Interpreter(Parser parser) {
         this.parser = parser;
         this.generatorData = new GeneratorData();
@@ -65,6 +67,9 @@ public class Interpreter {
     }
 
     public String visitOr(ASTOr node) {
+        for (AST child : node.expressions) {
+            visit(child);
+        }
         return "ASTOr\n";
     }
 
@@ -77,10 +82,20 @@ public class Interpreter {
     }
 
     public String visitQuoted(ASTQuoted node) {
+        String firstChar = ((Character) node.value.charAt(0)).toString();
+        if (generatorData.getTerminalsCanStartsWith().containsKey(currentTerm) &&
+                !generatorData.getTerminalsCanStartsWith().get(currentTerm).contains(firstChar)) {
+            String old = generatorData.getTerminalsCanStartsWith().get(currentTerm);
+            old += firstChar;
+            generatorData.getTerminalsCanStartsWith().put(currentTerm, old);
+        }
         return "ASTQuoted\n";
     }
 
     public String visitRepeat(ASTRepeat node) {
+        for (AST expr : node.childs) {
+            visit(expr);
+        }
         return "ASTRepeat\n";
     }
 
@@ -90,6 +105,9 @@ public class Interpreter {
 
     public String visitTermDef(ASTTermDef node) {
         generatorData.getTerminals().add(node.head);
+        generatorData.getTerminalsCanStartsWith().put(node.head, "");
+        currentTerm = node.head;
+
         String result = "ASTTermDef:\n        " + visit(node.expr);
         return result;
     }
