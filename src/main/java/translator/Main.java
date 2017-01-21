@@ -55,7 +55,7 @@ public class Main {
                 "PLUS", "MINUS", "MUL", "DIV", "EQ", "RPAREN", "LPAREN", "INTEGER"
         ));*/
 
-        Map<String, String> terminalsCanStartsWith = new HashMap<String, String>() {{
+        /*Map<String, String> terminalsCanStartsWith = new HashMap<String, String>() {{
             put("PLUS", "+");
             put("MINUS", "-");
             put("MUL", "*");
@@ -64,7 +64,7 @@ public class Main {
             put("LPAREN", "(");
             put("RPAREN", ")");
             put("INTEGER", "1234567890");
-        }};
+        }};*/
 
         Map<String, String> terminalsSourceCode = new HashMap<String, String>() {{
             put("PLUS", "// todo: fill me");
