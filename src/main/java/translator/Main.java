@@ -45,11 +45,11 @@ public class Main {
                 "expr", "term", "factor"
         ));*/
 
-        Map<String, String> nonterminalsSourceCode = new HashMap<String, String>() {{
+        /*Map<String, String> nonterminalsSourceCode = new HashMap<String, String>() {{
             put("expr", "// todo: fill me");
             put("term", "// todo: fill me");
             put("factor", "// todo: fill me");
-        }};
+        }};*/
 
         /*Set<String> terminals = new LinkedHashSet<String>(Arrays.asList(
                 "PLUS", "MINUS", "MUL", "DIV", "EQ", "RPAREN", "LPAREN", "INTEGER"
@@ -66,7 +66,7 @@ public class Main {
             put("INTEGER", "1234567890");
         }};*/
 
-        Map<String, String> terminalsSourceCode = new HashMap<String, String>() {{
+        /*Map<String, String> terminalsSourceCode = new HashMap<String, String>() {{
             put("PLUS", "// todo: fill me");
             put("MINUS", "// todo: fill me");
             put("MUL", "// todo: fill me");
@@ -75,14 +75,15 @@ public class Main {
             put("LPAREN", "// todo: fill me");
             put("RPAREN", "// todo: fill me");
             put("INTEGER", "// todo: fill me");
-        }};
+        }};*/
 
         GeneratorData generatorData = new GeneratorData(
                 interpreter.getGeneratorData().getNonterminals(),
-                nonterminalsSourceCode,
+                interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
+                interpreter.getGeneratorData().getNonterminalsSourceCode(),
                 interpreter.getGeneratorData().getTerminals(),
                 interpreter.getGeneratorData().getTerminalsCanStartsWith(),
-                terminalsSourceCode);
+                interpreter.getGeneratorData().getTerminalsSourceCode());
 
         Generator generator = new Generator(generatorData);
         generator.generate();
