@@ -67,7 +67,15 @@ public class Parser {
         childs.add(new ASTExpression(childsGroup));
         while (this.currentToken.type == TokenType.LINE) {
             this.eat(TokenType.LINE);
-            childs.add(this.expr());
+
+            AST exprNode = this.expr();
+            if (exprNode instanceof ASTOr) {
+                for (AST expression : ((ASTOr)exprNode).expressions) {
+                    childs.add(expression);
+                }
+            } else {
+                childs.add(exprNode);
+            }
         }
         if (childs.size() > 1 || childs.size() == 0) {
             return new ASTOr(childs);
