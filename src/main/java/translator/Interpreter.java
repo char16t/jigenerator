@@ -83,7 +83,11 @@ public class Interpreter {
         if (termOrNonterm == 1) {
             for (AST child : node.expressions) {
                 // todo: use 'else if' constructor for second and next conditions
-                result += "if (...) {\n" + visit(child) + "\n}\n";
+                if (child instanceof ASTQuoted || child instanceof ASTExpression) {
+                    result += visit(child);
+                } else {
+                    result += "if (...) {\n" + visit(child) + "\n}\n";
+                }
             }
         }
         if (termOrNonterm == 2) {
@@ -124,7 +128,7 @@ public class Interpreter {
         if (quoted.length() == 0) {
             return "return \"" + orig + "\";";
         }
-        String result = "if (this.currentChar.equals('" + quoted.charAt(quoted.length()-1) + "') {" +
+        String result = "if (this.currentChar.equals('" + quoted.charAt(quoted.length()-1) + "')) {" +
                 "this.advance(); " +
                 visitQuotedContent(orig, quoted.substring(0, quoted.length()-1)) +
                 " }";
