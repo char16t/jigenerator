@@ -51,12 +51,15 @@ public class NontermVisitor {
 
     private List<String> termsForNontermSubnode = new LinkedList<String>();
     private List<String> nontermsForNontermSubnode = new LinkedList<String>();
+    int isGetStartTermsForNontermSubnodeWorks = 0;
     // run this method only after visiting all AST tree
     public List<String> getStartTermsForNontermSubnode(AST tree) {
         termsForNontermSubnode.clear();
         nontermsForNontermSubnode.clear();
 
+        isGetStartTermsForNontermSubnodeWorks = 1;
         visit(tree);
+        isGetStartTermsForNontermSubnodeWorks = 0;
         for (String nonterminal : nontermsForNontermSubnode) {
             LinkedList<String> ret = getChildsTerms(nonterminal);
             termsForNontermSubnode.addAll(ret);
@@ -88,45 +91,47 @@ public class NontermVisitor {
     }
 
     private void visitTerm(ASTTerm node) {
-        if (nonterminalsCanStartsWith.containsKey(currentNonterm)) {
-            boolean termAlreadyAdded = false;
-            for (String item : nonterminalsCanStartsWith.get(currentNonterm)) {
-                if (item.equals(node.value)) {
-                    termAlreadyAdded = true;
+        if (isGetStartTermsForNontermSubnodeWorks == 0) {
+            if (nonterminalsCanStartsWith.containsKey(currentNonterm)) {
+                boolean termAlreadyAdded = false;
+                for (String item : nonterminalsCanStartsWith.get(currentNonterm)) {
+                    if (item.equals(node.value)) {
+                        termAlreadyAdded = true;
+                    }
+                }
+                if (!termAlreadyAdded) {
+                    nonterminalsCanStartsWith.get(currentNonterm).add(node.value);
                 }
             }
-            if (!termAlreadyAdded) {
-                nonterminalsCanStartsWith.get(currentNonterm).add(node.value);
+        }
+            boolean termAlreadyAdded2 = false;
+            for (String item : this.termsForNontermSubnode) {
+                if (item.equals(node.value)) {
+                    termAlreadyAdded2 = true;
+                }
             }
-        }
-
-        boolean termAlreadyAdded2 = false;
-        for (String item : this.termsForNontermSubnode) {
-            if (item.equals(node.value)) {
-                termAlreadyAdded2 = true;
+            if (!termAlreadyAdded2) {
+                termsForNontermSubnode.add(node.value);
             }
-        }
-        if (!termAlreadyAdded2) {
-            termsForNontermSubnode.add(node.value);
-        }
     }
 
     private void visitNonterm(ASTNonterm node) {
-        //nonterminalsStartsWithTerminals.put(currentNonterm, node.value);
-        if (nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
-            boolean nontermAlreadyAdded = false;
-            if (nonterminalsStartsWithTerminals.get(currentNonterm) != null) {
-                for (String item : nonterminalsStartsWithTerminals.get(currentNonterm)) {
-                    if (item.equals(node.value)) {
-                        nontermAlreadyAdded = true;
+        if (isGetStartTermsForNontermSubnodeWorks == 0) {
+            //nonterminalsStartsWithTerminals.put(currentNonterm, node.value);
+            if (nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
+                boolean nontermAlreadyAdded = false;
+                if (nonterminalsStartsWithTerminals.get(currentNonterm) != null) {
+                    for (String item : nonterminalsStartsWithTerminals.get(currentNonterm)) {
+                        if (item.equals(node.value)) {
+                            nontermAlreadyAdded = true;
+                        }
                     }
-                }
-                if (!nontermAlreadyAdded) {
-                    nonterminalsStartsWithTerminals.get(currentNonterm).add(node.value);
+                    if (!nontermAlreadyAdded) {
+                        nonterminalsStartsWithTerminals.get(currentNonterm).add(node.value);
+                    }
                 }
             }
         }
-
         boolean termAlreadyAdded2 = false;
         for (String item : this.nontermsForNontermSubnode) {
             if (item.equals(node.value)) {
@@ -136,6 +141,7 @@ public class NontermVisitor {
         if (!termAlreadyAdded2) {
             nontermsForNontermSubnode.add(node.value);
         }
+
     }
 
     private void visitNonermDef(ASTNonermDef node) {

@@ -88,18 +88,16 @@ public class Interpreter {
         }
         if (termOrNonterm == 2) {
             for (AST child : node.expressions) {
-            /*
-            List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(child);
-            String conditionString = "";
-            for (String condition : conditions) {
-                conditionString += "TokenType." + condition + " || ";
-            }
-            if (conditionString.length() > 4) {
-                conditionString.substring(0, conditionString.length() - 4);
-            }
-            */
+                List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(child);
+                String conditionString = "";
+                for (String condition : conditions) {
+                    conditionString += "TokenType." + condition + " || ";
+                }
+                if (conditionString.length() > 4) {
+                    conditionString = conditionString.substring(0, conditionString.length() - 4);
+                }
                 // todo: use 'else if' constructor for second and next conditions
-                result += "if (...) {\n" + visit(child) + "\n}\n";
+                result += "if (" + conditionString + ") {\n" + visit(child) + "\n}\n";
             }
         }
         return result;
@@ -142,7 +140,16 @@ public class Interpreter {
             }
             result += "\n}\n";
         } else if (termOrNonterm == 2) {
-            result = "while(...) {\n";
+            List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(node);
+            String conditionString = "";
+            for (String condition : conditions) {
+                conditionString += "TokenType." + condition + " || ";
+            }
+            if (conditionString.length() > 4) {
+                conditionString = conditionString.substring(0, conditionString.length() - 4);
+            }
+
+            result = "while(" + conditionString + ") {\n";
             for (AST expr : node.childs) {
                 result += visit(expr);
             }
