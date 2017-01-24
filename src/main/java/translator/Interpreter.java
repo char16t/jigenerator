@@ -87,6 +87,7 @@ public class Interpreter {
             }
         }
         if (termOrNonterm == 2) {
+            String ifDefention = "if";
             for (AST child : node.expressions) {
                 List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(child);
                 String conditionString = "";
@@ -96,8 +97,8 @@ public class Interpreter {
                 if (conditionString.length() > 4) {
                     conditionString = conditionString.substring(0, conditionString.length() - 4);
                 }
-                // todo: use 'else if' constructor for second and next conditions
-                result += "if (" + conditionString + ") {\n" + visit(child) + "\n}\n";
+                result += ifDefention + " (" + conditionString + ") {\n" + visit(child) + "\n}\n";
+                ifDefention = "else if";
             }
         }
         return result;
