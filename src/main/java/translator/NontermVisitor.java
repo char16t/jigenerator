@@ -21,13 +21,6 @@ public class NontermVisitor {
             result.put(nonterm, new LinkedList<String>() {{ addAll(ret); }});
         }
 
-        /*
-        for (String nonterm : result.keySet()) {
-            LinkedList<String> originalList = nonterminalsCanStartsWith.get(nonterm);
-            LinkedList<String> treeList = result.get(nonterm);
-        }
-        */
-
         return result;
     }
 
@@ -171,27 +164,8 @@ public class NontermVisitor {
         }
     }
 
-    /*
-    public void visitQuoted(ASTQuoted node) {
-        String firstChar = ((Character) node.value.charAt(0)).toString();
-        if (terminalsCanStartsWith.containsKey(currentTerm) &&
-                !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
-            String old = terminalsCanStartsWith.get(currentTerm);
-            old += firstChar;
-            terminalsCanStartsWith.put(currentTerm, old);
-        }
-    }
-*/
-
     public void visitRepeat(ASTRepeat node) {
         visit(node.childs.get(0));
     }
 
-    /*
-    public void visitTermDef(ASTTermDef node) {
-        currentTerm = node.head;
-        terminalsCanStartsWith.put(node.head, "");
-        visit(node.expr);
-    }
-    */
 }

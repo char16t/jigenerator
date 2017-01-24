@@ -54,43 +54,6 @@ public class Main {
         String result = interpreter.interpret();
         System.out.println(result);
 
-
-        /*Set<String> nonterminals = new LinkedHashSet<String>(Arrays.asList(
-                "expr", "term", "factor"
-        ));*/
-
-        /*Map<String, String> nonterminalsSourceCode = new HashMap<String, String>() {{
-            put("expr", "// todo: fill me");
-            put("term", "// todo: fill me");
-            put("factor", "// todo: fill me");
-        }};*/
-
-        /*Set<String> terminals = new LinkedHashSet<String>(Arrays.asList(
-                "PLUS", "MINUS", "MUL", "DIV", "EQ", "RPAREN", "LPAREN", "INTEGER"
-        ));*/
-
-        /*Map<String, String> terminalsCanStartsWith = new HashMap<String, String>() {{
-            put("PLUS", "+");
-            put("MINUS", "-");
-            put("MUL", "*");
-            put("DIV", "/");
-            put("EQ", ":");
-            put("LPAREN", "(");
-            put("RPAREN", ")");
-            put("INTEGER", "1234567890");
-        }};*/
-
-        /*Map<String, String> terminalsSourceCode = new HashMap<String, String>() {{
-            put("PLUS", "// todo: fill me");
-            put("MINUS", "// todo: fill me");
-            put("MUL", "// todo: fill me");
-            put("DIV", "// todo: fill me");
-            put("EQ", "// todo: fill me");
-            put("LPAREN", "// todo: fill me");
-            put("RPAREN", "// todo: fill me");
-            put("INTEGER", "// todo: fill me");
-        }};*/
-
         GeneratorData generatorData = new GeneratorData(
                 interpreter.getGeneratorData().getNonterminals(),
                 interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
