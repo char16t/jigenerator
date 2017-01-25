@@ -81,12 +81,22 @@ public class Interpreter {
     public String visitOr(ASTOr node) {
         String result = "";
         if (termOrNonterm == 1) {
+            String ifDefention = "if";
             for (AST child : node.expressions) {
-                // todo: use 'else if' constructor for second and next conditions
                 if (child instanceof ASTQuoted || child instanceof ASTExpression) {
                     result += visit(child);
                 } else {
-                    result += "if (...) {\n" + visit(child) + "\n}\n";
+                    String conditions = termVisitor.getStartSymbolsForTermSubnode(child);
+                    String conditionString = "";
+                    for (int i = 0; i < conditions.length(); ++i) {
+                        conditionString += "this.currentChar.equals('" + conditions.charAt(i) + "') || ";
+                    }
+                    if (conditionString.length() > 4) {
+                        conditionString = conditionString.substring(0, conditionString.length() - 4);
+                    }
+                    result += ifDefention + " (" + conditionString + ") {\n" + visit(child) + "\n}\n";
+                    ifDefention = "else if";
+                    //result += "if (...) {\n" + visit(child) + "\n}\n";
                 }
             }
         }
@@ -139,7 +149,15 @@ public class Interpreter {
     public String visitRepeat(ASTRepeat node) {
         String result = "";
         if (termOrNonterm == 1) {
-            result = "while(...) {\n";
+            String conditions = termVisitor.getStartSymbolsForTermSubnode(node);
+            String conditionString = "";
+            for (int i = 0; i < conditions.length(); ++i) {
+                conditionString += "this.currentChar.equals('" + conditions.charAt(i) + "') || ";
+            }
+            if (conditionString.length() > 4) {
+                conditionString = conditionString.substring(0, conditionString.length() - 4);
+            }
+            result = "while(" + conditionString + ") {\n";
             for (AST expr : node.childs) {
                 result += visit(expr);
             }

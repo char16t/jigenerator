@@ -1,6 +1,8 @@
 package translator;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class TermVisitor {
@@ -10,6 +12,19 @@ public class TermVisitor {
     public Map<String, String> getTerminalsCanStartsWith(AST tree) {
         visit(tree);
         return terminalsCanStartsWith;
+    }
+
+    private String startSymbolsForNontermSubnode = "";
+    int isGetStartSymbolsForTermSubnodeWorks = 0;
+    // run this method only after visiting all AST tree
+    public String getStartSymbolsForTermSubnode(AST tree) {
+        this.startSymbolsForNontermSubnode = "";
+
+        isGetStartSymbolsForTermSubnodeWorks = 1;
+        visit(tree);
+        isGetStartSymbolsForTermSubnodeWorks = 0;
+
+        return startSymbolsForNontermSubnode;
     }
 
     public void visit(AST node) {
@@ -47,13 +62,23 @@ public class TermVisitor {
     }
 
     public void visitQuoted(ASTQuoted node) {
-        String firstChar = ((Character) node.value.charAt(0)).toString();
-        if (terminalsCanStartsWith.containsKey(currentTerm) &&
-                !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
-            String old = terminalsCanStartsWith.get(currentTerm);
-            old += firstChar;
-            terminalsCanStartsWith.put(currentTerm, old);
+        if (isGetStartSymbolsForTermSubnodeWorks == 0) {
+            String firstChar = ((Character) node.value.charAt(0)).toString();
+            if (terminalsCanStartsWith.containsKey(currentTerm) &&
+                    !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
+                String old = terminalsCanStartsWith.get(currentTerm);
+                old += firstChar;
+                terminalsCanStartsWith.put(currentTerm, old);
+            }
+        } else {
+            // TODO
+            String firstChar = ((Character) node.value.charAt(0)).toString();
+            if (!startSymbolsForNontermSubnode.contains(firstChar)) {
+                startSymbolsForNontermSubnode += firstChar;
+            }
         }
+
+
     }
 
     public void visitRepeat(ASTRepeat node) {
