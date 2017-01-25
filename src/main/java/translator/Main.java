@@ -38,7 +38,7 @@ public class Main {
                 "expr   := term *((PLUS | MINUS) term);\n" +
                         "term   := factor *((MUL | DIV) factor);\n" +
                         "factor := (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN;\n" +
-                        "testvalue := (AWA |AWB|AWC|AWD|AWE) *(AWA |AWB|AWC|AWD|AWE);\n" + // todo: see ast tree. bug!
+                        "testvalue := (AWA |AWB|AWC|AWD|AWE) *(AWA |AWB|AWC|AWD|AWE);\n" +
                         "\n" +
                         "PLUS := '+';\n" +
                         "MINUS := '-';\n" +

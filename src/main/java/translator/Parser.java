@@ -106,6 +106,19 @@ public class Parser {
                 childs.add(this.expr());
             }
             this.eat(TokenType.RPAREN);
+
+            if (childs.size() == 2 && childs.get(1) instanceof ASTOr) {
+                AST firstNode = childs.get(0);
+                ASTOr secondNode = (ASTOr) childs.get(1);
+
+                List<AST> exprChilds = new LinkedList<AST>();
+                exprChilds.add(firstNode);
+                AST expr = new ASTExpression(exprChilds);
+                secondNode.expressions.remove(0);
+                secondNode.expressions.add(0, expr);
+                childs.remove(0);
+            }
+
             return new ASTRepeat(childs);
         }
 
