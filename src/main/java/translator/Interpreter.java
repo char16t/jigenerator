@@ -64,7 +64,7 @@ public class Interpreter {
 
     public String visitNonermDef(ASTNonermDef node) {
         termOrNonterm = 2;
-        String result = "/*\n" + visit(node.expr) + " */";
+        String result = visit(node.expr);
         generatorData.getNonterminals().add(node.name);
         generatorData.getNonterminalsSourceCode().put(node.name, result);
         return result;
@@ -81,6 +81,15 @@ public class Interpreter {
     public String visitOr(ASTOr node) {
         String result = "";
         if (termOrNonterm == 1) {
+            String nodeConditions = termVisitor.getStartSymbolsForTermSubnode(node);
+            String nodeConditionsString = "";
+            for (int i = 0; i < nodeConditions.length(); ++i) {
+                nodeConditionsString += "this.currentChar.equals('" + nodeConditions.charAt(i) + "') || ";
+            }
+            if (nodeConditionsString.length() > 4) {
+                nodeConditionsString = nodeConditionsString.substring(0, nodeConditionsString.length() - 4);
+            }
+
             String ifDefention = "if";
             for (AST child : node.expressions) {
                 if (child instanceof ASTQuoted || child instanceof ASTExpression) {
@@ -99,6 +108,8 @@ public class Interpreter {
                     //result += "if (...) {\n" + visit(child) + "\n}\n";
                 }
             }
+
+            result = "if (" + nodeConditionsString + ") { " + result + " } else { this.error(); }";
         }
         if (termOrNonterm == 2) {
             String ifDefention = "if";
@@ -136,7 +147,7 @@ public class Interpreter {
 
     private String visitQuotedContent(String orig, String quoted) {
         if (quoted.length() == 0) {
-            return "return \"" + orig + "\";";
+            return "result += \"" + orig + "\";";
         }
         String result = "if (this.currentChar.equals('" + quoted.charAt(quoted.length()-1) + "')) {" +
                 "this.advance(); " +
@@ -193,7 +204,7 @@ public class Interpreter {
         termOrNonterm = 1;
         generatorData.getTerminals().add(node.head);
 
-        String result = "/*\n" + visit(node.expr) + "\n*/\n";
+        String result = visit(node.expr);
         generatorData.getTerminalsSourceCode().put(node.head, result);
 
         return result;
