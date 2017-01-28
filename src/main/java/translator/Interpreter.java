@@ -177,7 +177,7 @@ public class Interpreter {
             List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(node);
             String conditionString = "";
             for (String condition : conditions) {
-                conditionString += "TokenType." + condition + " || ";
+                conditionString += "this.currentToken.type == TokenType." + condition + " || ";
             }
             if (conditionString.length() > 4) {
                 conditionString = conditionString.substring(0, conditionString.length() - 4);
