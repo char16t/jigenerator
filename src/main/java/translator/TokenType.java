@@ -13,5 +13,7 @@ public enum TokenType {
     LINE,
     SEMI,
     QUOTED,
+    ASTNAME,
+    INTEGER,
     EOF
 }

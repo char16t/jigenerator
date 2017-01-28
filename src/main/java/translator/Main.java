@@ -46,7 +46,11 @@ public class Main {
                         "EQ := ':=';\n" +
                         "LPAREN := '(';\n" +
                         "RPAREN := ')';\n" +
-                        "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');";
+                        "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n" +
+                        "\n" +
+                        "@BinaryOp(2);\n" +
+                        "@UnaryOp(1);\n" +
+                        "@Num(0);\n";
 
         Lexer lexer = new Lexer(futureSource2);
         Parser parser = new Parser(lexer);
@@ -60,7 +64,8 @@ public class Main {
                 interpreter.getGeneratorData().getNonterminalsSourceCode(),
                 interpreter.getGeneratorData().getTerminals(),
                 interpreter.getGeneratorData().getTerminalsCanStartsWith(),
-                interpreter.getGeneratorData().getTerminalsSourceCode());
+                interpreter.getGeneratorData().getTerminalsSourceCode(),
+                interpreter.getGeneratorData().getAstNodes());
 
         Generator generator = new Generator(generatorData);
         generator.generate();

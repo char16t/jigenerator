@@ -39,7 +39,24 @@ public class Parser {
             childs.add(this.termdef());
         }
 
+        while (this.currentToken.type == TokenType.ASTNAME) {
+            childs.add(this.astdef());
+        }
+
+
+
         return new ASTProgram(childs);
+    }
+
+    public AST astdef() throws Exception {
+        String name = this.currentToken.value;
+        this.eat(TokenType.ASTNAME);
+        this.eat(TokenType.LPAREN);
+        String numChilds = this.currentToken.value;
+        this.eat(TokenType.INTEGER);
+        this.eat(TokenType.RPAREN);
+        this.eat(TokenType.SEMI);
+        return new ASTASTDef(name, Integer.parseInt(numChilds));
     }
 
     public AST rule() throws Exception {

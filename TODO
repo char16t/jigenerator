@@ -1,7 +1,7 @@
-TODO: Generate AST.java
-TODO: Generate Interpreter.java
-TODO: Generate Lexer.java
+DONE: Generate AST.java
+DONE: Generate Interpreter.java
+DONE: Generate Lexer.java
 TODO: Generate Main.java
 TODO: Generate Parser.java
 DONE: Generate Token.java
-TODO: Generate TokenType.java
+DONE: Generate TokenType.java

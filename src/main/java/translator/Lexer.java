@@ -102,6 +102,114 @@ public class Lexer {
         return result;
     }
 
+    public String astname() {
+        String result = "";
+        if (this.currentChar == '@') {
+            this.advance();
+        }
+        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+            result += this.currentChar;
+            this.advance();
+        }
+        return result;
+    }
+
+    public String integer() throws Exception {
+        String result = "";
+        if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+            if (this.currentChar.equals('0')) {
+                this.advance();
+                result += "0";
+            }
+            if (this.currentChar.equals('1')) {
+                this.advance();
+                result += "1";
+            }
+            if (this.currentChar.equals('2')) {
+                this.advance();
+                result += "2";
+            }
+            if (this.currentChar.equals('3')) {
+                this.advance();
+                result += "3";
+            }
+            if (this.currentChar.equals('4')) {
+                this.advance();
+                result += "4";
+            }
+            if (this.currentChar.equals('5')) {
+                this.advance();
+                result += "5";
+            }
+            if (this.currentChar.equals('6')) {
+                this.advance();
+                result += "6";
+            }
+            if (this.currentChar.equals('7')) {
+                this.advance();
+                result += "7";
+            }
+            if (this.currentChar.equals('8')) {
+                this.advance();
+                result += "8";
+            }
+            if (this.currentChar.equals('9')) {
+                this.advance();
+                result += "9";
+            }
+        } else {
+            this.error();
+        }
+        while (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+            if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+                if (this.currentChar.equals('0')) {
+                    this.advance();
+                    result += "0";
+                }
+                if (this.currentChar.equals('1')) {
+                    this.advance();
+                    result += "1";
+                }
+                if (this.currentChar.equals('2')) {
+                    this.advance();
+                    result += "2";
+                }
+                if (this.currentChar.equals('3')) {
+                    this.advance();
+                    result += "3";
+                }
+                if (this.currentChar.equals('4')) {
+                    this.advance();
+                    result += "4";
+                }
+                if (this.currentChar.equals('5')) {
+                    this.advance();
+                    result += "5";
+                }
+                if (this.currentChar.equals('6')) {
+                    this.advance();
+                    result += "6";
+                }
+                if (this.currentChar.equals('7')) {
+                    this.advance();
+                    result += "7";
+                }
+                if (this.currentChar.equals('8')) {
+                    this.advance();
+                    result += "8";
+                }
+                if (this.currentChar.equals('9')) {
+                    this.advance();
+                    result += "9";
+                }
+            } else {
+                this.error();
+            }
+        }
+
+        return result;
+    }
+
     public Token getNextToken() throws Exception {
         while (this.currentChar != null) {
             if (Character.isWhitespace(this.currentChar)) {
@@ -148,6 +256,14 @@ public class Lexer {
             if (this.currentChar.equals(';')) {
                 this.advance();
                 return new Token(TokenType.SEMI, ";");
+            }
+
+            if (this.currentChar.equals('@')) {
+                return new Token(TokenType.ASTNAME, this.astname());
+            }
+
+            if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+                return new Token(TokenType.INTEGER, this.integer());
             }
 
             this.error();

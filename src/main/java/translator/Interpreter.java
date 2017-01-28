@@ -49,6 +49,8 @@ public class Interpreter {
             return visitTerm((ASTTerm) node);
         } else if (node instanceof ASTTermDef) {
             return visitTermDef((ASTTermDef) node);
+        } else if (node instanceof ASTASTDef) {
+            return visitASTDef((ASTASTDef) node);
         } else {
             return "";
         }
@@ -208,6 +210,11 @@ public class Interpreter {
         generatorData.getTerminalsSourceCode().put(node.head, result);
 
         return result;
+    }
+
+    public String visitASTDef(ASTASTDef node) {
+        generatorData.getAstNodes().put(node.name, node.numChilds);
+        return "";
     }
 
     public String interpret() throws Exception {
