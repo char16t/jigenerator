@@ -105,7 +105,7 @@ public class Interpreter {
                     if (conditionString.length() > 4) {
                         conditionString = conditionString.substring(0, conditionString.length() - 4);
                     }
-                    result += ifDefention + " (" + conditionString + ") {\n" + visit(child) + "\n}\n";
+                    result += ifDefention + " (this.currentChar != null && (" + conditionString + ")) {\n" + visit(child) + "\n}\n";
                     ifDefention = "else if";
                     //result += "if (...) {\n" + visit(child) + "\n}\n";
                 }
@@ -151,7 +151,7 @@ public class Interpreter {
         if (quoted.length() == 0) {
             return "result += \"" + orig + "\";";
         }
-        String result = "if (this.currentChar.equals('" + quoted.charAt(quoted.length()-1) + "')) {" +
+        String result = "if (this.currentChar != null && this.currentChar.equals('" + quoted.charAt(quoted.length()-1) + "')) {" +
                 "this.advance(); " +
                 visitQuotedContent(orig, quoted.substring(0, quoted.length()-1)) +
                 " }";
@@ -170,7 +170,7 @@ public class Interpreter {
             if (conditionString.length() > 4) {
                 conditionString = conditionString.substring(0, conditionString.length() - 4);
             }
-            result = "while(" + conditionString + ") {\n";
+            result = "while(this.currentChar != null && (" + conditionString + ")) {\n";
             for (AST expr : node.childs) {
                 result += visit(expr);
             }
