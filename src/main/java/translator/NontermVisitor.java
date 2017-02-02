@@ -18,7 +18,9 @@ public class NontermVisitor {
 
         for (String nonterm : nonterminalsStartsWithTerminals.keySet()) {
             final LinkedList<String> ret = getChildsTerms(nonterm);
-            result.put(nonterm, new LinkedList<String>() {{ addAll(ret); }});
+            result.put(nonterm, new LinkedList<String>() {{
+                addAll(ret);
+            }});
         }
 
         return result;
@@ -45,6 +47,7 @@ public class NontermVisitor {
     private List<String> termsForNontermSubnode = new LinkedList<String>();
     private List<String> nontermsForNontermSubnode = new LinkedList<String>();
     int isGetStartTermsForNontermSubnodeWorks = 0;
+
     // run this method only after visiting all AST tree
     public List<String> getStartTermsForNontermSubnode(AST tree) {
         termsForNontermSubnode.clear();
@@ -97,15 +100,15 @@ public class NontermVisitor {
                 }
             }
         }
-            boolean termAlreadyAdded2 = false;
-            for (String item : this.termsForNontermSubnode) {
-                if (item.equals(node.value)) {
-                    termAlreadyAdded2 = true;
-                }
+        boolean termAlreadyAdded2 = false;
+        for (String item : this.termsForNontermSubnode) {
+            if (item.equals(node.value)) {
+                termAlreadyAdded2 = true;
             }
-            if (!termAlreadyAdded2) {
-                termsForNontermSubnode.add(node.value);
-            }
+        }
+        if (!termAlreadyAdded2) {
+            termsForNontermSubnode.add(node.value);
+        }
     }
 
     private void visitNonterm(ASTNonterm node) {

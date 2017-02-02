@@ -3,9 +3,6 @@ package translator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by user on 1/4/17.
- */
 public class Parser {
     Lexer lexer;
     Token currentToken;
@@ -42,7 +39,6 @@ public class Parser {
         while (this.currentToken.type == TokenType.ASTNAME) {
             childs.add(this.astdef());
         }
-
 
 
         return new ASTProgram(childs);
@@ -87,7 +83,7 @@ public class Parser {
 
             AST exprNode = this.expr();
             if (exprNode instanceof ASTOr) {
-                for (AST expression : ((ASTOr)exprNode).expressions) {
+                for (AST expression : ((ASTOr) exprNode).expressions) {
                     childs.add(expression);
                 }
             } else {
@@ -146,8 +142,7 @@ public class Parser {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
             return this.atom();
-        }
-        else if (this.currentToken.type == TokenType.LPAREN) {
+        } else if (this.currentToken.type == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
             AST node = this.expr();
             this.eat(TokenType.RPAREN);
@@ -199,7 +194,7 @@ public class Parser {
             this.eat(TokenType.LINE);
             AST exprNode = this.termexpr();
             if (exprNode instanceof ASTOr) {
-                for (AST expression : ((ASTOr)exprNode).expressions) {
+                for (AST expression : ((ASTOr) exprNode).expressions) {
                     childs.add(expression);
                 }
             } else {
@@ -250,7 +245,7 @@ public class Parser {
 
             return new ASTRepeat(childs);
         }
-        throw  new Exception("[termexpr2] Sorry...");
+        throw new Exception("[termexpr2] Sorry...");
     }
 
     public AST termexpr3() throws Exception {

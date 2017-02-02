@@ -1,7 +1,5 @@
 package translator;
 
-import java.util.List;
-
 public class ASTTermDef implements AST {
     String head;
     AST expr;

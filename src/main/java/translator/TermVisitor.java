@@ -1,8 +1,6 @@
 package translator;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class TermVisitor {
@@ -16,6 +14,7 @@ public class TermVisitor {
 
     private String startSymbolsForNontermSubnode = "";
     int isGetStartSymbolsForTermSubnodeWorks = 0;
+
     // run this method only after visiting all AST tree
     public String getStartSymbolsForTermSubnode(AST tree) {
         this.startSymbolsForNontermSubnode = "";

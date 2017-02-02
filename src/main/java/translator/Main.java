@@ -3,8 +3,6 @@ package translator;
 import representation2.Generator;
 import representation2.GeneratorData;
 
-import java.util.*;
-
 public class Main {
     public static void main(String[] args) throws Exception {
         String source =

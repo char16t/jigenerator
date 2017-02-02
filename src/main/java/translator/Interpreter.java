@@ -5,9 +5,6 @@ import representation2.GeneratorData;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by user on 1/5/17.
- */
 public class Interpreter {
     private GeneratorData generatorData;
     Parser parser;
@@ -57,7 +54,7 @@ public class Interpreter {
     }
 
     public String visitExpression(ASTExpression node) {
-        String result =  "";
+        String result = "";
         for (AST child : node.childs) {
             result += visit(child);
         }
@@ -151,9 +148,9 @@ public class Interpreter {
         if (quoted.length() == 0) {
             return "result += \"" + orig + "\";";
         }
-        String result = "if (this.currentChar != null && this.currentChar.equals('" + quoted.charAt(quoted.length()-1) + "')) {" +
+        String result = "if (this.currentChar != null && this.currentChar.equals('" + quoted.charAt(quoted.length() - 1) + "')) {" +
                 "this.advance(); " +
-                visitQuotedContent(orig, quoted.substring(0, quoted.length()-1)) +
+                visitQuotedContent(orig, quoted.substring(0, quoted.length() - 1)) +
                 " }";
 
         return result;
