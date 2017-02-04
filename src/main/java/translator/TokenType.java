@@ -12,5 +12,7 @@ public enum TokenType {
     QUOTED,
     ASTNAME,
     INTEGER,
+    COMMA,
+    NAME,
     EOF
 }

@@ -114,6 +114,21 @@ public class Lexer {
         return result;
     }
 
+    public String name() {
+        String result = "";
+        if (this.currentChar == '[') {
+            this.advance();
+        }
+        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+            result += this.currentChar;
+            this.advance();
+        }
+        if (this.currentChar == ']') {
+            this.advance();
+        }
+        return result;
+    }
+
     public String integer() throws Exception {
         String result = "";
         if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
@@ -260,6 +275,15 @@ public class Lexer {
 
             if (this.currentChar.equals('@')) {
                 return new Token(TokenType.ASTNAME, this.astname());
+            }
+
+            if (this.currentChar.equals(',')) {
+                this.advance();
+                return new Token(TokenType.COMMA, ",");
+            }
+
+            if (this.currentChar.equals('[')) {
+                return new Token(TokenType.NAME, this.name());
             }
 
             if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {

@@ -69,7 +69,26 @@ public class Main {
                 "@UnaryOp(1);\n" +
                 "@Num(0);";
 
-        Lexer lexer = new Lexer(futureSource3);
+        String futureSource4 = "expr   := term[a] *((PLUS | MINUS) term[b]);\n" +
+                "term   := factor[a] *((MUL | DIV) factor[b]);\n" +
+                "factor := (PLUS | MINUS) factor;\n" +
+                "factor := INTEGER;\n" +
+                "factor := LPAREN expr RPAREN;\n" +
+                "\n" +
+                "PLUS := '+';\n" +
+                "MINUS := '-';\n" +
+                "MUL := '*';\n" +
+                "DIV := '/';\n" +
+                "EQ := ':=';\n" +
+                "LPAREN := '(';\n" +
+                "RPAREN := ')';\n" +
+                "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n" +
+                "\n" +
+                "@BinaryOp(2);\n" +
+                "@UnaryOp(1);\n" +
+                "@Num(0);";
+
+        Lexer lexer = new Lexer(futureSource4);
         Parser parser = new Parser(lexer);
         Interpreter interpreter = new Interpreter(parser);
         String result = interpreter.interpret();

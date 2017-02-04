@@ -59,7 +59,7 @@ public class Parser {
 
     public AST rule() throws Exception {
         String head = this.currentToken.value;
-        this.eat(TokenType.NONTERM);
+        this.nonterm();
         this.eat(TokenType.EQ);
         AST exprNode = this.expr();
         this.eat(TokenType.SEMI);
@@ -157,9 +157,7 @@ public class Parser {
     public AST atom() throws Exception {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM) {
-            value += this.currentToken.value;
-            this.eat(TokenType.NONTERM);
-            return new ASTNonterm(value);
+            return this.nonterm();
         }
 
         if (this.currentToken.type == TokenType.TERM) {
@@ -169,6 +167,23 @@ public class Parser {
         }
 
         throw new Exception("[atom] Sorry...");
+    }
+
+    public AST nonterm() throws Exception {
+        String value = "";
+        String localVariableName = "";
+
+        if (this.currentToken.type == TokenType.NONTERM) {
+            value += this.currentToken.value;
+            this.eat(TokenType.NONTERM);
+        }
+
+        if (this.currentToken.type == TokenType.NAME) {
+            localVariableName += this.currentToken.value;
+            this.eat(TokenType.NAME);
+        }
+
+        return !localVariableName.equals("") ? new ASTNonterm(value, localVariableName) : new ASTNonterm(value);
     }
 
     public AST termdef() throws Exception {
