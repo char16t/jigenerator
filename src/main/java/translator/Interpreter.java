@@ -2,8 +2,7 @@ package translator;
 
 import representation2.GeneratorData;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Interpreter {
     private GeneratorData generatorData;
@@ -61,11 +60,27 @@ public class Interpreter {
         return result;
     }
 
+    private Set<String> tokenVariableNames = new HashSet<String>();
+    private Set<String> nontermVariableNames = new HashSet<String>();
     public String visitNonermDef(ASTNonermDef node) {
+        tokenVariableNames.clear();
+        nontermVariableNames.clear();
+
         termOrNonterm = 2;
         String result = visit(node.expr);
         generatorData.getNonterminals().add(node.name);
-        generatorData.getNonterminalsSourceCode().put(node.name, result);
+
+        String tokenVariableNamesString = "";
+        for (String tokenVariableName : tokenVariableNames) {
+            tokenVariableNamesString += "Token " + tokenVariableName + ";\n";
+        }
+
+        String nontermVariableNamesString = "";
+        for (String nontermVariableName : nontermVariableNames) {
+            nontermVariableNamesString += "AST " + nontermVariableName + ";\n";
+        }
+        generatorData.getNonterminalsSourceCode().put(node.name,
+                tokenVariableNamesString + nontermVariableNamesString + result);
         return result;
     }
 
@@ -73,6 +88,10 @@ public class Interpreter {
         String result = "";
         if (termOrNonterm == 2) {
             result = "this." + node.value + "();\n";
+            if (node.localVariableName != null) {
+                nontermVariableNames.add(node.localVariableName);
+                result = node.localVariableName + " = " + result;
+            }
         }
         return result;
     }
@@ -195,6 +214,10 @@ public class Interpreter {
         String result = "";
         if (termOrNonterm == 2) {
             result = "this.eat(TokenType." + node.value + ");\n";
+            if (node.localVariableName != null) {
+                tokenVariableNames.add(node.localVariableName);
+                result = node.localVariableName + " = this.currentToken;\n" + result;
+            }
         }
         return result;
     }
