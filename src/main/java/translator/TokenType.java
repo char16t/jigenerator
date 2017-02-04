@@ -14,5 +14,7 @@ public enum TokenType {
     INTEGER,
     COMMA,
     NAME,
+    RET,
+    CALL,
     EOF
 }

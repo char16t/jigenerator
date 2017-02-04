@@ -114,6 +114,45 @@ public class Lexer {
         return result;
     }
 
+    public String ret() {
+        String result = "";
+        if (this.currentChar == '$') {
+            this.advance();
+        }
+        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+            result += this.currentChar;
+            this.advance();
+        }
+        return result;
+    }
+
+    // todo: need for review grammars
+    public String call() {
+        String result = "";
+        if (this.currentChar == '#') {
+            this.advance();
+        }
+        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+            result += this.currentChar;
+            this.advance();
+        }
+        if (this.currentChar == '(') {
+            result += '(';
+            this.advance();
+        }
+
+        while (this.currentChar != null && this.currentChar != ')' && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar) || this.currentChar == ' '|| this.currentChar == ',')) {
+            result += this.currentChar;
+            this.advance();
+        }
+
+        if (this.currentChar == ')') {
+            result += ')';
+            this.advance();
+        }
+        return "AST" + result;
+    }
+
     public String name() {
         String result = "";
         if (this.currentChar == '[') {
@@ -244,6 +283,10 @@ public class Lexer {
                 return new Token(TokenType.QUOTED, this.quoted());
             }
 
+            if (this.currentChar.equals('#')) {
+                return new Token(TokenType.CALL, this.call());
+            }
+
             if (this.currentChar.equals(':')) {
                 return new Token(TokenType.EQ, this.eq());
             }
@@ -280,6 +323,10 @@ public class Lexer {
             if (this.currentChar.equals(',')) {
                 this.advance();
                 return new Token(TokenType.COMMA, ",");
+            }
+
+            if (this.currentChar.equals('$')) {
+                return new Token(TokenType.RET, this.ret());
             }
 
             if (this.currentChar.equals('[')) {

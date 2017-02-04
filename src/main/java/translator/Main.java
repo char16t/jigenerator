@@ -88,7 +88,26 @@ public class Main {
                 "@UnaryOp(1);\n" +
                 "@Num(0);";
 
-        Lexer lexer = new Lexer(futureSource4);
+        String futureSource5 = "expr   := term[a] *((PLUS[b] | MINUS[b]) term[c] #BinOp(a, b, c)[a]) $a;\n" +
+                "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[a]) $d;\n" +
+                "factor := (PLUS | MINUS) factor;\n" +
+                "factor := INTEGER;\n" +
+                "factor := LPAREN expr RPAREN;\n" +
+                "\n" +
+                "PLUS := '+';\n" +
+                "MINUS := '-';\n" +
+                "MUL := '*';\n" +
+                "DIV := '/';\n" +
+                "EQ := ':=';\n" +
+                "LPAREN := '(';\n" +
+                "RPAREN := ')';\n" +
+                "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n" +
+                "\n" +
+                "@BinaryOp(2);\n" +
+                "@UnaryOp(1);\n" +
+                "@Num(0);";
+
+        Lexer lexer = new Lexer(futureSource5);
         Parser parser = new Parser(lexer);
         Interpreter interpreter = new Interpreter(parser);
         String result = interpreter.interpret();

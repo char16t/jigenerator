@@ -6,8 +6,9 @@ rule    := nonterm EQ expr SEMI
 expr    := (expr2)* (LINE expr)*
 expr2   := expr3 | STAR LPAREN expr3 (expr)* RPAREN
 expr3   := atom | LPAREN expr RPAREN
-atom    := nonterm | term
+atom    := nonterm | term | call | RET
 nonterm := NONTERM (NAME | EMPTY)
+call    := CALL (NAME | EMPTY)
 
 termdef     := term EQ termexpr SEMI
 termexpr    := (termexpr2)* (LINE termexpr)*

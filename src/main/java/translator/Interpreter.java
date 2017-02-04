@@ -47,6 +47,10 @@ public class Interpreter {
             return visitTermDef((ASTTermDef) node);
         } else if (node instanceof ASTASTDef) {
             return visitASTDef((ASTASTDef) node);
+        } else if (node instanceof ASTNewNode) {
+            return visitASTNewNode((ASTNewNode) node);
+        } else if (node instanceof ASTReturn) {
+            return visitASTReturn((ASTReturn) node);
         } else {
             return "";
         }
@@ -229,6 +233,17 @@ public class Interpreter {
         String result = visit(node.expr);
         generatorData.getTerminalsSourceCode().put(node.head, result);
 
+        return result;
+    }
+
+    private String visitASTReturn(ASTReturn node) {
+        String result = "return " + node.value + ";\n";
+        return result;
+    }
+
+    private String visitASTNewNode(ASTNewNode node) {
+        String result = node.localVariableName == null ?
+                node.value + ";\n" : node.localVariableName + " = " + node.value + ";\n";
         return result;
     }
 

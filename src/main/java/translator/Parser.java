@@ -74,7 +74,9 @@ public class Parser {
         while (this.currentToken.type == TokenType.STAR ||
                 this.currentToken.type == TokenType.NONTERM ||
                 this.currentToken.type == TokenType.TERM ||
-                this.currentToken.type == TokenType.LPAREN) {
+                this.currentToken.type == TokenType.LPAREN ||
+                this.currentToken.type == TokenType.CALL ||
+                this.currentToken.type == TokenType.RET) {
 
             childsGroup.add(this.expr2());
         }
@@ -106,6 +108,8 @@ public class Parser {
 
         if (this.currentToken.type == TokenType.NONTERM ||
                 this.currentToken.type == TokenType.TERM ||
+                this.currentToken.type == TokenType.CALL ||
+                this.currentToken.type == TokenType.RET ||
                 this.currentToken.type == TokenType.LPAREN) {
             return this.expr3();
         }
@@ -115,6 +119,8 @@ public class Parser {
             childs.add(this.expr3());
             if (this.currentToken.type == TokenType.NONTERM ||
                     this.currentToken.type == TokenType.TERM ||
+                    this.currentToken.type == TokenType.CALL ||
+                    this.currentToken.type == TokenType.RET ||
                     this.currentToken.type == TokenType.LPAREN ||
                     this.currentToken.type == TokenType.STAR ||
                     this.currentToken.type == TokenType.LINE) {
@@ -142,7 +148,10 @@ public class Parser {
 
     public AST expr3() throws Exception {
         String value = "";
-        if (this.currentToken.type == TokenType.NONTERM || this.currentToken.type == TokenType.TERM) {
+        if (this.currentToken.type == TokenType.NONTERM
+                || this.currentToken.type == TokenType.TERM
+                || this.currentToken.type == TokenType.CALL
+                || this.currentToken.type == TokenType.RET) {
             return this.atom();
         } else if (this.currentToken.type == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
@@ -164,6 +173,16 @@ public class Parser {
             return this.term();
         }
 
+        if (this.currentToken.type == TokenType.CALL) {
+            return this.call();
+        }
+
+        if (this.currentToken.type == TokenType.RET) {
+            value += this.currentToken.value;
+            this.eat(TokenType.RET);
+            return new ASTReturn(value);
+        }
+
         throw new Exception("[atom] Sorry...");
     }
 
@@ -182,6 +201,23 @@ public class Parser {
         }
 
         return !localVariableName.equals("") ? new ASTNonterm(value, localVariableName) : new ASTNonterm(value);
+    }
+
+    public AST call() throws Exception {
+        String value = "";
+        String localVariableName = "";
+
+        if (this.currentToken.type == TokenType.CALL) {
+            value += this.currentToken.value;
+            this.eat(TokenType.CALL);
+        }
+
+        if (this.currentToken.type == TokenType.NAME) {
+            localVariableName += this.currentToken.value;
+            this.eat(TokenType.NAME);
+        }
+
+        return !localVariableName.equals("") ? new ASTNewNode(value, localVariableName) : new ASTNewNode(value);
     }
 
     public AST termdef() throws Exception {
