@@ -90,9 +90,9 @@ public class Main {
 
         String futureSource5 = "expr   := term[a] *((PLUS[b] | MINUS[b]) term[c] #BinOp(a, b, c)[a]) $a;\n" +
                 "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[a]) $d;\n" +
-                "factor := (PLUS | MINUS) factor;\n" +
-                "factor := INTEGER;\n" +
-                "factor := LPAREN expr RPAREN;\n" +
+                "factor := (PLUS[a] | MINUS[a]) factor[b] #UnaryOp(a,b)[c] $c;\n" +
+                "factor := INTEGER[d] #Num(d)[e] $e;\n" +
+                "factor := LPAREN expr[f] RPAREN $f;" +
                 "\n" +
                 "PLUS := '+';\n" +
                 "MINUS := '-';\n" +

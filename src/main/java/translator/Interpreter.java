@@ -244,6 +244,9 @@ public class Interpreter {
     private String visitASTNewNode(ASTNewNode node) {
         String result = node.localVariableName == null ?
                 node.value + ";\n" : node.localVariableName + " = " + node.value + ";\n";
+        if (node.localVariableName != null) {
+            nontermVariableNames.add(node.localVariableName);
+        }
         return result;
     }
 
