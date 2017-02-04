@@ -1,76 +1,26 @@
 Version 3.0
 
-program := (rule)* (termdef)*
+program := (rule)* (termdef)* (astdef)*
 
-rule    := NONTERM EQ expr
+rule    := NONTERM EQ expr SEMI
 expr    := (expr2)* (LINE expr)*
 expr2   := expr3 | STAR LPAREN expr3 (expr)* RPAREN
 expr3   := atom | LPAREN expr RPAREN
 atom    := NONTERM | TERM
 
-termdef     := TERM EQ termexpr
+termdef     := TERM EQ termexpr SEMI
 termexpr    := (termexpr2)* (LINE termexpr)*
 termexpr2   := termexpr3 | STAR LPAREN termexpr3 (termexpr)* RPAREN
 termexpr3   := termatom | LPAREN termexpr RPAREN
 termatom    := SQ <any symbols except single quote> SQ
 
+astdef := ASTNAME LPAREN INTEGER RPAREN SEMI
+
 SQ  := '\''
+ASTNAME := '@' ('a'..'z' | 'A'..'Z')*
+LPAREN  := '('
+RPAREN  := ')'
+SEMI    := ';'
+INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')
 
-AST tree for `futureSource1`:
-
-Program
-  NontermDefenition
-
-    Nonterm { term }
-    Repeat
-      Or
-        Expression
-          Or
-            Expression
-              Term { PLUS }
-              Term { MINUS }
-        Expression
-          Nonterm { term }
-  NontermDefenition
-    Nonterm { factor }
-    Repeat
-      Or
-        Expression
-          Or
-            Expression
-              Term { MUL }
-            Expression
-              Term { DIV }
-          Nonterm { factor }
-  Nontermdefenition
-    Or
-      Expression
-        Or
-          Expression
-            Term { FACTOR }
-          Expression
-            Term { FACTOR }
-        Nonterm { factor }
-      Expression
-        Term { INTEGER }
-      Expression
-        Term { LPAREN }
-        Nonterm { expr }
-        Term { RPAREN }
-  TermDefenition
-    ...
-  TermDefenition
-    ...
-  TermDefenition
-    ...
-  TermDefenition
-    ...
-  TermDefenition
-    ...
-  TermDefenition
-    ...
-  TermDefenition
-    ...
-  TermDefenition
-    ...
 
