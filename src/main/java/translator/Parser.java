@@ -1,7 +1,9 @@
 package translator;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Parser {
     Lexer lexer;
@@ -279,7 +281,61 @@ public class Parser {
         if (this.currentToken.type != TokenType.EOF) {
             this.error();
         }
+        node = unionDoubleProductions((ASTProgram) node);
         return node;
     }
 
+    /*
+     * Поддержка повторяющихся продукций для нетерминалов
+     * Эти действия выполняются после построения AST-дерева в Parser:
+     * 0. Наткнулись на узел factor, который уже существует
+     * 1. Создать узел Or
+     * 1-а. Если первый узел в старом Or является Expression, перененести его в новый создаваемый узел
+     * 1-б. Если первый узел в старом Or является Or, перенести все его дочерние Expression в новый узел
+     * 2-а. Если первый узел в новом Or является Expression, добавить его в новый создаваемый узел
+     * 2-б. Если первый узел в новом Or является Or, добавить все его дочерние Expression в новый узел
+     * 3. Добавить новый узел factor и добавить его в Program, старые использованные удалить
+    **/
+    private AST unionDoubleProductions(ASTProgram node) {
+        Map<String, List<AST>> nonterms = new HashMap<String, List<AST>>();
+        List<String> nontermsForRemove = new LinkedList<String>();
+        ASTOr orNode = null;
+
+        for (final AST child : node.childs) {
+            if (child instanceof ASTNonermDef) {
+                String nontermName = ((ASTNonermDef) child).name;
+                if (nonterms.containsKey(nontermName)) {
+                    nonterms.get(nontermName).add(child);
+                } else {
+                    List<AST> nodes = new LinkedList<AST>() {{ add(child); }};
+                    nonterms.put(nontermName, nodes);
+                }
+            }
+        }
+
+        for (String nonterm : nonterms.keySet()) {
+            List<AST> astList = nonterms.get(nonterm);
+            if (astList.size() > 1) {
+                List<AST> expressions = new LinkedList<AST>();
+                for (AST nontermDef : astList) {
+                    AST expr = ((ASTNonermDef) nontermDef).expr;
+                    if (expr instanceof ASTExpression) {
+                        expressions.add(expr);
+                    } else if (expr instanceof ASTOr) {
+                        expressions.addAll(((ASTOr) expr).expressions);
+                    }
+                }
+                orNode = new ASTOr(expressions);
+                nontermsForRemove.add(nonterm);
+                node.childs.add(new ASTNonermDef(nonterm, orNode));
+            }
+        }
+
+        // remove nonterms
+        for (String nontermForRemove : nontermsForRemove) {
+            node.childs.removeAll(nonterms.get(nontermForRemove));
+        }
+
+        return node;
+    }
 }
