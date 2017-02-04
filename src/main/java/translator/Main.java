@@ -69,8 +69,8 @@ public class Main {
                 "@UnaryOp(1);\n" +
                 "@Num(0);";
 
-        String futureSource4 = "expr   := term[a] *((PLUS | MINUS) term[b]);\n" +
-                "term   := factor[a] *((MUL | DIV) factor[b]);\n" +
+        String futureSource4 = "expr   := term[a] *((PLUS[c] | MINUS[c]) term[b]);\n" +
+                "term   := factor[a] *((MUL[c] | DIV[c]) factor[b]);\n" +
                 "factor := (PLUS | MINUS) factor;\n" +
                 "factor := INTEGER;\n" +
                 "factor := LPAREN expr RPAREN;\n" +

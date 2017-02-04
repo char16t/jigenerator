@@ -161,9 +161,7 @@ public class Parser {
         }
 
         if (this.currentToken.type == TokenType.TERM) {
-            value += this.currentToken.value;
-            this.eat(TokenType.TERM);
-            return new ASTTerm(value);
+            return this.term();
         }
 
         throw new Exception("[atom] Sorry...");
@@ -188,7 +186,7 @@ public class Parser {
 
     public AST termdef() throws Exception {
         String head = this.currentToken.value;
-        this.eat(TokenType.TERM);
+        this.term();
         this.eat(TokenType.EQ);
         AST node = this.termexpr();
         this.eat(TokenType.SEMI);
@@ -289,6 +287,23 @@ public class Parser {
         }
 
         return new ASTQuoted(value);
+    }
+
+    public AST term() throws Exception {
+        String value = "";
+        String localVariableName = "";
+
+        if (this.currentToken.type == TokenType.TERM) {
+            value += this.currentToken.value;
+            this.eat(TokenType.TERM);
+        }
+
+        if (this.currentToken.type == TokenType.NAME) {
+            localVariableName += this.currentToken.value;
+            this.eat(TokenType.NAME);
+        }
+
+        return !localVariableName.equals("") ? new ASTTerm(value, localVariableName) : new ASTTerm(value);
     }
 
     public AST parse() throws Exception {
