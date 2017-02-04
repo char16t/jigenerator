@@ -70,7 +70,7 @@ public class Main {
                 "@Num(0);";
 
         String futureSource4 = "expr   := term[a] *((PLUS[c] | MINUS[c]) term[b]);\n" +
-                "term   := factor[a] *((MUL[c] | DIV[c]) factor[b]);\n" +
+                "term   := factor[d] *((MUL[e] | DIV[e]) factor[f]);\n" +
                 "factor := (PLUS | MINUS) factor;\n" +
                 "factor := INTEGER;\n" +
                 "factor := LPAREN expr RPAREN;\n" +
