@@ -76,12 +76,12 @@ public class Interpreter {
 
         String tokenVariableNamesString = "";
         for (String tokenVariableName : tokenVariableNames) {
-            tokenVariableNamesString += "Token " + tokenVariableName + ";\n";
+            tokenVariableNamesString += "Token " + tokenVariableName + " = null;\n";
         }
 
         String nontermVariableNamesString = "";
         for (String nontermVariableName : nontermVariableNames) {
-            nontermVariableNamesString += "AST " + nontermVariableName + ";\n";
+            nontermVariableNamesString += "AST " + nontermVariableName + " = null;\n";
         }
         generatorData.getNonterminalsSourceCode().put(node.name,
                 tokenVariableNamesString + nontermVariableNamesString + result);
@@ -147,6 +147,7 @@ public class Interpreter {
                 result += ifDefention + " (" + conditionString + ") {\n" + visit(child) + "\n}\n";
                 ifDefention = "else if";
             }
+            result += " else { this.error(); return null; }";
         }
         return result;
     }
@@ -243,7 +244,7 @@ public class Interpreter {
 
     private String visitASTNewNode(ASTNewNode node) {
         String result = node.localVariableName == null ?
-                node.value + ";\n" : node.localVariableName + " = " + node.value + ";\n";
+                "new " + node.value + ";\n" : node.localVariableName + " = new " + node.value + ";\n";
         if (node.localVariableName != null) {
             nontermVariableNames.add(node.localVariableName);
         }

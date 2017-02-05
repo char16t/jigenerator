@@ -108,7 +108,7 @@ public class Main {
                 "@Num(0);";
 
         String futureSource6 = "expr   := term[a] *((PLUS[b] | MINUS[b]) term[c] #BinOp(a, b, c)[a]) $a;\n" +
-                "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[a]) $d;\n" +
+                "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[d]) $d;\n" +
                 "factor := (PLUS[a] | MINUS[a]) factor[b] #UnaryOp(a,b)[c] $c;\n" +
                 "factor := INTEGER[d] #Num(d)[e] $e;\n" +
                 "factor := LPAREN expr[f] RPAREN $f;" +
@@ -122,7 +122,7 @@ public class Main {
                 "RPAREN := ')';\n" +
                 "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n" +
                 "\n" +
-                "@BinaryOp(%n, %t, %n);\n" +
+                "@BinOp(%n, %t, %n);\n" +
                 "@UnaryOp(%t, %n);\n" +
                 "@Num(%t);";
 
