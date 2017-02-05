@@ -251,7 +251,7 @@ public class Interpreter {
     }
 
     public String visitASTDef(ASTASTDef node) {
-        generatorData.getAstNodes().put(node.name, node.numChilds);
+        generatorData.getAstNodes().put(node.name, (LinkedList<String>) node.childs);
         return "";
     }
 

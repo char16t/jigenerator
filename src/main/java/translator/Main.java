@@ -107,7 +107,26 @@ public class Main {
                 "@UnaryOp(1);\n" +
                 "@Num(0);";
 
-        Lexer lexer = new Lexer(futureSource5);
+        String futureSource6 = "expr   := term[a] *((PLUS[b] | MINUS[b]) term[c] #BinOp(a, b, c)[a]) $a;\n" +
+                "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[a]) $d;\n" +
+                "factor := (PLUS[a] | MINUS[a]) factor[b] #UnaryOp(a,b)[c] $c;\n" +
+                "factor := INTEGER[d] #Num(d)[e] $e;\n" +
+                "factor := LPAREN expr[f] RPAREN $f;" +
+                "\n" +
+                "PLUS := '+';\n" +
+                "MINUS := '-';\n" +
+                "MUL := '*';\n" +
+                "DIV := '/';\n" +
+                "EQ := ':=';\n" +
+                "LPAREN := '(';\n" +
+                "RPAREN := ')';\n" +
+                "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n" +
+                "\n" +
+                "@BinaryOp(%n, %t, %n);\n" +
+                "@UnaryOp(%t, %n);\n" +
+                "@Num(%t);";
+
+        Lexer lexer = new Lexer(futureSource6);
         Parser parser = new Parser(lexer);
         Interpreter interpreter = new Interpreter(parser);
         String result = interpreter.interpret();

@@ -50,11 +50,21 @@ public class Parser {
         String name = this.currentToken.value;
         this.eat(TokenType.ASTNAME);
         this.eat(TokenType.LPAREN);
-        String numChilds = this.currentToken.value;
-        this.eat(TokenType.INTEGER);
+
+        List<String> types = new LinkedList<String>();
+        String type = this.currentToken.value;
+        this.eat(TokenType.ASTARGTYPE);
+        types.add(type);
+        while (this.currentToken.type == TokenType.COMMA) {
+            this.eat(TokenType.COMMA);
+            type = this.currentToken.value;
+            this.eat(TokenType.ASTARGTYPE);
+            types.add(type);
+        }
+
         this.eat(TokenType.RPAREN);
         this.eat(TokenType.SEMI);
-        return new ASTASTDef(name, Integer.parseInt(numChilds));
+        return new ASTASTDef(name, types);
     }
 
     public AST rule() throws Exception {

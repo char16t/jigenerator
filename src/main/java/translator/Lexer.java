@@ -114,6 +114,18 @@ public class Lexer {
         return result;
     }
 
+    public String astargtype() {
+        String result = "";
+        if (this.currentChar == '%') {
+            this.advance();
+        }
+        if (this.currentChar == 't' || this.currentChar == 'n') {
+            result += this.currentChar;
+            this.advance();
+        }
+        return result;
+    }
+
     public String ret() {
         String result = "";
         if (this.currentChar == '$') {
@@ -327,6 +339,10 @@ public class Lexer {
 
             if (this.currentChar.equals('$')) {
                 return new Token(TokenType.RET, this.ret());
+            }
+
+            if (this.currentChar.equals('%')) {
+                return new Token(TokenType.ASTARGTYPE, this.astargtype());
             }
 
             if (this.currentChar.equals('[')) {

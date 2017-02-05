@@ -16,5 +16,6 @@ public enum TokenType {
     NAME,
     RET,
     CALL,
+    ASTARGTYPE,
     EOF
 }
