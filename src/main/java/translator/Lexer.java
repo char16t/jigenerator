@@ -1,20 +1,99 @@
 package translator;
 
+/**
+ * Lexer. Converts raw text to tokens
+ */
 public class Lexer {
-    String text;
-    Integer pos;
-    Character currentChar;
+    /**
+     * The input text.
+     */
+    private String text;
 
+    /**
+     * Current position in input text.
+     */
+    private Integer pos;
+
+    /**
+     * Current character in input text.
+     */
+    private Character currentChar;
+
+    /**
+     * Constructor.
+     *
+     * @param text input text.
+     */
     public Lexer(final String text) {
         this.text = text;
         this.pos = 0;
         this.currentChar = this.text.charAt(this.pos);
     }
 
+    /**
+     * Getter.
+     *
+     * @return input text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param text input text.
+     */
+    public void setText(final String text) {
+        this.text = text;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return current position in input text
+     */
+    public Integer getPos() {
+        return pos;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param pos current position in input text
+     */
+    public void setPos(final Integer pos) {
+        this.pos = pos;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return current character in input text
+     */
+    public Character getCurrentChar() {
+        return currentChar;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param currentChar current character in input text
+     */
+    public void setCurrentChar(final Character currentChar) {
+        this.currentChar = currentChar;
+    }
+
+    /**
+     * @throws Exception throws exception when error occurs lexical analysis
+     */
     private void error() throws Exception {
         throw new Exception("Invalid character");
     }
 
+    /**
+     * Advance the 'pos' pointer and set the 'currentChar' field.
+     */
     private void advance() {
         this.pos += 1;
         if (this.pos > this.text.length() - 1) {
@@ -24,6 +103,10 @@ public class Lexer {
         }
     }
 
+    /**
+     * Advance the 'pos' pointer and set the 'currentChar' field while current
+     * char is a whitespace symbol.
+     */
     private void skipWhitespace() {
         while (this.currentChar != null
                 && Character.isWhitespace(this.currentChar)) {
@@ -31,6 +114,9 @@ public class Lexer {
         }
     }
 
+    /**
+     * @return the term consumed from the input.
+     */
     private String term() {
         String result = "";
         while (this.currentChar != null
@@ -41,6 +127,9 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return the nonterm consumed from the input.
+     */
     private String nonterm() {
         String result = "";
         while (this.currentChar != null
@@ -51,6 +140,11 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return symbol sequence ':='
+     * @throws Exception when failed to find a sequence of characters ':=' from
+     *                   the current position
+     */
     private String eq() throws Exception {
         String result = "";
         if (this.currentChar.equals(':')) {
@@ -64,6 +158,11 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return left parenthesis character
+     * @throws Exception when failed to find a left parenthesis character from
+     *                   the current position
+     */
     private String lparen() throws Exception {
         if (this.currentChar.equals('(')) {
             return "(";
@@ -72,6 +171,11 @@ public class Lexer {
         return null;
     }
 
+    /**
+     * @return right parenthesis character
+     * @throws Exception when failed to find a right parenthesis character from
+     *                   the current position
+     */
     private String rparen() throws Exception {
         if (this.currentChar.equals(')')) {
             return ")";
@@ -80,6 +184,11 @@ public class Lexer {
         return null;
     }
 
+    /**
+     * @return strt character
+     * @throws Exception when failed to find a star character from the current
+     *                   position
+     */
     private String star() throws Exception {
         if (this.currentChar.equals('*')) {
             return "*";
@@ -88,6 +197,11 @@ public class Lexer {
         return null;
     }
 
+    /**
+     * @return quoted symbol sequence
+     * @throws Exception when failed to find a quoted character sequence from
+     *                   the current position
+     */
     private String quoted() throws Exception {
         String result = "";
 
@@ -105,6 +219,9 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return name of ast-tree node
+     */
     private String astname() {
         String result = "";
         if (this.currentChar == '@') {
@@ -119,6 +236,9 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return the name of the field node of the AST tree
+     */
     private String astargtype() {
         String result = "";
         if (this.currentChar == '%') {
@@ -131,6 +251,9 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return the name of the variable the return value
+     */
     private String ret() {
         String result = "";
         if (this.currentChar == '$') {
@@ -145,7 +268,11 @@ public class Lexer {
         return result;
     }
 
-    // todo: need for review grammars
+    // TODO: need for review grammars
+
+    /**
+     * @return part of the original Java code, which creates a new node ADT-tree
+     */
     private String call() {
         String result = "";
         if (this.currentChar == '#') {
@@ -179,6 +306,9 @@ public class Lexer {
         return "AST" + result;
     }
 
+    /**
+     * @return name of variable
+     */
     private String name() {
         String result = "";
         if (this.currentChar == '[') {
@@ -196,6 +326,11 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * @return a (multidigit) integer consumed from the input.
+     * @throws Exception when failed to find a digit character sequence from
+     *                   the current position.
+     */
     private String integer() throws Exception {
         String result = "";
         if (this.currentChar.equals('0')
@@ -319,6 +454,14 @@ public class Lexer {
         return result;
     }
 
+    /**
+     * Lexical analyzer. This method is responsible for breaking a sentence
+     * apart into tokens. One token at a time.
+     *
+     * @return next avialable token
+     * @throws Exception when cannot read the next token from the current
+     *                   position in the text
+     */
     public Token getNextToken() throws Exception {
         while (this.currentChar != null) {
             if (Character.isWhitespace(this.currentChar)) {

@@ -3,25 +3,45 @@ package translator;
 import representation2.Generator;
 import representation2.GeneratorData;
 
-public class Main {
+/**
+ * Main class. The entry point to the program.
+ */
+public final class Main {
+    /**
+     * Utility classes should not have a public or default constructor.
+     */
+    private Main() {
+    }
+
+    /**
+     * Main method. The entry point to the program.
+     *
+     * @param args Unused
+     * @throws Exception when an error occurs lexical analysis, parsing or
+     *                   interpreting
+     */
     public static void main(final String[] args) throws Exception {
         String source =
                 "expr   := term *((PLUS | MINUS) term);\n"
                         + "term   := factor *((MUL | DIV) factor);\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN;";
+                        + "factor := (PLUS | MINUS) factor | INTEGER"
+                        + " | LPAREN expr RPAREN;";
 
         String source2 =
-                "factor := INTEGER | ((PLUS | MINUS)) factor |  LPAREN expr RPAREN;";
+                "factor := INTEGER | ((PLUS | MINUS)) factor "
+                        + "|  LPAREN expr RPAREN;";
 
         String source3 =
                 "expr   := term *((PLUS | MINUS) | term);\n"
                         + "term   := factor *((MUL | DIV) *(factor));\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN;";
+                        + "factor := (PLUS | MINUS) factor | INTEGER "
+                        + "| LPAREN expr RPAREN;";
 
         String futureSource1 =
                 "expr   := term *((PLUS | MINUS) | term);\n"
                         + "term   := factor *((MUL | DIV) *(factor));\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN;\n"
+                        + "factor := (PLUS | MINUS) factor | INTEGER"
+                        + " | LPAREN expr RPAREN;\n"
                         + "\n"
                         + "PLUS := '+';\n"
                         + "MINUS := '-';\n"
@@ -30,12 +50,14 @@ public class Main {
                         + "EQ := ':=';\n"
                         + "LPAREN := '(';\n"
                         + "RPAREN := ')';\n"
-                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');";
+                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
+                        + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');";
 
         String futureSource2 =
                 "expr   := term *((PLUS | MINUS) term);\n"
                         + "term   := factor *((MUL | DIV) factor);\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN;\n"
+                        + "factor := (PLUS | MINUS) factor | INTEGER"
+                        + " | LPAREN expr RPAREN;\n"
                         + "\n"
                         + "PLUS := '+';\n"
                         + "MINUS := '-';\n"
@@ -44,7 +66,8 @@ public class Main {
                         + "EQ := ':=';\n"
                         + "LPAREN := '(';\n"
                         + "RPAREN := ')';\n"
-                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
+                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
+                        + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
                         + "\n"
                         + "@BinaryOp(2);\n"
                         + "@UnaryOp(1);\n"
@@ -63,34 +86,40 @@ public class Main {
                 + "EQ := ':=';\n"
                 + "LPAREN := '(';\n"
                 + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
+                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
+                + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
                 + "\n"
                 + "@BinaryOp(2);\n"
                 + "@UnaryOp(1);\n"
                 + "@Num(0);";
 
-        String futureSource4 = "expr   := term[a] *((PLUS[c] | MINUS[c]) term[b]);\n"
-                + "term   := factor[d] *((MUL[e] | DIV[e]) factor[f]);\n"
-                + "factor := (PLUS | MINUS) factor;\n"
-                + "factor := INTEGER;\n"
-                + "factor := LPAREN expr RPAREN;\n"
-                + "\n"
-                + "PLUS := '+';\n"
-                + "MINUS := '-';\n"
-                + "MUL := '*';\n"
-                + "DIV := '/';\n"
-                + "EQ := ':=';\n"
-                + "LPAREN := '(';\n"
-                + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
-                + "\n"
-                + "@BinaryOp(2);\n"
-                + "@UnaryOp(1);\n"
-                + "@Num(0);";
+        String futureSource4 =
+                "expr   := term[a] *((PLUS[c] | MINUS[c]) term[b]);\n"
+                        + "term  := factor[d] *((MUL[e] | DIV[e]) factor[f]);\n"
+                        + "factor := (PLUS | MINUS) factor;\n"
+                        + "factor := INTEGER;\n"
+                        + "factor := LPAREN expr RPAREN;\n"
+                        + "\n"
+                        + "PLUS := '+';\n"
+                        + "MINUS := '-';\n"
+                        + "MUL := '*';\n"
+                        + "DIV := '/';\n"
+                        + "EQ := ':=';\n"
+                        + "LPAREN := '(';\n"
+                        + "RPAREN := ')';\n"
+                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
+                        + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
+                        + "\n"
+                        + "@BinaryOp(2);\n"
+                        + "@UnaryOp(1);\n"
+                        + "@Num(0);";
 
-        String futureSource5 = "expr   := term[a] *((PLUS[b] | MINUS[b]) term[c] #BinOp(a, b, c)[a]) $a;\n"
-                + "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[a]) $d;\n"
-                + "factor := (PLUS[a] | MINUS[a]) factor[b] #UnaryOp(a,b)[c] $c;\n"
+        String futureSource5 = "expr   := term[a] *((PLUS[b] | MINUS[b])"
+                + " term[c] #BinOp(a, b, c)[a]) $a;\n"
+                + "term   := factor[d] *((MUL[e] | DIV[e])"
+                + " factor[f] #BinOp(d, e, f)[a]) $d;\n"
+                + "factor := (PLUS[a] | MINUS[a])"
+                + " factor[b] #UnaryOp(a,b)[c] $c;\n"
                 + "factor := INTEGER[d] #Num(d)[e] $e;\n"
                 + "factor := LPAREN expr[f] RPAREN $f;"
                 + "\n"
@@ -101,15 +130,19 @@ public class Main {
                 + "EQ := ':=';\n"
                 + "LPAREN := '(';\n"
                 + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
+                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
+                + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
                 + "\n"
                 + "@BinaryOp(2);\n"
                 + "@UnaryOp(1);\n"
                 + "@Num(0);";
 
-        String futureSource6 = "expr   := term[a] *((PLUS[b] | MINUS[b]) term[c] #BinOp(a, b, c)[a]) $a;\n"
-                + "term   := factor[d] *((MUL[e] | DIV[e]) factor[f] #BinOp(d, e, f)[d]) $d;\n"
-                + "factor := (PLUS[a] | MINUS[a]) factor[b] #UnaryOp(a,b)[c] $c;\n"
+        String futureSource6 = "expr   := term[a] *((PLUS[b] | MINUS[b])"
+                + " term[c] #BinOp(a, b, c)[a]) $a;\n"
+                + "term   := factor[d] *((MUL[e] | DIV[e])"
+                + " factor[f] #BinOp(d, e, f)[d]) $d;\n"
+                + "factor := (PLUS[a] | MINUS[a])"
+                + " factor[b] #UnaryOp(a,b)[c] $c;\n"
                 + "factor := INTEGER[d] #Num(d)[e] $e;\n"
                 + "factor := LPAREN expr[f] RPAREN $f;"
                 + "\n"
@@ -120,7 +153,8 @@ public class Main {
                 + "EQ := ':=';\n"
                 + "LPAREN := '(';\n"
                 + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
+                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
+                + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
                 + "\n"
                 + "@BinOp(%n, %t, %n);\n"
                 + "@UnaryOp(%t, %n);\n"

@@ -2,31 +2,77 @@ package translator;
 
 import representation2.GeneratorData;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+/**
+ * Interpreter. Interpret token sequence
+ */
 public class Interpreter {
-    Parser parser;
-    TermVisitor termVisitor = new TermVisitor();
-    NontermVisitor nontermVisitor = new NontermVisitor();
-    int termOrNonterm = 0; /* 0 - none, 1 - term, 2 - nonterm */
+    /**
+     * Parsers provides a token sequence.
+     */
+    private Parser parser;
+
+    /**
+     * TermVisitor can visit only terms in ast-tree.
+     */
+    private TermVisitor termVisitor = new TermVisitor();
+
+    /**
+     * NontermVisitor can visit only nonterms in ast-tree.
+     */
+    private NontermVisitor nontermVisitor = new NontermVisitor();
+
+    /**
+     * 0 - none;
+     * 1 - term;
+     * 2 - nonterm.
+     */
+    private int termOrNonterm = 0;
+
     private GeneratorData generatorData;
     private Set<String> tokenVariableNames = new HashSet<String>();
     private Set<String> nontermVariableNames = new HashSet<String>();
 
-    public Interpreter(Parser parser) {
+    /**
+     * Constructor.
+     *
+     * @param parser
+     */
+    public Interpreter(final Parser parser) {
         this.parser = parser;
         this.generatorData = new GeneratorData();
     }
 
+    /**
+     * Getter.
+     *
+     * @return generatorData
+     */
     public GeneratorData getGeneratorData() {
         return generatorData;
     }
 
-    public void setGeneratorData(GeneratorData generatorData) {
+    /**
+     * Setter.
+     *
+     * @param generatorData
+     */
+    public void setGeneratorData(final GeneratorData generatorData) {
         this.generatorData = generatorData;
     }
 
-    public String visit(AST node) {
+    /**
+     * Visit abstact tree node.
+     *
+     * @param node abstact tree node
+     * @return result string
+     */
+    private String visit(final AST node) {
         if (node instanceof ASTExpression) {
             return visitExpression((ASTExpression) node);
         } else if (node instanceof ASTNonermDef) {
@@ -56,7 +102,13 @@ public class Interpreter {
         }
     }
 
-    private String visitExpression(ASTExpression node) {
+    /**
+     * Visit expression tree node.
+     *
+     * @param node expression node
+     * @return result substring
+     */
+    private String visitExpression(final ASTExpression node) {
         String result = "";
         for (AST child : node.childs) {
             result += visit(child);
@@ -64,7 +116,13 @@ public class Interpreter {
         return result;
     }
 
-    private String visitNonermDef(ASTNonermDef node) {
+    /**
+     * Visit nonterm defenition tree node.
+     *
+     * @param node nonterm defenition tree node
+     * @return result substring
+     */
+    private String visitNonermDef(final ASTNonermDef node) {
         tokenVariableNames.clear();
         nontermVariableNames.clear();
 
@@ -74,7 +132,9 @@ public class Interpreter {
 
         String tokenVariableNamesString = "";
         for (String tokenVariableName : tokenVariableNames) {
-            tokenVariableNamesString += "Token " + tokenVariableName + " = null;\n";
+            tokenVariableNamesString += "Token "
+                    + tokenVariableName
+                    + " = null;\n";
         }
 
         String nontermVariableNamesString = "";
@@ -86,7 +146,13 @@ public class Interpreter {
         return result;
     }
 
-    private String visitNonterm(ASTNonterm node) {
+    /**
+     * Visit nonterm tree node.
+     *
+     * @param node nonterm tree node
+     * @return result substring
+     */
+    private String visitNonterm(final ASTNonterm node) {
         String result = "";
         if (termOrNonterm == 2) {
             result = "this." + node.value + "();\n";
@@ -98,7 +164,13 @@ public class Interpreter {
         return result;
     }
 
-    private String visitOr(ASTOr node) {
+    /**
+     * Visit 'or' tree node.
+     *
+     * @param node 'or' tree node
+     * @return result substring
+     */
+    private String visitOr(final ASTOr node) {
         String result = "";
         if (termOrNonterm == 1) {
             String nodeConditions = termVisitor.getStartSymbolsForTermSubnode(node);
@@ -150,6 +222,12 @@ public class Interpreter {
         return result;
     }
 
+    /**
+     * Visit program tree node.
+     *
+     * @param node program tree node
+     * @return result substring
+     */
     private String visitProgram(ASTProgram node) {
         String result = "ASTProgram:\n";
         for (AST child : node.childs) {
@@ -158,6 +236,12 @@ public class Interpreter {
         return result;
     }
 
+    /**
+     * Visit quoted tree node.
+     *
+     * @param node quoted tree node
+     * @return result substring
+     */
     private String visitQuoted(ASTQuoted node) {
         String result = "";
         if (termOrNonterm == 1) {
@@ -166,6 +250,9 @@ public class Interpreter {
         return result;
     }
 
+    /**
+     * Generates string for quoted tree node. Recursive method.
+     */
     private String visitQuotedContent(String orig, String quoted) {
         if (quoted.length() == 0) {
             return "result += \"" + orig + "\";";
@@ -179,13 +266,21 @@ public class Interpreter {
         return result;
     }
 
+    /**
+     * Visit repeat tree node.
+     *
+     * @param node repeat tree node
+     * @return result substring
+     */
     private String visitRepeat(ASTRepeat node) {
         String result = "";
         if (termOrNonterm == 1) {
             String conditions = termVisitor.getStartSymbolsForTermSubnode(node);
             String conditionString = "";
             for (int i = 0; i < conditions.length(); ++i) {
-                conditionString += "this.currentChar.equals('" + conditions.charAt(i) + "') || ";
+                conditionString += "this.currentChar.equals('"
+                        + conditions.charAt(i)
+                        + "') || ";
             }
             if (conditionString.length() > 4) {
                 conditionString = conditionString.substring(0, conditionString.length() - 4);
@@ -214,18 +309,32 @@ public class Interpreter {
         return result;
     }
 
-    private String visitTerm(ASTTerm node) {
+    /**
+     * Visit term tree node.
+     *
+     * @param node term tree node
+     * @return result substring
+     */
+    private String visitTerm(final ASTTerm node) {
         String result = "";
         if (termOrNonterm == 2) {
             result = "this.eat(TokenType." + node.value + ");\n";
             if (node.localVariableName != null) {
                 tokenVariableNames.add(node.localVariableName);
-                result = node.localVariableName + " = this.currentToken;\n" + result;
+                result = node.localVariableName
+                        + " = this.currentToken;\n"
+                        + result;
             }
         }
         return result;
     }
 
+    /**
+     * Visit term defenition tree node.
+     *
+     * @param node term defenition tree node
+     * @return result substring
+     */
     private String visitTermDef(ASTTermDef node) {
         termOrNonterm = 1;
         generatorData.getTerminals().add(node.head);
@@ -236,11 +345,23 @@ public class Interpreter {
         return result;
     }
 
+    /**
+     * Visit ast return tree node.
+     *
+     * @param node ast return tree node
+     * @return result substring
+     */
     private String visitASTReturn(ASTReturn node) {
         String result = "return " + node.value + ";\n";
         return result;
     }
 
+    /**
+     * Visit newNode tree node.
+     *
+     * @param node newNode tree node
+     * @return result substring
+     */
     private String visitASTNewNode(ASTNewNode node) {
         String result = node.localVariableName == null
                 ? "new " + node.value + ";\n"
@@ -251,11 +372,23 @@ public class Interpreter {
         return result;
     }
 
-    private String visitASTDef(ASTASTDef node) {
+    /**
+     * Visit astDef tree node.
+     *
+     * @param node astDef tree node
+     * @return result substring
+     */
+    private String visitASTDef(final ASTASTDef node) {
         generatorData.getAstNodes().put(node.name, (LinkedList<String>) node.childs);
         return "";
     }
 
+    /**
+     * Interpret token sequence.
+     *
+     * @return result string
+     * @throws Exception when parsing error
+     */
     public String interpret() throws Exception {
         AST tree = parser.parse();
         if (tree == null) {
