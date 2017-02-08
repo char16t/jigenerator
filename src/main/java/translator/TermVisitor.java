@@ -4,16 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TermVisitor {
+    int isGetStartSymbolsForTermSubnodeWorks = 0;
     private String currentTerm = "";
     private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();
+    private String startSymbolsForNontermSubnode = "";
 
     public Map<String, String> getTerminalsCanStartsWith(AST tree) {
         visit(tree);
         return terminalsCanStartsWith;
     }
-
-    private String startSymbolsForNontermSubnode = "";
-    int isGetStartSymbolsForTermSubnodeWorks = 0;
 
     // run this method only after visiting all AST tree
     public String getStartSymbolsForTermSubnode(AST tree) {

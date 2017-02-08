@@ -383,7 +383,9 @@ public class Parser {
                 if (nonterms.containsKey(nontermName)) {
                     nonterms.get(nontermName).add(child);
                 } else {
-                    List<AST> nodes = new LinkedList<AST>() {{ add(child); }};
+                    List<AST> nodes = new LinkedList<AST>() {{
+                        add(child);
+                    }};
                     nonterms.put(nontermName, nodes);
                 }
             }

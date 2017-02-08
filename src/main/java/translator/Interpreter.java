@@ -5,13 +5,13 @@ import representation2.GeneratorData;
 import java.util.*;
 
 public class Interpreter {
-    private GeneratorData generatorData;
     Parser parser;
-
     TermVisitor termVisitor = new TermVisitor();
     NontermVisitor nontermVisitor = new NontermVisitor();
-
     int termOrNonterm = 0; /* 0 - none, 1 - term, 2 - nonterm */
+    private GeneratorData generatorData;
+    private Set<String> tokenVariableNames = new HashSet<String>();
+    private Set<String> nontermVariableNames = new HashSet<String>();
 
     public Interpreter(Parser parser) {
         this.parser = parser;
@@ -64,8 +64,6 @@ public class Interpreter {
         return result;
     }
 
-    private Set<String> tokenVariableNames = new HashSet<String>();
-    private Set<String> nontermVariableNames = new HashSet<String>();
     public String visitNonermDef(ASTNonermDef node) {
         tokenVariableNames.clear();
         nontermVariableNames.clear();

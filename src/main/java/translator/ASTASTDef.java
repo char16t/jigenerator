@@ -1,6 +1,5 @@
 package translator;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class ASTASTDef implements AST {

@@ -153,7 +153,7 @@ public class Lexer {
             this.advance();
         }
 
-        while (this.currentChar != null && this.currentChar != ')' && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar) || this.currentChar == ' '|| this.currentChar == ',')) {
+        while (this.currentChar != null && this.currentChar != ')' && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar) || this.currentChar == ' ' || this.currentChar == ',')) {
             result += this.currentChar;
             this.advance();
         }

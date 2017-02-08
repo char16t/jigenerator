@@ -3,9 +3,12 @@ package translator;
 import java.util.*;
 
 public class NontermVisitor {
+    int isGetStartTermsForNontermSubnodeWorks = 0;
     private String currentNonterm = "";
     private Map<String, LinkedList<String>> nonterminalsCanStartsWith = new HashMap<String, LinkedList<String>>();
     private Map<String, LinkedList<String>> nonterminalsStartsWithTerminals = new HashMap<String, LinkedList<String>>();
+    private List<String> termsForNontermSubnode = new LinkedList<String>();
+    private List<String> nontermsForNontermSubnode = new LinkedList<String>();
 
     public Map<String, LinkedList<String>> getResult(AST tree) {
         visit(tree);
@@ -43,10 +46,6 @@ public class NontermVisitor {
 
         return result;
     }
-
-    private List<String> termsForNontermSubnode = new LinkedList<String>();
-    private List<String> nontermsForNontermSubnode = new LinkedList<String>();
-    int isGetStartTermsForNontermSubnodeWorks = 0;
 
     // run this method only after visiting all AST tree
     public List<String> getStartTermsForNontermSubnode(AST tree) {

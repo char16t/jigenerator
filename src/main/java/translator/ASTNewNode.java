@@ -1,7 +1,5 @@
 package translator;
 
-import java.util.List;
-
 public class ASTNewNode implements AST {
     String value;
     String localVariableName;

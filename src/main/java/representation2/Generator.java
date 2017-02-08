@@ -36,6 +36,53 @@ public class Generator {
         this.astNodes = generatorData.getAstNodes();
     }
 
+    public static void createFile(String path, String name, String template) {
+        new File(OUTPUT_PATH + path).mkdirs();
+        String data = null;
+        try {
+            data = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            new File(OUTPUT_PATH + path + name).createNewFile();
+            FileOutputStream out = new FileOutputStream(OUTPUT_PATH + path + name);
+            out.write(data.getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void appendFile(String path, String name, String string) {
+        try {
+            FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void appendFileWithTemplate(String path, String name, String template) {
+        String string = null;
+        try {
+            string = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void generate() {
         try {
             FileUtils.deleteDirectory(new File(OUTPUT_PATH));
@@ -189,52 +236,5 @@ public class Generator {
             appendFile("src/main/java/", "Parser.java", str);
         }
         appendFileWithTemplate("src/main/java/", "Parser.java", "ParserFooter");
-    }
-
-    public static void createFile(String path, String name, String template) {
-        new File(OUTPUT_PATH + path).mkdirs();
-        String data = null;
-        try {
-            data = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            new File(OUTPUT_PATH + path + name).createNewFile();
-            FileOutputStream out = new FileOutputStream(OUTPUT_PATH + path + name);
-            out.write(data.getBytes());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void appendFile(String path, String name, String string) {
-        try {
-            FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void appendFileWithTemplate(String path, String name, String template) {
-        String string = null;
-        try {
-            string = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
