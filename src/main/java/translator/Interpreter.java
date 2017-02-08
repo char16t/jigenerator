@@ -170,10 +170,11 @@ public class Interpreter {
         if (quoted.length() == 0) {
             return "result += \"" + orig + "\";";
         }
-        String result = "if (this.currentChar != null && this.currentChar.equals('" + quoted.charAt(quoted.length() - 1) + "')) {" +
-                "this.advance(); " +
-                visitQuotedContent(orig, quoted.substring(0, quoted.length() - 1)) +
-                " }";
+        String result = "if (this.currentChar != null && this.currentChar.equals('"
+                + quoted.charAt(quoted.length() - 1) + "')) {"
+                + "this.advance(); "
+                + visitQuotedContent(orig, quoted.substring(0, quoted.length() - 1))
+                + " }";
 
         return result;
     }
