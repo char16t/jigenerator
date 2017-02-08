@@ -30,7 +30,7 @@ public class Lexer {
         }
     }
 
-    public String term() {
+    private String term() {
         String result = "";
         while (this.currentChar != null && Character.isUpperCase(this.currentChar)) {
             result += this.currentChar;
@@ -39,7 +39,7 @@ public class Lexer {
         return result;
     }
 
-    public String nonterm() {
+    private String nonterm() {
         String result = "";
         while (this.currentChar != null && Character.isLowerCase(this.currentChar)) {
             result += this.currentChar;
@@ -48,7 +48,7 @@ public class Lexer {
         return result;
     }
 
-    public String eq() throws Exception {
+    private String eq() throws Exception {
         String result = "";
         if (this.currentChar.equals(':')) {
             this.advance();
@@ -61,7 +61,7 @@ public class Lexer {
         return result;
     }
 
-    public String lparen() throws Exception {
+    private String lparen() throws Exception {
         if (this.currentChar.equals('(')) {
             return "(";
         }
@@ -69,7 +69,7 @@ public class Lexer {
         return null;
     }
 
-    public String rparen() throws Exception {
+    private String rparen() throws Exception {
         if (this.currentChar.equals(')')) {
             return ")";
         }
@@ -77,7 +77,7 @@ public class Lexer {
         return null;
     }
 
-    public String star() throws Exception {
+    private String star() throws Exception {
         if (this.currentChar.equals('*')) {
             return "*";
         }
@@ -102,7 +102,7 @@ public class Lexer {
         return result;
     }
 
-    public String astname() {
+    private String astname() {
         String result = "";
         if (this.currentChar == '@') {
             this.advance();
@@ -114,7 +114,7 @@ public class Lexer {
         return result;
     }
 
-    public String astargtype() {
+    private String astargtype() {
         String result = "";
         if (this.currentChar == '%') {
             this.advance();
@@ -126,7 +126,7 @@ public class Lexer {
         return result;
     }
 
-    public String ret() {
+    private String ret() {
         String result = "";
         if (this.currentChar == '$') {
             this.advance();
@@ -139,7 +139,7 @@ public class Lexer {
     }
 
     // todo: need for review grammars
-    public String call() {
+    private String call() {
         String result = "";
         if (this.currentChar == '#') {
             this.advance();
@@ -165,7 +165,7 @@ public class Lexer {
         return "AST" + result;
     }
 
-    public String name() {
+    private String name() {
         String result = "";
         if (this.currentChar == '[') {
             this.advance();
@@ -180,7 +180,7 @@ public class Lexer {
         return result;
     }
 
-    public String integer() throws Exception {
+    private String integer() throws Exception {
         String result = "";
         if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
             if (this.currentChar.equals('0')) {

@@ -26,7 +26,7 @@ public class Parser {
         }
     }
 
-    public AST program() throws Exception {
+    private AST program() throws Exception {
         List<AST> childs = new LinkedList<AST>();
 
         String value = "";
@@ -46,7 +46,7 @@ public class Parser {
         return new ASTProgram(childs);
     }
 
-    public AST astdef() throws Exception {
+    private AST astdef() throws Exception {
         String name = this.currentToken.value;
         this.eat(TokenType.ASTNAME);
         this.eat(TokenType.LPAREN);
@@ -67,7 +67,7 @@ public class Parser {
         return new ASTASTDef(name, types);
     }
 
-    public AST rule() throws Exception {
+    private AST rule() throws Exception {
         String head = this.currentToken.value;
         this.nonterm();
         this.eat(TokenType.EQ);
@@ -76,7 +76,7 @@ public class Parser {
         return new ASTNonermDef(head, exprNode);
     }
 
-    public AST expr() throws Exception {
+    private AST expr() throws Exception {
         String value = "";
         List<AST> childs = new LinkedList<AST>();
         List<AST> childsGroup = new LinkedList<AST>();
@@ -111,7 +111,7 @@ public class Parser {
         }
     }
 
-    public AST expr2() throws Exception {
+    private AST expr2() throws Exception {
         String value = "";
         String subvalue = "";
         List<AST> childs = new LinkedList<AST>();
@@ -156,7 +156,7 @@ public class Parser {
         throw new Exception("[expr2] Sorry...");
     }
 
-    public AST expr3() throws Exception {
+    private AST expr3() throws Exception {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM
                 || this.currentToken.type == TokenType.TERM
@@ -173,7 +173,7 @@ public class Parser {
         throw new Exception("[expr3] Sorry...");
     }
 
-    public AST atom() throws Exception {
+    private AST atom() throws Exception {
         String value = "";
         if (this.currentToken.type == TokenType.NONTERM) {
             return this.nonterm();
@@ -196,7 +196,7 @@ public class Parser {
         throw new Exception("[atom] Sorry...");
     }
 
-    public AST nonterm() throws Exception {
+    private AST nonterm() throws Exception {
         String value = "";
         String localVariableName = "";
 
@@ -213,7 +213,7 @@ public class Parser {
         return !localVariableName.equals("") ? new ASTNonterm(value, localVariableName) : new ASTNonterm(value);
     }
 
-    public AST call() throws Exception {
+    private AST call() throws Exception {
         String value = "";
         String localVariableName = "";
 
@@ -230,7 +230,7 @@ public class Parser {
         return !localVariableName.equals("") ? new ASTNewNode(value, localVariableName) : new ASTNewNode(value);
     }
 
-    public AST termdef() throws Exception {
+    private AST termdef() throws Exception {
         String head = this.currentToken.value;
         this.term();
         this.eat(TokenType.EQ);
@@ -239,7 +239,7 @@ public class Parser {
         return new ASTTermDef(head, node);
     }
 
-    public AST termexpr() throws Exception {
+    private AST termexpr() throws Exception {
         List<AST> childs = new LinkedList<AST>();
         List<AST> childsGroup = new LinkedList<AST>();
 
@@ -270,7 +270,7 @@ public class Parser {
         }
     }
 
-    public AST termexpr2() throws Exception {
+    private AST termexpr2() throws Exception {
         String value = "";
         String subvalue = "";
 
@@ -309,7 +309,7 @@ public class Parser {
         throw new Exception("[termexpr2] Sorry...");
     }
 
-    public AST termexpr3() throws Exception {
+    private AST termexpr3() throws Exception {
         String value = "";
 
         AST node;
@@ -324,7 +324,7 @@ public class Parser {
 
     }
 
-    public AST termatom() throws Exception {
+    private AST termatom() throws Exception {
         String value = "";
 
         if (this.currentToken.type == TokenType.QUOTED) {
@@ -335,7 +335,7 @@ public class Parser {
         return new ASTQuoted(value);
     }
 
-    public AST term() throws Exception {
+    private AST term() throws Exception {
         String value = "";
         String localVariableName = "";
 
