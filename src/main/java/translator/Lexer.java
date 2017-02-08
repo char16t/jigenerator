@@ -11,11 +11,11 @@ public class Lexer {
         this.currentChar = this.text.charAt(this.pos);
     }
 
-    public void error() throws Exception {
+    private void error() throws Exception {
         throw new Exception("Invalid character");
     }
 
-    public void advance() {
+    private void advance() {
         this.pos += 1;
         if (this.pos > this.text.length() - 1) {
             this.currentChar = null;
@@ -24,7 +24,7 @@ public class Lexer {
         }
     }
 
-    public void skipWhitespace() {
+    private void skipWhitespace() {
         while (this.currentChar != null
                 && Character.isWhitespace(this.currentChar)) {
             this.advance();

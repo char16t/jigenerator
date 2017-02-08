@@ -14,11 +14,11 @@ public class Parser {
         this.currentToken = this.lexer.getNextToken();
     }
 
-    public void error() throws Exception {
+    private void error() throws Exception {
         throw new Exception("Invalid syntax");
     }
 
-    public void eat(TokenType tokenType) throws Exception {
+    private void eat(TokenType tokenType) throws Exception {
         if (this.currentToken.type == tokenType) {
             this.currentToken = this.lexer.getNextToken();
         } else {
