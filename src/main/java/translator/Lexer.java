@@ -5,7 +5,7 @@ public class Lexer {
     Integer pos;
     Character currentChar;
 
-    public Lexer(String text) {
+    public Lexer(final String text) {
         this.text = text;
         this.pos = 0;
         this.currentChar = this.text.charAt(this.pos);
@@ -25,14 +25,16 @@ public class Lexer {
     }
 
     public void skipWhitespace() {
-        while (this.currentChar != null && Character.isWhitespace(this.currentChar)) {
+        while (this.currentChar != null
+                && Character.isWhitespace(this.currentChar)) {
             this.advance();
         }
     }
 
     private String term() {
         String result = "";
-        while (this.currentChar != null && Character.isUpperCase(this.currentChar)) {
+        while (this.currentChar != null
+                && Character.isUpperCase(this.currentChar)) {
             result += this.currentChar;
             this.advance();
         }
@@ -41,7 +43,8 @@ public class Lexer {
 
     private String nonterm() {
         String result = "";
-        while (this.currentChar != null && Character.isLowerCase(this.currentChar)) {
+        while (this.currentChar != null
+                && Character.isLowerCase(this.currentChar)) {
             result += this.currentChar;
             this.advance();
         }
@@ -107,7 +110,9 @@ public class Lexer {
         if (this.currentChar == '@') {
             this.advance();
         }
-        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+        while (this.currentChar != null
+                && (Character.isLowerCase(this.currentChar)
+                || Character.isUpperCase(this.currentChar))) {
             result += this.currentChar;
             this.advance();
         }
@@ -131,7 +136,9 @@ public class Lexer {
         if (this.currentChar == '$') {
             this.advance();
         }
-        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+        while (this.currentChar != null
+                && (Character.isLowerCase(this.currentChar)
+                || Character.isUpperCase(this.currentChar))) {
             result += this.currentChar;
             this.advance();
         }
@@ -144,7 +151,9 @@ public class Lexer {
         if (this.currentChar == '#') {
             this.advance();
         }
-        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+        while (this.currentChar != null
+                && (Character.isLowerCase(this.currentChar)
+                || Character.isUpperCase(this.currentChar))) {
             result += this.currentChar;
             this.advance();
         }
@@ -153,7 +162,12 @@ public class Lexer {
             this.advance();
         }
 
-        while (this.currentChar != null && this.currentChar != ')' && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar) || this.currentChar == ' ' || this.currentChar == ',')) {
+        while (this.currentChar != null
+                && this.currentChar != ')'
+                && (Character.isLowerCase(this.currentChar)
+                || Character.isUpperCase(this.currentChar)
+                || this.currentChar == ' '
+                || this.currentChar == ',')) {
             result += this.currentChar;
             this.advance();
         }
@@ -170,7 +184,9 @@ public class Lexer {
         if (this.currentChar == '[') {
             this.advance();
         }
-        while (this.currentChar != null && (Character.isLowerCase(this.currentChar) || Character.isUpperCase(this.currentChar))) {
+        while (this.currentChar != null
+                && (Character.isLowerCase(this.currentChar)
+                || Character.isUpperCase(this.currentChar))) {
             result += this.currentChar;
             this.advance();
         }
@@ -182,7 +198,16 @@ public class Lexer {
 
     private String integer() throws Exception {
         String result = "";
-        if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+        if (this.currentChar.equals('0')
+                || this.currentChar.equals('1')
+                || this.currentChar.equals('2')
+                || this.currentChar.equals('3')
+                || this.currentChar.equals('4')
+                || this.currentChar.equals('5')
+                || this.currentChar.equals('6')
+                || this.currentChar.equals('7')
+                || this.currentChar.equals('8')
+                || this.currentChar.equals('9')) {
             if (this.currentChar.equals('0')) {
                 this.advance();
                 result += "0";
@@ -226,8 +251,26 @@ public class Lexer {
         } else {
             this.error();
         }
-        while (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
-            if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+        while (this.currentChar.equals('0')
+                || this.currentChar.equals('1')
+                || this.currentChar.equals('2')
+                || this.currentChar.equals('3')
+                || this.currentChar.equals('4')
+                || this.currentChar.equals('5')
+                || this.currentChar.equals('6')
+                || this.currentChar.equals('7')
+                || this.currentChar.equals('8')
+                || this.currentChar.equals('9')) {
+            if (this.currentChar.equals('0')
+                    || this.currentChar.equals('1')
+                    || this.currentChar.equals('2')
+                    || this.currentChar.equals('3')
+                    || this.currentChar.equals('4')
+                    || this.currentChar.equals('5')
+                    || this.currentChar.equals('6')
+                    || this.currentChar.equals('7')
+                    || this.currentChar.equals('8')
+                    || this.currentChar.equals('9')) {
                 if (this.currentChar.equals('0')) {
                     this.advance();
                     result += "0";
@@ -349,7 +392,16 @@ public class Lexer {
                 return new Token(TokenType.NAME, this.name());
             }
 
-            if (this.currentChar.equals('0') || this.currentChar.equals('1') || this.currentChar.equals('2') || this.currentChar.equals('3') || this.currentChar.equals('4') || this.currentChar.equals('5') || this.currentChar.equals('6') || this.currentChar.equals('7') || this.currentChar.equals('8') || this.currentChar.equals('9')) {
+            if (this.currentChar.equals('0')
+                    || this.currentChar.equals('1')
+                    || this.currentChar.equals('2')
+                    || this.currentChar.equals('3')
+                    || this.currentChar.equals('4')
+                    || this.currentChar.equals('5')
+                    || this.currentChar.equals('6')
+                    || this.currentChar.equals('7')
+                    || this.currentChar.equals('8')
+                    || this.currentChar.equals('9')) {
                 return new Token(TokenType.INTEGER, this.integer());
             }
 

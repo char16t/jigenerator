@@ -62,8 +62,8 @@ public class TermVisitor {
     public void visitQuoted(ASTQuoted node) {
         if (isGetStartSymbolsForTermSubnodeWorks == 0) {
             String firstChar = ((Character) node.value.charAt(0)).toString();
-            if (terminalsCanStartsWith.containsKey(currentTerm) &&
-                    !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
+            if (terminalsCanStartsWith.containsKey(currentTerm)
+                    && !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
                 String old = terminalsCanStartsWith.get(currentTerm);
                 old += firstChar;
                 terminalsCanStartsWith.put(currentTerm, old);
