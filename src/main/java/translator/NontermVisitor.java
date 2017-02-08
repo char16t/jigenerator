@@ -112,7 +112,6 @@ public class NontermVisitor {
 
     private void visitNonterm(ASTNonterm node) {
         if (isGetStartTermsForNontermSubnodeWorks == 0) {
-            //nonterminalsStartsWithTerminals.put(currentNonterm, node.value);
             if (nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
                 boolean nontermAlreadyAdded = false;
                 if (nonterminalsStartsWithTerminals.get(currentNonterm) != null) {
