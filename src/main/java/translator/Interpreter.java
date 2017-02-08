@@ -56,7 +56,7 @@ public class Interpreter {
         }
     }
 
-    public String visitExpression(ASTExpression node) {
+    private String visitExpression(ASTExpression node) {
         String result = "";
         for (AST child : node.childs) {
             result += visit(child);
@@ -64,7 +64,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitNonermDef(ASTNonermDef node) {
+    private String visitNonermDef(ASTNonermDef node) {
         tokenVariableNames.clear();
         nontermVariableNames.clear();
 
@@ -86,7 +86,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitNonterm(ASTNonterm node) {
+    private String visitNonterm(ASTNonterm node) {
         String result = "";
         if (termOrNonterm == 2) {
             result = "this." + node.value + "();\n";
@@ -98,7 +98,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitOr(ASTOr node) {
+    private String visitOr(ASTOr node) {
         String result = "";
         if (termOrNonterm == 1) {
             String nodeConditions = termVisitor.getStartSymbolsForTermSubnode(node);
@@ -150,7 +150,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitProgram(ASTProgram node) {
+    private String visitProgram(ASTProgram node) {
         String result = "ASTProgram:\n";
         for (AST child : node.childs) {
             result += "    " + visit(child);
@@ -158,7 +158,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitQuoted(ASTQuoted node) {
+    private String visitQuoted(ASTQuoted node) {
         String result = "";
         if (termOrNonterm == 1) {
             result = visitQuotedContent(node.value, node.value);
@@ -179,7 +179,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitRepeat(ASTRepeat node) {
+    private String visitRepeat(ASTRepeat node) {
         String result = "";
         if (termOrNonterm == 1) {
             String conditions = termVisitor.getStartSymbolsForTermSubnode(node);
@@ -214,7 +214,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitTerm(ASTTerm node) {
+    private String visitTerm(ASTTerm node) {
         String result = "";
         if (termOrNonterm == 2) {
             result = "this.eat(TokenType." + node.value + ");\n";
@@ -226,7 +226,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitTermDef(ASTTermDef node) {
+    private String visitTermDef(ASTTermDef node) {
         termOrNonterm = 1;
         generatorData.getTerminals().add(node.head);
 
@@ -251,7 +251,7 @@ public class Interpreter {
         return result;
     }
 
-    public String visitASTDef(ASTASTDef node) {
+    private String visitASTDef(ASTASTDef node) {
         generatorData.getAstNodes().put(node.name, (LinkedList<String>) node.childs);
         return "";
     }
