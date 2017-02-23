@@ -3,24 +3,46 @@ package translator;
 import representation2.Generator;
 import representation2.GeneratorData;
 
+import java.io.PrintStream;
+
 /**
- * Main class. The entry point to the program.
+ * Main.
  */
 public final class Main {
     /**
-     * Utility classes should not have a public or default constructor.
+     * Output stream.
      */
-    private Main() {
+    private final PrintStream stdout;
+
+    /**
+     * Input arguments.
+     */
+    private final String[] args;
+
+    /**
+     * Entry point.
+     *
+     * @param stdout Output stream
+     * @param args   Input arguments
+     */
+    public Main(final PrintStream stdout, final String... args) {
+        this.stdout = stdout;
+        this.args = args;
     }
 
     /**
-     * Main method. The entry point to the program.
+     * Entry point.
      *
-     * @param args Unused
-     * @throws Exception when an error occurs lexical analysis, parsing or
-     *                   interpreting
+     * @param args Input arguments
      */
-    public static void main(final String[] args) throws Exception {
+    public static void main(final String... args) throws Exception {
+        new Main(System.out, args).exec();
+    }
+
+    /**
+     * Entry point.
+     */
+    public void exec() throws Exception {
         String source =
                 "expr   := term *((PLUS | MINUS) term);\n"
                         + "term   := factor *((MUL | DIV) factor);\n"
