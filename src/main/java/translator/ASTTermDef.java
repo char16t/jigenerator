@@ -8,4 +8,12 @@ public class ASTTermDef implements AST {
         this.head = head;
         this.expr = expr;
     }
+
+    public String head() {
+        return head;
+    }
+
+    public AST expr() {
+        return expr;
+    }
 }

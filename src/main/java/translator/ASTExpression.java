@@ -9,4 +9,8 @@ public class ASTExpression implements AST {
     public ASTExpression(final List<AST> childsGroup) {
         this.childs = childsGroup;
     }
+
+    public List<AST> childs() {
+        return childs;
+    }
 }

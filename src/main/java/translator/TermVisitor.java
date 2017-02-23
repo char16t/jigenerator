@@ -41,27 +41,27 @@ public class TermVisitor {
         }
     }
 
-    public void visitExpression(ASTExpression node) {
-        visit(node.childs.get(0));
+    public void visitExpression(final ASTExpression node) {
+        visit(node.childs().get(0));
     }
 
-    public void visitOr(ASTOr node) {
-        for (AST expr : node.expressions) {
+    public void visitOr(final ASTOr node) {
+        for (AST expr : node.expressions()) {
             visit(expr);
         }
     }
 
-    public void visitProgram(ASTProgram node) {
-        for (AST child : node.childs) {
+    public void visitProgram(final ASTProgram node) {
+        for (AST child : node.childs()) {
             if (child instanceof ASTTermDef) {
                 visit(child);
             }
         }
     }
 
-    public void visitQuoted(ASTQuoted node) {
+    public void visitQuoted(final ASTQuoted node) {
         if (isGetStartSymbolsForTermSubnodeWorks == 0) {
-            String firstChar = ((Character) node.value.charAt(0)).toString();
+            String firstChar = ((Character) node.value().charAt(0)).toString();
             if (terminalsCanStartsWith.containsKey(currentTerm)
                     && !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
                 String old = terminalsCanStartsWith.get(currentTerm);
@@ -70,7 +70,7 @@ public class TermVisitor {
             }
         } else {
             // TODO
-            String firstChar = ((Character) node.value.charAt(0)).toString();
+            String firstChar = ((Character) node.value().charAt(0)).toString();
             if (!startSymbolsForNontermSubnode.contains(firstChar)) {
                 startSymbolsForNontermSubnode += firstChar;
             }
@@ -79,13 +79,13 @@ public class TermVisitor {
 
     }
 
-    public void visitRepeat(ASTRepeat node) {
-        visit(node.childs.get(0));
+    public void visitRepeat(final ASTRepeat node) {
+        visit(node.childs().get(0));
     }
 
-    public void visitTermDef(ASTTermDef node) {
-        currentTerm = node.head;
-        terminalsCanStartsWith.put(node.head, "");
-        visit(node.expr);
+    public void visitTermDef(final ASTTermDef node) {
+        currentTerm = node.head();
+        terminalsCanStartsWith.put(node.head(), "");
+        visit(node.expr());
     }
 }

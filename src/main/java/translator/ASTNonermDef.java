@@ -8,4 +8,12 @@ public class ASTNonermDef implements AST {
         this.name = name;
         this.expr = expr;
     }
+
+    public String name() {
+        return name;
+    }
+
+    public AST expr() {
+        return expr;
+    }
 }

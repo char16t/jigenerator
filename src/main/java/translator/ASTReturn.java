@@ -6,4 +6,8 @@ public class ASTReturn implements AST {
     public ASTReturn(final String value) {
         this.value = value;
     }
+
+    public String value() {
+        return value;
+    }
 }

@@ -8,4 +8,8 @@ public class ASTProgram implements AST {
     public ASTProgram(final List<AST> childs) {
         this.childs = childs;
     }
+
+    public List<AST> childs() {
+        return childs;
+    }
 }

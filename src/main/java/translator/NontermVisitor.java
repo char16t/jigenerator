@@ -85,88 +85,88 @@ public class NontermVisitor {
         }
     }
 
-    private void visitTerm(ASTTerm node) {
+    private void visitTerm(final ASTTerm node) {
         if (isGetStartTermsForNontermSubnodeWorks == 0) {
             if (nonterminalsCanStartsWith.containsKey(currentNonterm)) {
                 boolean termAlreadyAdded = false;
                 for (String item : nonterminalsCanStartsWith.get(currentNonterm)) {
-                    if (item.equals(node.value)) {
+                    if (item.equals(node.value())) {
                         termAlreadyAdded = true;
                     }
                 }
                 if (!termAlreadyAdded) {
-                    nonterminalsCanStartsWith.get(currentNonterm).add(node.value);
+                    nonterminalsCanStartsWith.get(currentNonterm).add(node.value());
                 }
             }
         }
         boolean termAlreadyAdded2 = false;
         for (String item : this.termsForNontermSubnode) {
-            if (item.equals(node.value)) {
+            if (item.equals(node.value())) {
                 termAlreadyAdded2 = true;
             }
         }
         if (!termAlreadyAdded2) {
-            termsForNontermSubnode.add(node.value);
+            termsForNontermSubnode.add(node.value());
         }
     }
 
-    private void visitNonterm(ASTNonterm node) {
+    private void visitNonterm(final ASTNonterm node) {
         if (isGetStartTermsForNontermSubnodeWorks == 0) {
             if (nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
                 boolean nontermAlreadyAdded = false;
                 if (nonterminalsStartsWithTerminals.get(currentNonterm) != null) {
                     for (String item : nonterminalsStartsWithTerminals.get(currentNonterm)) {
-                        if (item.equals(node.value)) {
+                        if (item.equals(node.value())) {
                             nontermAlreadyAdded = true;
                         }
                     }
                     if (!nontermAlreadyAdded) {
-                        nonterminalsStartsWithTerminals.get(currentNonterm).add(node.value);
+                        nonterminalsStartsWithTerminals.get(currentNonterm).add(node.value());
                     }
                 }
             }
         }
         boolean termAlreadyAdded2 = false;
         for (String item : this.nontermsForNontermSubnode) {
-            if (item.equals(node.value)) {
+            if (item.equals(node.value())) {
                 termAlreadyAdded2 = true;
             }
         }
         if (!termAlreadyAdded2) {
-            nontermsForNontermSubnode.add(node.value);
+            nontermsForNontermSubnode.add(node.value());
         }
 
     }
 
-    private void visitNonermDef(ASTNonermDef node) {
-        currentNonterm = node.name;
-        nonterminalsCanStartsWith.put(node.name, new LinkedList<String>());
+    private void visitNonermDef(final ASTNonermDef node) {
+        currentNonterm = node.name();
+        nonterminalsCanStartsWith.put(node.name(), new LinkedList<String>());
         nonterminalsStartsWithTerminals.put(currentNonterm, new LinkedList<String>());
-        visit(node.expr);
+        visit(node.expr());
     }
 
-    public void visitExpression(ASTExpression node) {
-        if (node.childs.size() > 0) {
-            visit(node.childs.get(0));
+    public void visitExpression(final ASTExpression node) {
+        if (node.childs().size() > 0) {
+            visit(node.childs().get(0));
         }
     }
 
-    public void visitOr(ASTOr node) {
-        for (AST expr : node.expressions) {
+    public void visitOr(final ASTOr node) {
+        for (AST expr : node.expressions()) {
             visit(expr);
         }
     }
 
-    public void visitProgram(ASTProgram node) {
-        for (AST child : node.childs) {
+    public void visitProgram(final ASTProgram node) {
+        for (AST child : node.childs()) {
             if (child instanceof ASTNonermDef) {
                 visit(child);
             }
         }
     }
 
-    public void visitRepeat(ASTRepeat node) {
-        visit(node.childs.get(0));
+    public void visitRepeat(final ASTRepeat node) {
+        visit(node.childs().get(0));
     }
 
 }

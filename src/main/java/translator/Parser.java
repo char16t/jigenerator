@@ -97,7 +97,7 @@ public class Parser {
 
             AST exprNode = this.expr();
             if (exprNode instanceof ASTOr) {
-                for (AST expression : ((ASTOr) exprNode).expressions) {
+                for (AST expression : ((ASTOr) exprNode).expressions()) {
                     childs.add(expression);
                 }
             } else {
@@ -145,8 +145,8 @@ public class Parser {
                 List<AST> exprChilds = new LinkedList<AST>();
                 exprChilds.add(firstNode);
                 AST expr = new ASTExpression(exprChilds);
-                secondNode.expressions.remove(0);
-                secondNode.expressions.add(0, expr);
+                secondNode.expressions().remove(0);
+                secondNode.expressions().add(0, expr);
                 childs.remove(0);
             }
 
@@ -257,7 +257,7 @@ public class Parser {
             this.eat(TokenType.LINE);
             AST exprNode = this.termexpr();
             if (exprNode instanceof ASTOr) {
-                for (AST expression : ((ASTOr) exprNode).expressions) {
+                for (AST expression : ((ASTOr) exprNode).expressions()) {
                     childs.add(expression);
                 }
             } else {
@@ -301,8 +301,8 @@ public class Parser {
                 List<AST> exprChilds = new LinkedList<AST>();
                 exprChilds.add(firstNode);
                 AST expr = new ASTExpression(exprChilds);
-                secondNode.expressions.remove(0);
-                secondNode.expressions.add(0, expr);
+                secondNode.expressions().remove(0);
+                secondNode.expressions().add(0, expr);
                 childs.remove(0);
             }
 
@@ -376,14 +376,14 @@ public class Parser {
      * 2-б. Если первый узел в новом Or является Or, добавить все его дочерние Expression в новый узел
      * 3. Добавить новый узел factor и добавить его в Program, старые использованные удалить
     **/
-    private AST unionDoubleProductions(ASTProgram node) {
+    private AST unionDoubleProductions(final ASTProgram node) {
         Map<String, List<AST>> nonterms = new HashMap<String, List<AST>>();
         List<String> nontermsForRemove = new LinkedList<String>();
         ASTOr orNode = null;
 
-        for (final AST child : node.childs) {
+        for (final AST child : node.childs()) {
             if (child instanceof ASTNonermDef) {
-                String nontermName = ((ASTNonermDef) child).name;
+                String nontermName = ((ASTNonermDef) child).name();
                 if (nonterms.containsKey(nontermName)) {
                     nonterms.get(nontermName).add(child);
                 } else {
@@ -400,22 +400,22 @@ public class Parser {
             if (astList.size() > 1) {
                 List<AST> expressions = new LinkedList<AST>();
                 for (AST nontermDef : astList) {
-                    AST expr = ((ASTNonermDef) nontermDef).expr;
+                    AST expr = ((ASTNonermDef) nontermDef).expr();
                     if (expr instanceof ASTExpression) {
                         expressions.add(expr);
                     } else if (expr instanceof ASTOr) {
-                        expressions.addAll(((ASTOr) expr).expressions);
+                        expressions.addAll(((ASTOr) expr).expressions());
                     }
                 }
                 orNode = new ASTOr(expressions);
                 nontermsForRemove.add(nonterm);
-                node.childs.add(new ASTNonermDef(nonterm, orNode));
+                node.childs().add(new ASTNonermDef(nonterm, orNode));
             }
         }
 
         // remove nonterms
         for (String nontermForRemove : nontermsForRemove) {
-            node.childs.removeAll(nonterms.get(nontermForRemove));
+            node.childs().removeAll(nonterms.get(nontermForRemove));
         }
 
         return node;

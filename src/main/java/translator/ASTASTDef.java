@@ -10,4 +10,12 @@ public class ASTASTDef implements AST {
         this.name = name;
         this.childs = types;
     }
+
+    public String name() {
+        return name;
+    }
+
+    public List<String> childs() {
+        return childs;
+    }
 }

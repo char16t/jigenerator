@@ -8,4 +8,8 @@ public class ASTOr implements AST {
     public ASTOr(final List<AST> expressions) {
         this.expressions = expressions;
     }
+
+    public List<AST> expressions() {
+        return expressions;
+    }
 }

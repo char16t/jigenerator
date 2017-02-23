@@ -8,4 +8,8 @@ public class ASTRepeat implements AST {
     public ASTRepeat(final List<AST> childs) {
         this.childs = childs;
     }
+
+    public List<AST> childs() {
+        return childs;
+    }
 }

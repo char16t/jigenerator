@@ -13,4 +13,12 @@ public class ASTTerm implements AST {
         this.value = value;
         this.localVariableName = localVariableName;
     }
+
+    public String value() {
+        return value;
+    }
+
+    public String localVariableName() {
+        return localVariableName;
+    }
 }
