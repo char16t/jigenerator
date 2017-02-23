@@ -1,9 +1,9 @@
 package translator;
 
 public class ASTQuoted implements AST {
-    String value;
+    private String value;
 
-    public ASTQuoted(String value) {
+    public ASTQuoted(final String value) {
         this.value = value;
     }
 }

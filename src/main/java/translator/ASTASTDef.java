@@ -3,10 +3,10 @@ package translator;
 import java.util.List;
 
 public class ASTASTDef implements AST {
-    String name;
-    List<String> childs;
+    private String name;
+    private List<String> childs;
 
-    public ASTASTDef(String name, List<String> types) {
+    public ASTASTDef(final String name, final List<String> types) {
         this.name = name;
         this.childs = types;
     }

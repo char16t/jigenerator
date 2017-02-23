@@ -1,9 +1,9 @@
 package translator;
 
 public class ASTReturn implements AST {
-    String value;
+    private String value;
 
-    public ASTReturn(String value) {
+    public ASTReturn(final String value) {
         this.value = value;
     }
 }

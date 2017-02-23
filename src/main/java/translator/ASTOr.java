@@ -3,9 +3,9 @@ package translator;
 import java.util.List;
 
 public class ASTOr implements AST {
-    List<AST> expressions;
+    private List<AST> expressions;
 
-    public ASTOr(List<AST> expressions) {
+    public ASTOr(final List<AST> expressions) {
         this.expressions = expressions;
     }
 }

@@ -1,15 +1,15 @@
 package translator;
 
 public class ASTTerm implements AST {
-    String value;
-    String localVariableName;
+    private String value;
+    private String localVariableName;
 
 
-    public ASTTerm(String value) {
+    public ASTTerm(final String value) {
         this.value = value;
     }
 
-    public ASTTerm(String value, String localVariableName) {
+    public ASTTerm(final String value, final String localVariableName) {
         this.value = value;
         this.localVariableName = localVariableName;
     }

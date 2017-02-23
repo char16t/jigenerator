@@ -3,9 +3,9 @@ package translator;
 import java.util.List;
 
 public class ASTRepeat implements AST {
-    List<AST> childs;
+    private List<AST> childs;
 
-    public ASTRepeat(List<AST> childs) {
+    public ASTRepeat(final List<AST> childs) {
         this.childs = childs;
     }
 }

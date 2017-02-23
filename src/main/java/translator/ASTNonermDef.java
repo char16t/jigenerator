@@ -1,10 +1,10 @@
 package translator;
 
 public class ASTNonermDef implements AST {
-    String name;
-    AST expr;
+    private String name;
+    private AST expr;
 
-    public ASTNonermDef(String name, AST expr) {
+    public ASTNonermDef(final String name, final AST expr) {
         this.name = name;
         this.expr = expr;
     }

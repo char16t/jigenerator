@@ -1,10 +1,10 @@
 package translator;
 
 public class ASTTermDef implements AST {
-    String head;
-    AST expr;
+    private String head;
+    private AST expr;
 
-    public ASTTermDef(String head, AST expr) {
+    public ASTTermDef(final String head, final AST expr) {
         this.head = head;
         this.expr = expr;
     }

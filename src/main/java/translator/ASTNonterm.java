@@ -1,14 +1,14 @@
 package translator;
 
 public class ASTNonterm implements AST {
-    String value;
-    String localVariableName;
+    private String value;
+    private String localVariableName;
 
-    public ASTNonterm(String value) {
+    public ASTNonterm(final String value) {
         this.value = value;
     }
 
-    public ASTNonterm(String value, String localVariableName) {
+    public ASTNonterm(final String value, final String localVariableName) {
         this.value = value;
         this.localVariableName = localVariableName;
     }
