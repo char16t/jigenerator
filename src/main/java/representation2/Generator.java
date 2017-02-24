@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Generator {
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
-    private static final String OUTPUT_PATH = "output/";
+    private static String OUTPUT_PATH = "output/";
 
     private Set<String> nonterminals = new LinkedHashSet<String>();
     private Map<String, String> nonterminalsSourceCode = new HashMap<String, String>();
@@ -27,13 +27,15 @@ public class Generator {
         this.astNodes = astNodes;
     }
 
-    public Generator(GeneratorData generatorData) {
+    public Generator(String outputPath, GeneratorData generatorData) {
         this.nonterminals = generatorData.getNonterminals();
         this.nonterminalsSourceCode = generatorData.getNonterminalsSourceCode();
         this.terminals = generatorData.getTerminals();
         this.terminalsCanStartsWith = generatorData.getTerminalsCanStartsWith();
         this.terminalsSourceCode = generatorData.getTerminalsSourceCode();
         this.astNodes = generatorData.getAstNodes();
+
+        this.OUTPUT_PATH = outputPath;
     }
 
     public static void createFile(String path, String name, String template) {

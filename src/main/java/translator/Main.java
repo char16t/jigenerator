@@ -3,7 +3,11 @@ package translator;
 import representation2.Generator;
 import representation2.GeneratorData;
 
+import java.io.File;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Main.
@@ -43,160 +47,25 @@ public final class Main {
      * Entry point.
      */
     public void exec() throws Exception {
-        String source =
-                "expr   := term *((PLUS | MINUS) term);\n"
-                        + "term   := factor *((MUL | DIV) factor);\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER"
-                        + " | LPAREN expr RPAREN;";
+        if (args.length == 2) {
+            String program = Files.readAllLines(new File(args[0]).toPath()).stream().collect(Collectors.joining("\n"));
 
-        String source2 =
-                "factor := INTEGER | ((PLUS | MINUS)) factor "
-                        + "|  LPAREN expr RPAREN;";
+            Lexer lexer = new Lexer(program);
+            Parser parser = new Parser(lexer);
+            Interpreter interpreter = new Interpreter(parser);
+            String result = interpreter.interpret();
 
-        String source3 =
-                "expr   := term *((PLUS | MINUS) | term);\n"
-                        + "term   := factor *((MUL | DIV) *(factor));\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER "
-                        + "| LPAREN expr RPAREN;";
+            GeneratorData generatorData = new GeneratorData(
+                    interpreter.getGeneratorData().getNonterminals(),
+                    interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
+                    interpreter.getGeneratorData().getNonterminalsSourceCode(),
+                    interpreter.getGeneratorData().getTerminals(),
+                    interpreter.getGeneratorData().getTerminalsCanStartsWith(),
+                    interpreter.getGeneratorData().getTerminalsSourceCode(),
+                    interpreter.getGeneratorData().getAstNodes());
 
-        String futureSource1 =
-                "expr   := term *((PLUS | MINUS) | term);\n"
-                        + "term   := factor *((MUL | DIV) *(factor));\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER"
-                        + " | LPAREN expr RPAREN;\n"
-                        + "\n"
-                        + "PLUS := '+';\n"
-                        + "MINUS := '-';\n"
-                        + "MUL := '*';\n"
-                        + "DIV := '/';\n"
-                        + "EQ := ':=';\n"
-                        + "LPAREN := '(';\n"
-                        + "RPAREN := ')';\n"
-                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
-                        + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');";
-
-        String futureSource2 =
-                "expr   := term *((PLUS | MINUS) term);\n"
-                        + "term   := factor *((MUL | DIV) factor);\n"
-                        + "factor := (PLUS | MINUS) factor | INTEGER"
-                        + " | LPAREN expr RPAREN;\n"
-                        + "\n"
-                        + "PLUS := '+';\n"
-                        + "MINUS := '-';\n"
-                        + "MUL := '*';\n"
-                        + "DIV := '/';\n"
-                        + "EQ := ':=';\n"
-                        + "LPAREN := '(';\n"
-                        + "RPAREN := ')';\n"
-                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
-                        + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
-                        + "\n"
-                        + "@BinaryOp(2);\n"
-                        + "@UnaryOp(1);\n"
-                        + "@Num(0);\n";
-
-        String futureSource3 = "expr   := term *((PLUS | MINUS) term);\n"
-                + "term   := factor *((MUL | DIV) factor);\n"
-                + "factor := (PLUS | MINUS) factor;\n"
-                + "factor := INTEGER;\n"
-                + "factor := LPAREN expr RPAREN;\n"
-                + "\n"
-                + "PLUS := '+';\n"
-                + "MINUS := '-';\n"
-                + "MUL := '*';\n"
-                + "DIV := '/';\n"
-                + "EQ := ':=';\n"
-                + "LPAREN := '(';\n"
-                + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
-                + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
-                + "\n"
-                + "@BinaryOp(2);\n"
-                + "@UnaryOp(1);\n"
-                + "@Num(0);";
-
-        String futureSource4 =
-                "expr   := term[a] *((PLUS[c] | MINUS[c]) term[b]);\n"
-                        + "term  := factor[d] *((MUL[e] | DIV[e]) factor[f]);\n"
-                        + "factor := (PLUS | MINUS) factor;\n"
-                        + "factor := INTEGER;\n"
-                        + "factor := LPAREN expr RPAREN;\n"
-                        + "\n"
-                        + "PLUS := '+';\n"
-                        + "MINUS := '-';\n"
-                        + "MUL := '*';\n"
-                        + "DIV := '/';\n"
-                        + "EQ := ':=';\n"
-                        + "LPAREN := '(';\n"
-                        + "RPAREN := ')';\n"
-                        + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
-                        + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
-                        + "\n"
-                        + "@BinaryOp(2);\n"
-                        + "@UnaryOp(1);\n"
-                        + "@Num(0);";
-
-        String futureSource5 = "expr   := term[a] *((PLUS[b] | MINUS[b])"
-                + " term[c] #BinOp(a, b, c)[a]) $a;\n"
-                + "term   := factor[d] *((MUL[e] | DIV[e])"
-                + " factor[f] #BinOp(d, e, f)[a]) $d;\n"
-                + "factor := (PLUS[a] | MINUS[a])"
-                + " factor[b] #UnaryOp(a,b)[c] $c;\n"
-                + "factor := INTEGER[d] #Num(d)[e] $e;\n"
-                + "factor := LPAREN expr[f] RPAREN $f;"
-                + "\n"
-                + "PLUS := '+';\n"
-                + "MINUS := '-';\n"
-                + "MUL := '*';\n"
-                + "DIV := '/';\n"
-                + "EQ := ':=';\n"
-                + "LPAREN := '(';\n"
-                + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
-                + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
-                + "\n"
-                + "@BinaryOp(2);\n"
-                + "@UnaryOp(1);\n"
-                + "@Num(0);";
-
-        String futureSource6 = "expr   := term[a] *((PLUS[b] | MINUS[b])"
-                + " term[c] #BinOp(a, b, c)[a]) $a;\n"
-                + "term   := factor[d] *((MUL[e] | DIV[e])"
-                + " factor[f] #BinOp(d, e, f)[d]) $d;\n"
-                + "factor := (PLUS[a] | MINUS[a])"
-                + " factor[b] #UnaryOp(a,b)[c] $c;\n"
-                + "factor := INTEGER[d] #Num(d)[e] $e;\n"
-                + "factor := LPAREN expr[f] RPAREN $f;"
-                + "\n"
-                + "PLUS := '+';\n"
-                + "MINUS := '-';\n"
-                + "MUL := '*';\n"
-                + "DIV := '/';\n"
-                + "EQ := ':=';\n"
-                + "LPAREN := '(';\n"
-                + "RPAREN := ')';\n"
-                + "INTEGER := ('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')"
-                + " *('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9');\n"
-                + "\n"
-                + "@BinOp(%n, %t, %n);\n"
-                + "@UnaryOp(%t, %n);\n"
-                + "@Num(%t);";
-
-        Lexer lexer = new Lexer(futureSource6);
-        Parser parser = new Parser(lexer);
-        Interpreter interpreter = new Interpreter(parser);
-        String result = interpreter.interpret();
-
-        GeneratorData generatorData = new GeneratorData(
-                interpreter.getGeneratorData().getNonterminals(),
-                interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
-                interpreter.getGeneratorData().getNonterminalsSourceCode(),
-                interpreter.getGeneratorData().getTerminals(),
-                interpreter.getGeneratorData().getTerminalsCanStartsWith(),
-                interpreter.getGeneratorData().getTerminalsSourceCode(),
-                interpreter.getGeneratorData().getAstNodes());
-
-        Generator generator = new Generator(generatorData);
-        generator.generate();
+            Generator generator = new Generator(args[1] + "/", generatorData);
+            generator.generate();
+        }
     }
 }
