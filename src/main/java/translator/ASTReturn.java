@@ -1,7 +1,7 @@
 package translator;
 
-public class ASTReturn implements AST {
-    private String value;
+public final class ASTReturn implements AST {
+    private final String value;
 
     public ASTReturn(final String value) {
         this.value = value;

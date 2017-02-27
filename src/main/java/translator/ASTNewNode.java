@@ -1,11 +1,11 @@
 package translator;
 
-public class ASTNewNode implements AST {
-    private String value;
-    private String localVariableName;
+public final class ASTNewNode implements AST {
+    private final String value;
+    private final String localVariableName;
 
     public ASTNewNode(final String value) {
-        this.value = value;
+        this(value, "");
     }
 
     public ASTNewNode(final String value, final String localVariableName) {

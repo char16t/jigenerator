@@ -2,7 +2,7 @@ package translator;
 
 import java.util.*;
 
-public class NontermVisitor {
+public final class NontermVisitor {
     int isGetStartTermsForNontermSubnodeWorks = 0;
     private String currentNonterm = "";
     private Map<String, LinkedList<String>> nonterminalsCanStartsWith = new HashMap<String, LinkedList<String>>();

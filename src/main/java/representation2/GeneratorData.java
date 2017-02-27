@@ -2,7 +2,7 @@ package representation2;
 
 import java.util.*;
 
-public class GeneratorData {
+public final class GeneratorData {
     private Set<String> nonterminals;
     private Map<String, LinkedList<String>> nonterminalsCanStartsWith;
     private Map<String, String> nonterminalsSourceCode;

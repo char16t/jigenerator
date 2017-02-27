@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Parser {
-    Lexer lexer;
-    Token currentToken;
+public final class Parser {
+    private final Lexer lexer;
+    private Token currentToken;
 
     public Parser(Lexer lexer) throws Exception {
         this.lexer = lexer;
@@ -19,7 +19,7 @@ public class Parser {
     }
 
     private void eat(TokenType tokenType) throws Exception {
-        if (this.currentToken.type == tokenType) {
+        if (this.currentToken.type() == tokenType) {
             this.currentToken = this.lexer.getNextToken();
         } else {
             this.error();
@@ -30,15 +30,15 @@ public class Parser {
         List<AST> childs = new LinkedList<AST>();
 
         String value = "";
-        while (this.currentToken.type == TokenType.NONTERM) {
+        while (this.currentToken.type() == TokenType.NONTERM) {
             childs.add(this.rule());
         }
 
-        while (this.currentToken.type == TokenType.TERM) {
+        while (this.currentToken.type() == TokenType.TERM) {
             childs.add(this.termdef());
         }
 
-        while (this.currentToken.type == TokenType.ASTNAME) {
+        while (this.currentToken.type() == TokenType.ASTNAME) {
             childs.add(this.astdef());
         }
 
@@ -47,17 +47,17 @@ public class Parser {
     }
 
     private AST astdef() throws Exception {
-        String name = this.currentToken.value;
+        String name = this.currentToken.value();
         this.eat(TokenType.ASTNAME);
         this.eat(TokenType.LPAREN);
 
         List<String> types = new LinkedList<String>();
-        String type = this.currentToken.value;
+        String type = this.currentToken.value();
         this.eat(TokenType.ASTARGTYPE);
         types.add(type);
-        while (this.currentToken.type == TokenType.COMMA) {
+        while (this.currentToken.type() == TokenType.COMMA) {
             this.eat(TokenType.COMMA);
-            type = this.currentToken.value;
+            type = this.currentToken.value();
             this.eat(TokenType.ASTARGTYPE);
             types.add(type);
         }
@@ -68,7 +68,7 @@ public class Parser {
     }
 
     private AST rule() throws Exception {
-        String head = this.currentToken.value;
+        String head = this.currentToken.value();
         this.nonterm();
         this.eat(TokenType.EQ);
         AST exprNode = this.expr();
@@ -81,18 +81,18 @@ public class Parser {
         List<AST> childs = new LinkedList<AST>();
         List<AST> childsGroup = new LinkedList<AST>();
 
-        while (this.currentToken.type == TokenType.STAR
-                || this.currentToken.type == TokenType.NONTERM
-                || this.currentToken.type == TokenType.TERM
-                || this.currentToken.type == TokenType.LPAREN
-                || this.currentToken.type == TokenType.CALL
-                || this.currentToken.type == TokenType.RET) {
+        while (this.currentToken.type() == TokenType.STAR
+                || this.currentToken.type() == TokenType.NONTERM
+                || this.currentToken.type() == TokenType.TERM
+                || this.currentToken.type() == TokenType.LPAREN
+                || this.currentToken.type() == TokenType.CALL
+                || this.currentToken.type() == TokenType.RET) {
 
             childsGroup.add(this.expr2());
         }
 
         childs.add(new ASTExpression(childsGroup));
-        while (this.currentToken.type == TokenType.LINE) {
+        while (this.currentToken.type() == TokenType.LINE) {
             this.eat(TokenType.LINE);
 
             AST exprNode = this.expr();
@@ -116,24 +116,24 @@ public class Parser {
         String subvalue = "";
         List<AST> childs = new LinkedList<AST>();
 
-        if (this.currentToken.type == TokenType.NONTERM
-                || this.currentToken.type == TokenType.TERM
-                || this.currentToken.type == TokenType.CALL
-                || this.currentToken.type == TokenType.RET
-                || this.currentToken.type == TokenType.LPAREN) {
+        if (this.currentToken.type() == TokenType.NONTERM
+                || this.currentToken.type() == TokenType.TERM
+                || this.currentToken.type() == TokenType.CALL
+                || this.currentToken.type() == TokenType.RET
+                || this.currentToken.type() == TokenType.LPAREN) {
             return this.expr3();
         }
-        if (this.currentToken.type == TokenType.STAR) {
+        if (this.currentToken.type() == TokenType.STAR) {
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
             childs.add(this.expr3());
-            if (this.currentToken.type == TokenType.NONTERM
-                    || this.currentToken.type == TokenType.TERM
-                    || this.currentToken.type == TokenType.CALL
-                    || this.currentToken.type == TokenType.RET
-                    || this.currentToken.type == TokenType.LPAREN
-                    || this.currentToken.type == TokenType.STAR
-                    || this.currentToken.type == TokenType.LINE) {
+            if (this.currentToken.type() == TokenType.NONTERM
+                    || this.currentToken.type() == TokenType.TERM
+                    || this.currentToken.type() == TokenType.CALL
+                    || this.currentToken.type() == TokenType.RET
+                    || this.currentToken.type() == TokenType.LPAREN
+                    || this.currentToken.type() == TokenType.STAR
+                    || this.currentToken.type() == TokenType.LINE) {
                 childs.add(this.expr());
             }
             this.eat(TokenType.RPAREN);
@@ -158,12 +158,12 @@ public class Parser {
 
     private AST expr3() throws Exception {
         String value = "";
-        if (this.currentToken.type == TokenType.NONTERM
-                || this.currentToken.type == TokenType.TERM
-                || this.currentToken.type == TokenType.CALL
-                || this.currentToken.type == TokenType.RET) {
+        if (this.currentToken.type() == TokenType.NONTERM
+                || this.currentToken.type() == TokenType.TERM
+                || this.currentToken.type() == TokenType.CALL
+                || this.currentToken.type() == TokenType.RET) {
             return this.atom();
-        } else if (this.currentToken.type == TokenType.LPAREN) {
+        } else if (this.currentToken.type() == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
             AST node = this.expr();
             this.eat(TokenType.RPAREN);
@@ -175,20 +175,20 @@ public class Parser {
 
     private AST atom() throws Exception {
         String value = "";
-        if (this.currentToken.type == TokenType.NONTERM) {
+        if (this.currentToken.type() == TokenType.NONTERM) {
             return this.nonterm();
         }
 
-        if (this.currentToken.type == TokenType.TERM) {
+        if (this.currentToken.type() == TokenType.TERM) {
             return this.term();
         }
 
-        if (this.currentToken.type == TokenType.CALL) {
+        if (this.currentToken.type() == TokenType.CALL) {
             return this.call();
         }
 
-        if (this.currentToken.type == TokenType.RET) {
-            value += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.RET) {
+            value += this.currentToken.value();
             this.eat(TokenType.RET);
             return new ASTReturn(value);
         }
@@ -200,13 +200,13 @@ public class Parser {
         String value = "";
         String localVariableName = "";
 
-        if (this.currentToken.type == TokenType.NONTERM) {
-            value += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.NONTERM) {
+            value += this.currentToken.value();
             this.eat(TokenType.NONTERM);
         }
 
-        if (this.currentToken.type == TokenType.NAME) {
-            localVariableName += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.NAME) {
+            localVariableName += this.currentToken.value();
             this.eat(TokenType.NAME);
         }
 
@@ -217,13 +217,13 @@ public class Parser {
         String value = "";
         String localVariableName = "";
 
-        if (this.currentToken.type == TokenType.CALL) {
-            value += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.CALL) {
+            value += this.currentToken.value();
             this.eat(TokenType.CALL);
         }
 
-        if (this.currentToken.type == TokenType.NAME) {
-            localVariableName += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.NAME) {
+            localVariableName += this.currentToken.value();
             this.eat(TokenType.NAME);
         }
 
@@ -233,7 +233,7 @@ public class Parser {
     }
 
     private AST termdef() throws Exception {
-        String head = this.currentToken.value;
+        String head = this.currentToken.value();
         this.term();
         this.eat(TokenType.EQ);
         AST node = this.termexpr();
@@ -246,14 +246,14 @@ public class Parser {
         List<AST> childsGroup = new LinkedList<AST>();
 
         String value = "";
-        while (this.currentToken.type == TokenType.STAR
-                || this.currentToken.type == TokenType.QUOTED
-                || this.currentToken.type == TokenType.LPAREN) {
+        while (this.currentToken.type() == TokenType.STAR
+                || this.currentToken.type() == TokenType.QUOTED
+                || this.currentToken.type() == TokenType.LPAREN) {
             childsGroup.add(this.termexpr2());
         }
 
         childs.add(new ASTExpression(childsGroup));
-        while (this.currentToken.type == TokenType.LINE) {
+        while (this.currentToken.type() == TokenType.LINE) {
             this.eat(TokenType.LINE);
             AST exprNode = this.termexpr();
             if (exprNode instanceof ASTOr) {
@@ -276,20 +276,20 @@ public class Parser {
         String value = "";
         String subvalue = "";
 
-        if (this.currentToken.type == TokenType.QUOTED
-                || this.currentToken.type == TokenType.LPAREN) {
+        if (this.currentToken.type() == TokenType.QUOTED
+                || this.currentToken.type() == TokenType.LPAREN) {
             return this.termexpr3();
         }
-        if (this.currentToken.type == TokenType.STAR) {
+        if (this.currentToken.type() == TokenType.STAR) {
             List<AST> childs = new LinkedList<AST>();
 
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
             childs.add(this.termexpr3());
-            if (this.currentToken.type == TokenType.QUOTED
-                    || this.currentToken.type == TokenType.LPAREN
-                    || this.currentToken.type == TokenType.STAR
-                    || this.currentToken.type == TokenType.LINE) {
+            if (this.currentToken.type() == TokenType.QUOTED
+                    || this.currentToken.type() == TokenType.LPAREN
+                    || this.currentToken.type() == TokenType.STAR
+                    || this.currentToken.type() == TokenType.LINE) {
                 childs.add(this.termexpr());
             }
             this.eat(TokenType.RPAREN);
@@ -315,7 +315,7 @@ public class Parser {
         String value = "";
 
         AST node;
-        if (this.currentToken.type == TokenType.LPAREN) {
+        if (this.currentToken.type() == TokenType.LPAREN) {
             this.eat(TokenType.LPAREN);
             node = this.termexpr();
             this.eat(TokenType.RPAREN);
@@ -329,8 +329,8 @@ public class Parser {
     private AST termatom() throws Exception {
         String value = "";
 
-        if (this.currentToken.type == TokenType.QUOTED) {
-            value += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.QUOTED) {
+            value += this.currentToken.value();
             this.eat(TokenType.QUOTED);
         }
 
@@ -341,13 +341,13 @@ public class Parser {
         String value = "";
         String localVariableName = "";
 
-        if (this.currentToken.type == TokenType.TERM) {
-            value += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.TERM) {
+            value += this.currentToken.value();
             this.eat(TokenType.TERM);
         }
 
-        if (this.currentToken.type == TokenType.NAME) {
-            localVariableName += this.currentToken.value;
+        if (this.currentToken.type() == TokenType.NAME) {
+            localVariableName += this.currentToken.value();
             this.eat(TokenType.NAME);
         }
 
@@ -358,7 +358,7 @@ public class Parser {
 
     public AST parse() throws Exception {
         AST node = this.program();
-        if (this.currentToken.type != TokenType.EOF) {
+        if (this.currentToken.type() != TokenType.EOF) {
             this.error();
         }
         node = unionDoubleProductions((ASTProgram) node);
@@ -395,7 +395,7 @@ public class Parser {
             }
         }
 
-        for (String nonterm : nonterms.keySet()) {
+        for (final String nonterm : nonterms.keySet()) {
             List<AST> astList = nonterms.get(nonterm);
             if (astList.size() > 1) {
                 List<AST> expressions = new LinkedList<AST>();

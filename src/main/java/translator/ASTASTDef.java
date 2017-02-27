@@ -2,9 +2,9 @@ package translator;
 
 import java.util.List;
 
-public class ASTASTDef implements AST {
-    private String name;
-    private List<String> childs;
+public final class ASTASTDef implements AST {
+    private final String name;
+    private final List<String> childs;
 
     public ASTASTDef(final String name, final List<String> types) {
         this.name = name;

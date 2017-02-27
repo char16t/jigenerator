@@ -48,7 +48,7 @@ public final class Main {
      */
     public void exec() throws Exception {
         if (args.length == 2) {
-            String program = Files.readAllLines(new File(args[0]).toPath()).stream().collect(Collectors.joining("\n"));
+            final String program = Files.readAllLines(new File(args[0]).toPath()).stream().collect(Collectors.joining("\n"));
 
             Lexer lexer = new Lexer(program);
             Parser parser = new Parser(lexer);

@@ -1,8 +1,8 @@
 package translator;
 
-public class ASTNonermDef implements AST {
-    private String name;
-    private AST expr;
+public final class ASTNonermDef implements AST {
+    private final String name;
+    private final AST expr;
 
     public ASTNonermDef(final String name, final AST expr) {
         this.name = name;

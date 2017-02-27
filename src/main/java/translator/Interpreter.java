@@ -11,21 +11,21 @@ import java.util.Set;
 /**
  * Interpreter. Interpret token sequence
  */
-public class Interpreter {
+public final class Interpreter {
     /**
      * Parsers provides a token sequence.
      */
-    private Parser parser;
+    private final Parser parser;
 
     /**
      * TermVisitor can visit only terms in ast-tree.
      */
-    private TermVisitor termVisitor = new TermVisitor();
+    private final TermVisitor termVisitor = new TermVisitor();
 
     /**
      * NontermVisitor can visit only nonterms in ast-tree.
      */
-    private NontermVisitor nontermVisitor = new NontermVisitor();
+    private final NontermVisitor nontermVisitor = new NontermVisitor();
 
     /**
      * 0 - none;

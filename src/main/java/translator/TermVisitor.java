@@ -3,7 +3,7 @@ package translator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TermVisitor {
+public final class TermVisitor {
     int isGetStartSymbolsForTermSubnodeWorks = 0;
     private String currentTerm = "";
     private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();

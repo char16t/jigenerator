@@ -5,12 +5,12 @@ package translator;
  * type is 't' if argument is term
  * tyle is 'n' if argument is nonterm
  */
-public class ASTASTArgType implements AST {
+public final class ASTASTArgType implements AST {
     /**
      * type is 't' if argument is term;
      * tyle is 'n' if argument is nonterm.
      */
-    private String type;
+    private final String type;
 
     /**
      * Constructor.

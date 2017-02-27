@@ -1,8 +1,8 @@
 package translator;
 
-public class ASTTermDef implements AST {
-    private String head;
-    private AST expr;
+public final class ASTTermDef implements AST {
+    private final String head;
+    private final AST expr;
 
     public ASTTermDef(final String head, final AST expr) {
         this.head = head;

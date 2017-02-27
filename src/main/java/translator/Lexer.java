@@ -3,11 +3,11 @@ package translator;
 /**
  * Lexer. Converts raw text to tokens
  */
-public class Lexer {
+public final class Lexer {
     /**
      * The input text.
      */
-    private String text;
+    private final String text;
 
     /**
      * Current position in input text.
@@ -35,18 +35,10 @@ public class Lexer {
      *
      * @return input text
      */
-    public String getText() {
+    public String text() {
         return text;
     }
 
-    /**
-     * Setter.
-     *
-     * @param text input text.
-     */
-    public void setText(final String text) {
-        this.text = text;
-    }
 
     /**
      * Getter.

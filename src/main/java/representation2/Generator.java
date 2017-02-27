@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class Generator {
+public final class Generator {
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
     private static String OUTPUT_PATH = "output/";
 
