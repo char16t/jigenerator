@@ -36,18 +36,43 @@ import java.util.Map;
  * @since 0.1
  */
 public final class Parser {
+
+    /**
+     * Lexer.
+     */
     private final Lexer lexer;
+
+    /**
+     * Current token.
+     */
     private Token currentToken;
 
+    /**
+     * Ctor.
+     *
+     * @param lexer Lexer
+     * @throws Exception when cannot read the next token
+     */
     public Parser(Lexer lexer) throws Exception {
         this.lexer = lexer;
         this.currentToken = this.lexer.getNextToken();
     }
 
+    /**
+     * Error, call it when something wrong.
+     *
+     * @throws Exception always
+     */
     private void error() throws Exception {
         throw new Exception("Invalid syntax");
     }
 
+    /**
+     * Eat next token.
+     *
+     * @param tokenType
+     * @throws Exception If next token and expected are different
+     */
     private void eat(TokenType tokenType) throws Exception {
         if (this.currentToken.type() == tokenType) {
             this.currentToken = this.lexer.getNextToken();
@@ -56,6 +81,12 @@ public final class Parser {
         }
     }
 
+    /**
+     * 'program' nonterm implementation
+     *
+     * @return 'program' node
+     * @throws Exception when something is wrong
+     */
     private AST program() throws Exception {
         List<AST> childs = new LinkedList<AST>();
 
@@ -76,6 +107,12 @@ public final class Parser {
         return new ASTProgram(childs);
     }
 
+    /**
+     * 'astdef' nonterm implementation
+     *
+     * @return 'astdef' node
+     * @throws Exception when something is wrong
+     */
     private AST astdef() throws Exception {
         String name = this.currentToken.value();
         this.eat(TokenType.ASTNAME);
@@ -97,6 +134,12 @@ public final class Parser {
         return new ASTASTDef(name, types);
     }
 
+    /**
+     * 'rule' nonterm implementation
+     *
+     * @return 'rule' node
+     * @throws Exception when something is wrong
+     */
     private AST rule() throws Exception {
         String head = this.currentToken.value();
         this.nonterm();
@@ -106,6 +149,12 @@ public final class Parser {
         return new ASTNonermDef(head, exprNode);
     }
 
+    /**
+     * 'expr' nonterm implementation
+     *
+     * @return 'expr' node
+     * @throws Exception when something is wrong
+     */
     private AST expr() throws Exception {
         String value = "";
         List<AST> childs = new LinkedList<AST>();
@@ -141,6 +190,12 @@ public final class Parser {
         }
     }
 
+    /**
+     * 'expr2' nonterm implementation
+     *
+     * @return 'expr2' node
+     * @throws Exception when something is wrong
+     */
     private AST expr2() throws Exception {
         String value = "";
         String subvalue = "";
@@ -186,6 +241,12 @@ public final class Parser {
         throw new Exception("[expr2] Sorry...");
     }
 
+    /**
+     * 'expr3' nonterm implementation
+     *
+     * @return 'expr3' node
+     * @throws Exception when something is wrong
+     */
     private AST expr3() throws Exception {
         String value = "";
         if (this.currentToken.type() == TokenType.NONTERM
@@ -203,6 +264,12 @@ public final class Parser {
         throw new Exception("[expr3] Sorry...");
     }
 
+    /**
+     * 'atom' nonterm implementation
+     *
+     * @return 'atom' node
+     * @throws Exception when something is wrong
+     */
     private AST atom() throws Exception {
         String value = "";
         if (this.currentToken.type() == TokenType.NONTERM) {
@@ -226,6 +293,12 @@ public final class Parser {
         throw new Exception("[atom] Sorry...");
     }
 
+    /**
+     * 'nonterm' nonterm implementation
+     *
+     * @return 'nonterm' node
+     * @throws Exception when something is wrong
+     */
     private AST nonterm() throws Exception {
         String value = "";
         String localVariableName = "";
@@ -243,6 +316,12 @@ public final class Parser {
         return !localVariableName.equals("") ? new ASTNonterm(value, localVariableName) : new ASTNonterm(value);
     }
 
+    /**
+     * 'call' nonterm implementation
+     *
+     * @return 'call' node
+     * @throws Exception when something is wrong
+     */
     private AST call() throws Exception {
         String value = "";
         String localVariableName = "";
@@ -262,6 +341,12 @@ public final class Parser {
                 : new ASTNewNode(value);
     }
 
+    /**
+     * 'termdef' nonterm implementation
+     *
+     * @return 'termdef' node
+     * @throws Exception when something is wrong
+     */
     private AST termdef() throws Exception {
         String head = this.currentToken.value();
         this.term();
@@ -271,6 +356,12 @@ public final class Parser {
         return new ASTTermDef(head, node);
     }
 
+    /**
+     * 'termexpr' nonterm implementation
+     *
+     * @return 'termexpr' node
+     * @throws Exception when something is wrong
+     */
     private AST termexpr() throws Exception {
         List<AST> childs = new LinkedList<AST>();
         List<AST> childsGroup = new LinkedList<AST>();
@@ -302,6 +393,12 @@ public final class Parser {
         }
     }
 
+    /**
+     * 'termexpr2' nonterm implementation
+     *
+     * @return 'termexpr2' node
+     * @throws Exception when something is wrong
+     */
     private AST termexpr2() throws Exception {
         String value = "";
         String subvalue = "";
@@ -341,6 +438,12 @@ public final class Parser {
         throw new Exception("[termexpr2] Sorry...");
     }
 
+    /**
+     * 'termexpr3' nonterm implementation
+     *
+     * @return 'termexpr3' node
+     * @throws Exception when something is wrong
+     */
     private AST termexpr3() throws Exception {
         String value = "";
 
@@ -356,6 +459,12 @@ public final class Parser {
 
     }
 
+    /**
+     * 'termatom' nonterm implementation
+     *
+     * @return 'termatom' node
+     * @throws Exception when something is wrong
+     */
     private AST termatom() throws Exception {
         String value = "";
 
@@ -367,6 +476,12 @@ public final class Parser {
         return new ASTQuoted(value);
     }
 
+    /**
+     * 'term' nonterm implementation
+     *
+     * @return 'term' node
+     * @throws Exception when something is wrong
+     */
     private AST term() throws Exception {
         String value = "";
         String localVariableName = "";
@@ -386,6 +501,12 @@ public final class Parser {
                 : new ASTTerm(value);
     }
 
+    /**
+     * Parse program.
+     *
+     * @return root node of ast-tree
+     * @throws Exception when something is wrong
+     */
     public AST parse() throws Exception {
         AST node = this.program();
         if (this.currentToken.type() != TokenType.EOF) {

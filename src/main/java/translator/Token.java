@@ -31,18 +31,42 @@ package translator;
  * @since 0.1
  */
 public final class Token {
+
+    /**
+     * Token type.
+     */
     private final TokenType type;
+
+    /**
+     * Token value.
+     */
     private final String value;
 
+    /**
+     * Ctor.
+     *
+     * @param type Token type
+     * @param value Token value
+     */
     public Token(final TokenType type, final String value) {
         this.type = type;
         this.value = value;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Token type
+     */
     public TokenType type() {
         return type;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Token value.
+     */
     public String value() {
         return value;
     }

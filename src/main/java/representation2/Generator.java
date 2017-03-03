@@ -355,17 +355,20 @@ public final class Generator {
         createFile("src/main/java/", "Parser.java", "ParserHeader");
 
         appendFile("src/main/java/", "Parser.java",
-                "    public AST parse() throws Exception {\n" +
-                        "        AST node = this." + nonterminals.iterator().next() + "();\n" +
-                        "        if (this.currentToken.type != TokenType.EOF) {\n" +
-                        "            this.error();\n" +
-                        "        }\n" +
-                        "        return node;\n" +
-                        "    }\n");
+            "    public AST parse() throws Exception {\n"
+            + "        AST node = this." + nonterminals.iterator().next() + "();\n"
+            + "        if (this.currentToken.type != TokenType.EOF) {\n"
+            + "            this.error();\n"
+            + "        }\n"
+            + "        return node;\n"
+            + "    }\n");
         for (String nonterminal : nonterminals) {
-            String str = "public AST " + nonterminal + "() throws Exception {\n" +
-                    nonterminalsSourceCode.get(nonterminal) + "\n" +
-                    "}\n\n";
+            String str = "public AST "
+                + nonterminal
+                + "() throws Exception {\n"
+                + nonterminalsSourceCode.get(nonterminal)
+                + "\n"
+                + "}\n\n";
             appendFile("src/main/java/", "Parser.java", str);
         }
         appendFileWithTemplate("src/main/java/", "Parser.java", "ParserFooter");
