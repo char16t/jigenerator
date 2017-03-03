@@ -38,17 +38,67 @@ import java.util.*;
  * @since 0.1
  */
 public final class Generator {
+
+    /**
+     * Templates path.
+     */
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
+
+    /**
+     * Output path.
+     */
     private static String OUTPUT_PATH = "output/";
 
+    /**
+     * Set of nonterminals.
+     */
     private Set<String> nonterminals = new LinkedHashSet<String>();
-    private Map<String, String> nonterminalsSourceCode = new HashMap<String, String>();
-    private Set<String> terminals = new LinkedHashSet<String>();
-    private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();
-    private Map<String, String> terminalsSourceCode = new HashMap<String, String>();
-    private Map<String, LinkedList<String>> astNodes = new HashMap<String, LinkedList<String>>();
 
-    public Generator(Set<String> nonterminals, Map<String, String> nonterminalsSourceCode, Set<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode, Map<String, LinkedList<String>> astNodes) {
+    /**
+     * Generated source code for nonterminals.
+     */
+    private Map<String, String> nonterminalsSourceCode = new HashMap<String, String>();
+
+    /**
+     * Set of terminals.
+     */
+    private Set<String> terminals = new LinkedHashSet<String>();
+
+    /**
+     * List (string) of symbols, which can begin a terminals.
+     */
+    private Map<String, String> terminalsCanStartsWith
+            = new HashMap<String, String>();
+
+    /**
+     * Generated source code for terminals.
+     */
+    private Map<String, String> terminalsSourceCode
+            = new HashMap<String, String>();
+
+    /**
+     * AST nodes and their constructor arguments
+     */
+    private Map<String, LinkedList<String>> astNodes
+            = new HashMap<String, LinkedList<String>>();
+
+    /**
+     * Ctor.
+     *
+     * @param nonterminals Set of nonterminals
+     * @param nonterminalsSourceCode Generated source code for nonterminals
+     * @param terminals Set of terminals
+     * @param terminalsCanStartsWith List (string) of symbols, which can begin
+     *                               a terminals
+     * @param terminalsSourceCode Generated source code for terminals
+     * @param astNodes AST nodes and their constructor arguments
+     */
+    public Generator(Set<String> nonterminals,
+                     Map<String, String> nonterminalsSourceCode,
+                     Set<String> terminals,
+                     Map<String, String> terminalsCanStartsWith,
+                     Map<String, String> terminalsSourceCode,
+                     Map<String, LinkedList<String>> astNodes) {
         this.nonterminals = nonterminals;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
         this.terminals = terminals;
@@ -57,6 +107,12 @@ public final class Generator {
         this.astNodes = astNodes;
     }
 
+    /**
+     * Ctor.
+     *
+     * @param outputPath Output path
+     * @param generatorData Generator data
+     */
     public Generator(String outputPath, GeneratorData generatorData) {
         this.nonterminals = generatorData.getNonterminals();
         this.nonterminalsSourceCode = generatorData.getNonterminalsSourceCode();
@@ -68,11 +124,24 @@ public final class Generator {
         this.OUTPUT_PATH = outputPath;
     }
 
+    /**
+     * Create new file from template.
+     *
+     * @param path Directory
+     * @param name File name
+     * @param template Template name
+     */
     public static void createFile(String path, String name, String template) {
         new File(OUTPUT_PATH + path).mkdirs();
         String data = null;
         try {
-            data = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));
+            data = IOUtils.toString(
+                    new FileReader(
+                            TEMPLATES_PATH
+                                    + template
+                                    + ".template"
+                    )
+            );
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -90,6 +159,13 @@ public final class Generator {
         }
     }
 
+    /**
+     * Append file with content.
+     *
+     * @param path Directory
+     * @param name File name
+     * @param string Content
+     */
     public static void appendFile(String path, String name, String string) {
         try {
             FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
@@ -98,6 +174,13 @@ public final class Generator {
         }
     }
 
+    /**
+     * Append file with template.
+     *
+     * @param path Directory
+     * @param name File name
+     * @param template Template name
+     */
     public static void appendFileWithTemplate(String path, String name, String template) {
         String string = null;
         try {
@@ -115,6 +198,9 @@ public final class Generator {
         }
     }
 
+    /**
+     * Generate Java project. Main method of this class.
+     */
     public void generate() {
         try {
             FileUtils.deleteDirectory(new File(OUTPUT_PATH));
@@ -133,6 +219,9 @@ public final class Generator {
         createInterpreterFile();
     }
 
+    /**
+     * Generate Interpreter.java file.
+     */
     private void createInterpreterFile() {
         String visitMethodContent = "";
         for (String node : astNodes.keySet()) {
@@ -162,6 +251,9 @@ public final class Generator {
         appendFileWithTemplate("src/main/java/", "Interpreter.java", "InterpreterFooter");
     }
 
+    /**
+     * Generate AST*.java files.
+     */
     private void createASTTreeNodeFiles() {
         for (String node : astNodes.keySet()) {
             Integer numArguments = astNodes.get(node).size();
@@ -201,6 +293,9 @@ public final class Generator {
         }
     }
 
+    /**
+     * Generate TokenType.java file.
+     */
     public void createTokenTypeFile() {
         createFile("src/main/java/", "TokenType.java", "TokenTypeHeader");
         for (String t : terminals) {
@@ -209,6 +304,9 @@ public final class Generator {
         appendFile("src/main/java/", "TokenType.java", "    EOF\n}");
     }
 
+    /**
+     * Generate Lexer.java file.
+     */
     public void createLexerFile() {
         createFile("src/main/java/", "Lexer.java", "LexerHeader");
         for (String terminal : terminals) {
@@ -250,6 +348,9 @@ public final class Generator {
         appendFileWithTemplate("src/main/java/", "Lexer.java", "LexerFooter");
     }
 
+    /**
+     * Generate parser.java file.
+     */
     public void createParserFile() {
         createFile("src/main/java/", "Parser.java", "ParserHeader");
 
