@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * ast term definition.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTTermDef implements AST {
     private final String head;
     private final AST expr;

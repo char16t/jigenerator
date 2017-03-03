@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * AST nonterm definition.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTNonermDef implements AST {
     private final String name;
     private final AST expr;

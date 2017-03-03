@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * AST new node
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTNewNode implements AST {
     private final String value;
     private final String localVariableName;

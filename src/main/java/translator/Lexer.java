@@ -25,6 +25,10 @@ package translator;
 
 /**
  * Lexer. Converts raw text to tokens
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
 public final class Lexer {
     /**

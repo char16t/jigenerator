@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * 'return' ast node.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTReturn implements AST {
     private final String value;
 

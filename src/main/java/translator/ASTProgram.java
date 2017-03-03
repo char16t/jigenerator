@@ -25,6 +25,13 @@ package translator;
 
 import java.util.List;
 
+/**
+ * 'Program' AST Node.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTProgram implements AST {
     private final List<AST> childs;
 

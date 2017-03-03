@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * Token.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class Token {
     private final TokenType type;
     private final String value;

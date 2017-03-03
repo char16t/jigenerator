@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * 'term' ast node.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTTerm implements AST {
     private final String value;
     private final String localVariableName;

@@ -25,6 +25,13 @@ package translator;
 
 import java.util.List;
 
+/**
+ * AST node defenition.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTASTDef implements AST {
     private final String name;
     private final List<String> childs;

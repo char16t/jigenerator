@@ -29,6 +29,13 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Test case for {@link Main}
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class MainTest {
     @Test
     public void execTest1() throws Exception {

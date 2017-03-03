@@ -25,6 +25,13 @@ package representation2;
 
 import java.util.*;
 
+/**
+ * Java project generator data.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class GeneratorData {
     private Set<String> nonterminals;
     private Map<String, LinkedList<String>> nonterminalsCanStartsWith;

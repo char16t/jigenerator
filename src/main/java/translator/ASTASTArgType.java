@@ -27,6 +27,10 @@ package translator;
  * AST node argument type.
  * type is 't' if argument is term
  * tyle is 'n' if argument is nonterm
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
 public final class ASTASTArgType implements AST {
     /**

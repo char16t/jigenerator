@@ -23,6 +23,13 @@
  */
 package translator;
 
+/**
+ * Token type.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public enum TokenType {
     NONTERM,
     TERM,

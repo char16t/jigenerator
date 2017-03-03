@@ -30,6 +30,13 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
+/**
+ * Java project generator.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class Generator {
     private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
     private static String OUTPUT_PATH = "output/";

@@ -25,6 +25,10 @@ package translator;
 
 /**
  * Abstract ast tree node.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
 public interface AST {
 }

@@ -25,6 +25,13 @@ package translator;
 
 import java.util.List;
 
+/**
+ * AST "or" node.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class ASTOr implements AST {
     private final List<AST> expressions;
 

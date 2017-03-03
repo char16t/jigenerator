@@ -26,6 +26,13 @@ package translator;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Terminals visitor.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class TermVisitor {
     int isGetStartSymbolsForTermSubnodeWorks = 0;
     private String currentTerm = "";

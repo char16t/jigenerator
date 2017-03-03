@@ -34,6 +34,10 @@ import java.util.stream.Collectors;
 
 /**
  * Main.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
 public final class Main {
     /**

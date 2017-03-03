@@ -25,6 +25,13 @@ package translator;
 
 import java.util.*;
 
+/**
+ * Nonterminals visitor.
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public final class NontermVisitor {
     int isGetStartTermsForNontermSubnodeWorks = 0;
     private String currentNonterm = "";

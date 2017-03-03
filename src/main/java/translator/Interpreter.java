@@ -33,6 +33,10 @@ import java.util.Set;
 
 /**
  * Interpreter. Interpret token sequence
+ *
+ * @author Valeriy Manenkov (v.manenkov@gmail.com)
+ * @version $Id$
+ * @since 0.1
  */
 public final class Interpreter {
     /**
