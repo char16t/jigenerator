@@ -31,22 +31,45 @@ package translator;
  * @since 0.1
  */
 public final class ASTNonterm implements AST {
+    /**
+     * Nonterm name.
+     */
     private final String value;
+
+    /**
+     * Associated variable name.
+     */
     private final String localVariableName;
 
     public ASTNonterm(final String value) {
         this(value, "");
     }
 
+    /**
+     * Ctor.
+     *
+     * @param value Nonterm name
+     * @param localVariableName Associated variable name
+     */
     public ASTNonterm(final String value, final String localVariableName) {
         this.value = value;
         this.localVariableName = localVariableName;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Nonterm name
+     */
     public String value() {
         return value;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Associated variable name
+     */
     public String localVariableName() {
         return localVariableName;
     }

@@ -33,12 +33,25 @@ import java.util.List;
  * @since 0.1
  */
 public final class ASTOr implements AST {
+    /**
+     * Available child expressions.
+     */
     private final List<AST> expressions;
 
+    /**
+     * Ctor.
+     *
+     * @param expressions Available child expressions
+     */
     public ASTOr(final List<AST> expressions) {
         this.expressions = expressions;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Available child expressions
+     */
     public List<AST> expressions() {
         return expressions;
     }

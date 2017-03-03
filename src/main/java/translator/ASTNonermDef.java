@@ -31,18 +31,41 @@ package translator;
  * @since 0.1
  */
 public final class ASTNonermDef implements AST {
+    /**
+     * Nonterm name.
+     */
     private final String name;
+
+    /**
+     * Nonterm body associated with the name.
+     */
     private final AST expr;
 
+    /**
+     * Ctor.
+     *
+     * @param name Nonterm name
+     * @param expr Nonterm body associated with the name
+     */
     public ASTNonermDef(final String name, final AST expr) {
         this.name = name;
         this.expr = expr;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Nonterm name
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Nonterm body associated with the name
+     */
     public AST expr() {
         return expr;
     }

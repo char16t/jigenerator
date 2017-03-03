@@ -31,22 +31,50 @@ package translator;
  * @since 0.1
  */
 public final class ASTNewNode implements AST {
+    /**
+     * Variable value.
+     */
     private final String value;
+
+    /**
+     * Local variable name.
+     */
     private final String localVariableName;
 
+    /**
+     * Ctor.
+     *
+     * @param value Variable value
+     */
     public ASTNewNode(final String value) {
         this(value, "");
     }
 
+    /**
+     * Ctor.
+     *
+     * @param value Variable value
+     * @param localVariableName Local variable name
+     */
     public ASTNewNode(final String value, final String localVariableName) {
         this.value = value;
         this.localVariableName = localVariableName;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Variable value
+     */
     public String value() {
         return value;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Local variable name
+     */
     public String localVariableName() {
         return localVariableName;
     }

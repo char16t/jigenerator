@@ -31,21 +31,88 @@ package translator;
  * @since 0.1
  */
 public enum TokenType {
+    /**
+     * Nonterminal.
+     */
     NONTERM,
+
+    /**
+     * Terminal.
+     */
     TERM,
+
+    /**
+     * Equals symbol.
+     */
     EQ,
+
+    /**
+     * Left paren.
+     */
     LPAREN,
+
+    /**
+     * Right paren.
+     */
     RPAREN,
+
+    /**
+     * Star symbol '*'
+     */
     STAR,
+
+    /**
+     * Vertical line '|'
+     */
     LINE,
+
+    /**
+     * Semicolon.
+     */
     SEMI,
+
+    /**
+     * Quoted expression.
+     */
     QUOTED,
+
+    /**
+     * AST node name.
+     */
     ASTNAME,
+
+    /**
+     * Integer number.
+     */
     INTEGER,
+
+    /**
+     * Comma.
+     */
     COMMA,
+
+    /**
+     * Local variable name.
+     */
     NAME,
+
+    /**
+     * Return statement.
+     */
     RET,
+
+    /**
+     * Call ast node constructor.
+     */
     CALL,
+
+    /**
+     * Type of ast node constructor's argument
+     */
     ASTARGTYPE,
+
+    /**
+     * End of file.
+     */
     EOF
 }

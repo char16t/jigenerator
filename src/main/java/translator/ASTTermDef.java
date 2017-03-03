@@ -31,18 +31,42 @@ package translator;
  * @since 0.1
  */
 public final class ASTTermDef implements AST {
+
+    /**
+     * Term name.
+     */
     private final String head;
+
+    /**
+     * Term body associated with the name.
+     */
     private final AST expr;
 
+    /**
+     * Ctor.
+     *
+     * @param head Term name
+     * @param expr Term body associated with the name
+     */
     public ASTTermDef(final String head, final AST expr) {
         this.head = head;
         this.expr = expr;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Term name
+     */
     public String head() {
         return head;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Term body associated with the name
+     */
     public AST expr() {
         return expr;
     }

@@ -33,14 +33,45 @@ import java.util.*;
  * @since 0.1
  */
 public final class GeneratorData {
+
+    /**
+     * Set of nonterminals.
+     */
     private Set<String> nonterminals;
+
+    /**
+     * List of tokens, which can begin a nonterminals.
+     */
     private Map<String, LinkedList<String>> nonterminalsCanStartsWith;
+
+    /**
+     * Generated source code for nonterminals.
+     */
     private Map<String, String> nonterminalsSourceCode;
+
+    /**
+     * Set of terminals.
+     */
     private Set<String> terminals;
+
+    /**
+     * List (string) of symbols, which can begin a terminals.
+     */
     private Map<String, String> terminalsCanStartsWith;
+
+    /**
+     * Generated source code for terminals.
+     */
     private Map<String, String> terminalsSourceCode;
+
+    /**
+     * AST nodes and their constructor arguments
+     */
     private Map<String, LinkedList<String>> astNodes;
 
+    /**
+     * Ctor.
+     */
     public GeneratorData() {
         this.nonterminals = new LinkedHashSet<String>();
         this.nonterminalsCanStartsWith = new LinkedHashMap<String, LinkedList<String>>();
@@ -51,7 +82,24 @@ public final class GeneratorData {
         this.astNodes = new HashMap<String, LinkedList<String>>();
     }
 
-    public GeneratorData(Set<String> nonterminals, Map<String, LinkedList<String>> nonterminalsCanStartsWith, Map<String, String> nonterminalsSourceCode, Set<String> terminals, Map<String, String> terminalsCanStartsWith, Map<String, String> terminalsSourceCode, Map<String, LinkedList<String>> astNodes) {
+    /**
+     * Ctor.
+     *
+     * @param nonterminals Set of nonterminals
+     * @param nonterminalsSourceCode Generated source code for nonterminals
+     * @param terminals Set of terminals
+     * @param terminalsCanStartsWith List (string) of symbols, which can begin
+     *                               a terminals
+     * @param terminalsSourceCode Generated source code for terminals
+     * @param astNodes AST nodes and their constructor arguments
+     */
+    public GeneratorData(Set<String> nonterminals,
+                         Map<String, LinkedList<String>> nonterminalsCanStartsWith,
+                         Map<String, String> nonterminalsSourceCode,
+                         Set<String> terminals,
+                         Map<String, String> terminalsCanStartsWith,
+                         Map<String, String> terminalsSourceCode,
+                         Map<String, LinkedList<String>> astNodes) {
         this.nonterminals = nonterminals;
         this.nonterminalsCanStartsWith = nonterminalsCanStartsWith;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
@@ -61,58 +109,128 @@ public final class GeneratorData {
         this.astNodes = astNodes;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Set of nonterminals
+     */
     public Set<String> getNonterminals() {
         return nonterminals;
     }
 
+    /**
+     * Setter.
+     *
+     * @param nonterminals Set of nonterminals
+     */
     public void setNonterminals(Set<String> nonterminals) {
         this.nonterminals = nonterminals;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Generated source code for terminals
+     */
     public Map<String, String> getNonterminalsSourceCode() {
         return nonterminalsSourceCode;
     }
 
+    /**
+     * Setter.
+     *
+     * @param nonterminalsSourceCode Generated source code for terminals
+     */
     public void setNonterminalsSourceCode(Map<String, String> nonterminalsSourceCode) {
         this.nonterminalsSourceCode = nonterminalsSourceCode;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Set of terminals
+     */
     public Set<String> getTerminals() {
         return terminals;
     }
 
+    /**
+     * Setter.
+     *
+     * @param terminals Set of terminals
+     */
     public void setTerminals(Set<String> terminals) {
         this.terminals = terminals;
     }
 
+    /**
+     * Getter.
+     *
+     * @return List (string) of symbols, which can begin a terminals.
+     */
     public Map<String, String> getTerminalsCanStartsWith() {
         return terminalsCanStartsWith;
     }
 
+    /**
+     * Setter.
+     *
+     * @param terminalsCanStartsWith List (string) of symbols, which can begin a terminals.
+     */
     public void setTerminalsCanStartsWith(Map<String, String> terminalsCanStartsWith) {
         this.terminalsCanStartsWith = terminalsCanStartsWith;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Generated source code for terminals
+     */
     public Map<String, String> getTerminalsSourceCode() {
         return terminalsSourceCode;
     }
 
+    /**
+     * Setter.
+     *
+     * @param terminalsSourceCode Generated source code for terminals
+     */
     public void setTerminalsSourceCode(Map<String, String> terminalsSourceCode) {
         this.terminalsSourceCode = terminalsSourceCode;
     }
 
+    /**
+     * Getter.
+     *
+     * @return List of tokens, which can begin a nonterminals
+     */
     public Map<String, LinkedList<String>> getNonterminalsCanStartsWith() {
         return nonterminalsCanStartsWith;
     }
 
+    /**
+     * Setter.
+     *
+     * @param nonterminalsCanStartsWith List of tokens, which can begin a nonterminals.
+     */
     public void setNonterminalsCanStartsWith(Map<String, LinkedList<String>> nonterminalsCanStartsWith) {
         this.nonterminalsCanStartsWith = nonterminalsCanStartsWith;
     }
 
+    /**
+     * Getter.
+     *
+     * @return AST nodes and their constructor arguments
+     */
     public Map<String, LinkedList<String>> getAstNodes() {
         return astNodes;
     }
 
+    /**
+     * Setter.
+     *
+     * @param astNodes AST nodes and their constructor arguments
+     */
     public void setAstNodes(Map<String, LinkedList<String>> astNodes) {
         this.astNodes = astNodes;
     }

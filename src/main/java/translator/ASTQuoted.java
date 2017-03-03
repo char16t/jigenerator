@@ -31,12 +31,25 @@ package translator;
  * @since 0.1
  */
 public final class ASTQuoted implements AST {
+    /**
+     * Quoted value.
+     */
     private final String value;
 
+    /**
+     * Ctor.
+     *
+     * @param value Quoted value
+     */
     public ASTQuoted(final String value) {
         this.value = value;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Quoted value
+     */
     public String value() {
         return value;
     }

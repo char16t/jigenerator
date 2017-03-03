@@ -61,8 +61,19 @@ public final class Interpreter {
      */
     private int termOrNonterm = 0;
 
+    /**
+     * Generator data.
+     */
     private GeneratorData generatorData;
+
+    /**
+     * Token variable names.
+     */
     private Set<String> tokenVariableNames = new HashSet<String>();
+
+    /**
+     * Nonterm variable names.
+     */
     private Set<String> nontermVariableNames = new HashSet<String>();
 
     /**

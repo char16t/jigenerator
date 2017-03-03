@@ -31,23 +31,51 @@ package translator;
  * @since 0.1
  */
 public final class ASTTerm implements AST {
+
+    /**
+     * Term name.
+     */
     private final String value;
+
+    /**
+     * Associated variable name.
+     */
     private final String localVariableName;
 
-
+    /**
+     * Ctor.
+     *
+     * @param value Term name
+     */
     public ASTTerm(final String value) {
         this(value, "");
     }
 
+    /**
+     * Ctor.
+     *
+     * @param value Term name
+     * @param localVariableName Associated variable name
+     */
     public ASTTerm(final String value, final String localVariableName) {
         this.value = value;
         this.localVariableName = localVariableName;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Term name
+     */
     public String value() {
         return value;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Associated variable name
+     */
     public String localVariableName() {
         return localVariableName;
     }

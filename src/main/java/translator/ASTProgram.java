@@ -33,12 +33,25 @@ import java.util.List;
  * @since 0.1
  */
 public final class ASTProgram implements AST {
+    /**
+     * Expressions, like a terms, nonterms etc.
+     */
     private final List<AST> childs;
 
+    /**
+     * Ctor.
+     *
+     * @param childs Expressions, like a terms, nonterms etc.
+     */
     public ASTProgram(final List<AST> childs) {
         this.childs = childs;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Expressions, like a terms, nonterms etc
+     */
     public List<AST> childs() {
         return childs;
     }

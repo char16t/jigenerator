@@ -31,12 +31,25 @@ package translator;
  * @since 0.1
  */
 public final class ASTReturn implements AST {
+    /**
+     * Generated value.
+     */
     private final String value;
 
+    /**
+     * Ctor.
+     *
+     * @param value Generated value
+     */
     public ASTReturn(final String value) {
         this.value = value;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Generated value
+     */
     public String value() {
         return value;
     }

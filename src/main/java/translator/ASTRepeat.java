@@ -33,12 +33,25 @@ import java.util.List;
  * @since 0.1
  */
 public final class ASTRepeat implements AST {
+    /**
+     * Available child expressions.
+     */
     private final List<AST> childs;
 
+    /**
+     * Ctor.
+     *
+     * @param childs Available child expressions
+     */
     public ASTRepeat(final List<AST> childs) {
         this.childs = childs;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Available child expressions
+     */
     public List<AST> childs() {
         return childs;
     }

@@ -33,12 +33,25 @@ import java.util.List;
  * @since 0.1
  */
 public final class ASTExpression implements AST {
+    /**
+     * List of node childs.
+     */
     private final List<AST> childs;
 
+    /**
+     * Ctor.
+     *
+     * @param childsGroup List of node childs
+     */
     public ASTExpression(final List<AST> childsGroup) {
         this.childs = childsGroup;
     }
 
+    /**
+     * Getter.
+     *
+     * @return List of node childs
+     */
     public List<AST> childs() {
         return childs;
     }

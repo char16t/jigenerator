@@ -33,18 +33,41 @@ import java.util.List;
  * @since 0.1
  */
 public final class ASTASTDef implements AST {
+    /**
+     * Node name.
+     */
     private final String name;
+
+    /**
+     * List of node childs.
+     */
     private final List<String> childs;
 
+    /**
+     * Ctor.
+     *
+     * @param name Node name
+     * @param types List of node childs
+     */
     public ASTASTDef(final String name, final List<String> types) {
         this.name = name;
         this.childs = types;
     }
 
+    /**
+     * Getter.
+     *
+     * @return Node name
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Getter.
+     *
+     * @return List of node childs
+     */
     public List<String> childs() {
         return childs;
     }
