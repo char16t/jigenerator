@@ -34,7 +34,7 @@ import java.util.Map;
  * @since 0.1
  */
 public final class TermVisitor {
-    int isGetStartSymbolsForTermSubnodeWorks = 0;
+    private int isGetStartSymbolsForTermSubnodeWorks = 0;
     private String currentTerm = "";
     private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();
     private String startSymbolsForNontermSubnode = "";

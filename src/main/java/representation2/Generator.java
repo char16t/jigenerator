@@ -26,9 +26,17 @@ package representation2;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Java project generator.
@@ -93,12 +101,12 @@ public final class Generator {
      * @param terminalsSourceCode Generated source code for terminals
      * @param astNodes AST nodes and their constructor arguments
      */
-    public Generator(Set<String> nonterminals,
-                     Map<String, String> nonterminalsSourceCode,
-                     Set<String> terminals,
-                     Map<String, String> terminalsCanStartsWith,
-                     Map<String, String> terminalsSourceCode,
-                     Map<String, LinkedList<String>> astNodes) {
+    public Generator(final Set<String> nonterminals,
+                     final Map<String, String> nonterminalsSourceCode,
+                     final Set<String> terminals,
+                     final Map<String, String> terminalsCanStartsWith,
+                     final Map<String, String> terminalsSourceCode,
+                     final Map<String, LinkedList<String>> astNodes) {
         this.nonterminals = nonterminals;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
         this.terminals = terminals;
@@ -113,7 +121,7 @@ public final class Generator {
      * @param outputPath Output path
      * @param generatorData Generator data
      */
-    public Generator(String outputPath, GeneratorData generatorData) {
+    public Generator(final String outputPath, final GeneratorData generatorData) {
         this.nonterminals = generatorData.getNonterminals();
         this.nonterminalsSourceCode = generatorData.getNonterminalsSourceCode();
         this.terminals = generatorData.getTerminals();
@@ -131,7 +139,7 @@ public final class Generator {
      * @param name File name
      * @param template Template name
      */
-    public static void createFile(String path, String name, String template) {
+    public static void createFile(final String path, final String name, final String template) {
         new File(OUTPUT_PATH + path).mkdirs();
         String data = null;
         try {
@@ -166,7 +174,7 @@ public final class Generator {
      * @param name File name
      * @param string Content
      */
-    public static void appendFile(String path, String name, String string) {
+    public static void appendFile(final String path, final String name, final String string) {
         try {
             FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
         } catch (IOException e) {
@@ -181,7 +189,7 @@ public final class Generator {
      * @param name File name
      * @param template Template name
      */
-    public static void appendFileWithTemplate(String path, String name, String template) {
+    public static void appendFileWithTemplate(final String path, final String name, final String template) {
         String string = null;
         try {
             string = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));

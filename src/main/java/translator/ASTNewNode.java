@@ -24,7 +24,7 @@
 package translator;
 
 /**
- * AST new node
+ * AST new node.
  *
  * @author Valeriy Manenkov (v.manenkov@gmail.com)
  * @version $Id$

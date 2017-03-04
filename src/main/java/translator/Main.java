@@ -29,7 +29,6 @@ import representation2.GeneratorData;
 import java.io.File;
 import java.io.PrintStream;
 import java.nio.file.Files;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**

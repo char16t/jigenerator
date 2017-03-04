@@ -23,7 +23,13 @@
  */
 package representation2;
 
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Java project generator data.
@@ -93,13 +99,13 @@ public final class GeneratorData {
      * @param terminalsSourceCode Generated source code for terminals
      * @param astNodes AST nodes and their constructor arguments
      */
-    public GeneratorData(Set<String> nonterminals,
-                         Map<String, LinkedList<String>> nonterminalsCanStartsWith,
-                         Map<String, String> nonterminalsSourceCode,
-                         Set<String> terminals,
-                         Map<String, String> terminalsCanStartsWith,
-                         Map<String, String> terminalsSourceCode,
-                         Map<String, LinkedList<String>> astNodes) {
+    public GeneratorData(final Set<String> nonterminals,
+                         final Map<String, LinkedList<String>> nonterminalsCanStartsWith,
+                         final Map<String, String> nonterminalsSourceCode,
+                         final Set<String> terminals,
+                         final Map<String, String> terminalsCanStartsWith,
+                         final Map<String, String> terminalsSourceCode,
+                         final Map<String, LinkedList<String>> astNodes) {
         this.nonterminals = nonterminals;
         this.nonterminalsCanStartsWith = nonterminalsCanStartsWith;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
@@ -123,7 +129,7 @@ public final class GeneratorData {
      *
      * @param nonterminals Set of nonterminals
      */
-    public void setNonterminals(Set<String> nonterminals) {
+    public void setNonterminals(final Set<String> nonterminals) {
         this.nonterminals = nonterminals;
     }
 
@@ -141,7 +147,7 @@ public final class GeneratorData {
      *
      * @param nonterminalsSourceCode Generated source code for terminals
      */
-    public void setNonterminalsSourceCode(Map<String, String> nonterminalsSourceCode) {
+    public void setNonterminalsSourceCode(final Map<String, String> nonterminalsSourceCode) {
         this.nonterminalsSourceCode = nonterminalsSourceCode;
     }
 
@@ -159,7 +165,7 @@ public final class GeneratorData {
      *
      * @param terminals Set of terminals
      */
-    public void setTerminals(Set<String> terminals) {
+    public void setTerminals(final Set<String> terminals) {
         this.terminals = terminals;
     }
 
@@ -177,7 +183,7 @@ public final class GeneratorData {
      *
      * @param terminalsCanStartsWith List (string) of symbols, which can begin a terminals.
      */
-    public void setTerminalsCanStartsWith(Map<String, String> terminalsCanStartsWith) {
+    public void setTerminalsCanStartsWith(final Map<String, String> terminalsCanStartsWith) {
         this.terminalsCanStartsWith = terminalsCanStartsWith;
     }
 
@@ -195,7 +201,7 @@ public final class GeneratorData {
      *
      * @param terminalsSourceCode Generated source code for terminals
      */
-    public void setTerminalsSourceCode(Map<String, String> terminalsSourceCode) {
+    public void setTerminalsSourceCode(final Map<String, String> terminalsSourceCode) {
         this.terminalsSourceCode = terminalsSourceCode;
     }
 
@@ -213,7 +219,7 @@ public final class GeneratorData {
      *
      * @param nonterminalsCanStartsWith List of tokens, which can begin a nonterminals.
      */
-    public void setNonterminalsCanStartsWith(Map<String, LinkedList<String>> nonterminalsCanStartsWith) {
+    public void setNonterminalsCanStartsWith(final Map<String, LinkedList<String>> nonterminalsCanStartsWith) {
         this.nonterminalsCanStartsWith = nonterminalsCanStartsWith;
     }
 
@@ -231,7 +237,7 @@ public final class GeneratorData {
      *
      * @param astNodes AST nodes and their constructor arguments
      */
-    public void setAstNodes(Map<String, LinkedList<String>> astNodes) {
+    public void setAstNodes(final Map<String, LinkedList<String>> astNodes) {
         this.astNodes = astNodes;
     }
 }
