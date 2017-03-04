@@ -41,6 +41,11 @@ public final class ASTNonterm implements AST {
      */
     private final String localVariableName;
 
+    /**
+     * Ctor.
+     *
+     * @param value Nonterm name
+     */
     public ASTNonterm(final String value) {
         this(value, "");
     }
