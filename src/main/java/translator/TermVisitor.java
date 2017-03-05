@@ -36,7 +36,8 @@ import java.util.Map;
 public final class TermVisitor {
     private int isGetStartSymbolsForTermSubnodeWorks = 0;
     private String currentTerm = "";
-    private Map<String, String> terminalsCanStartsWith = new HashMap<String, String>();
+    private Map<String, String> terminalsCanStartsWith
+        = new HashMap<String, String>();
     private String startSymbolsForNontermSubnode = "";
 
     public Map<String, String> getTerminalsCanStartsWith(AST tree) {
@@ -93,7 +94,8 @@ public final class TermVisitor {
         if (isGetStartSymbolsForTermSubnodeWorks == 0) {
             String firstChar = ((Character) node.value().charAt(0)).toString();
             if (terminalsCanStartsWith.containsKey(currentTerm)
-                    && !terminalsCanStartsWith.get(currentTerm).contains(firstChar)) {
+                && !terminalsCanStartsWith.get(currentTerm)
+                    .contains(firstChar)) {
                 String old = terminalsCanStartsWith.get(currentTerm);
                 old += firstChar;
                 terminalsCanStartsWith.put(currentTerm, old);

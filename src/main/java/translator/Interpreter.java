@@ -177,7 +177,8 @@ public final class Interpreter {
 
         String nontermVariableNamesString = "";
         for (String nontermVariableName : nontermVariableNames) {
-            nontermVariableNamesString += "AST " + nontermVariableName + " = null;\n";
+            nontermVariableNamesString += "AST "
+                + nontermVariableName + " = null;\n";
         }
         generatorData.getNonterminalsSourceCode().put(node.name(),
                 tokenVariableNamesString + nontermVariableNamesString + result);
@@ -211,48 +212,77 @@ public final class Interpreter {
     private String visitOr(final ASTOr node) {
         String result = "";
         if (termOrNonterm == 1) {
-            String nodeConditions = termVisitor.getStartSymbolsForTermSubnode(node);
+            String nodeConditions =
+                termVisitor.getStartSymbolsForTermSubnode(node);
             String nodeConditionsString = "";
             for (int i = 0; i < nodeConditions.length(); ++i) {
-                nodeConditionsString += "this.currentChar.equals('" + nodeConditions.charAt(i) + "') || ";
+                nodeConditionsString += "this.currentChar.equals('"
+                    + nodeConditions.charAt(i) + "') || ";
             }
             if (nodeConditionsString.length() > 4) {
-                nodeConditionsString = nodeConditionsString.substring(0, nodeConditionsString.length() - 4);
+                nodeConditionsString =
+                    nodeConditionsString.substring(
+                        0, nodeConditionsString.length() - 4
+                    );
             }
 
             String ifDefention = "if";
             for (AST child : node.expressions()) {
-                if (child instanceof ASTQuoted || child instanceof ASTExpression) {
+                if (child instanceof ASTQuoted
+                    || child instanceof ASTExpression) {
                     result += visit(child);
                 } else {
-                    String conditions = termVisitor.getStartSymbolsForTermSubnode(child);
+                    String conditions =
+                        termVisitor.getStartSymbolsForTermSubnode(child);
                     String conditionString = "";
                     for (int i = 0; i < conditions.length(); ++i) {
-                        conditionString += "this.currentChar.equals('" + conditions.charAt(i) + "') || ";
+                        conditionString += "this.currentChar.equals('"
+                            + conditions.charAt(i) + "') || ";
                     }
                     if (conditionString.length() > 4) {
-                        conditionString = conditionString.substring(0, conditionString.length() - 4);
+                        conditionString = conditionString.substring(
+                            0, conditionString.length() - 4
+                        );
                     }
-                    result += ifDefention + " (this.currentChar != null && (" + conditionString + ")) {\n" + visit(child) + "\n}\n";
+                    result += ifDefention
+                        + " (this.currentChar != null && ("
+                        + conditionString
+                        + ")) {\n"
+                        + visit(child)
+                        + "\n}\n";
                     ifDefention = "else if";
                     //result += "if (...) {\n" + visit(child) + "\n}\n";
                 }
             }
 
-            result = "if (" + nodeConditionsString + ") { " + result + " } else { this.error(); }";
+            result = "if ("
+                + nodeConditionsString
+                + ") { "
+                + result
+                + " } else { this.error(); }";
         }
         if (termOrNonterm == 2) {
             String ifDefention = "if";
             for (AST child : node.expressions()) {
-                List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(child);
+                List<String> conditions =
+                    nontermVisitor.getStartTermsForNontermSubnode(child);
                 String conditionString = "";
                 for (String condition : conditions) {
-                    conditionString += "this.currentToken.type == TokenType." + condition + " || ";
+                    conditionString += "this.currentToken.type == TokenType."
+                        + condition + " || ";
                 }
                 if (conditionString.length() > 4) {
-                    conditionString = conditionString.substring(0, conditionString.length() - 4);
+                    conditionString = conditionString.substring(
+                        0,
+                        conditionString.length() - 4
+                    );
                 }
-                result += ifDefention + " (" + conditionString + ") {\n" + visit(child) + "\n}\n";
+                result += ifDefention
+                    + " ("
+                    + conditionString
+                    + ") {\n"
+                    + visit(child)
+                    + "\n}\n";
                 ifDefention = "else if";
             }
             result += " else { this.error(); return null; }";
@@ -295,10 +325,12 @@ public final class Interpreter {
         if (quoted.length() == 0) {
             return "result += \"" + orig + "\";";
         }
-        String result = "if (this.currentChar != null && this.currentChar.equals('"
+        String result =
+            "if (this.currentChar != null && this.currentChar.equals('"
                 + quoted.charAt(quoted.length() - 1) + "')) {"
                 + "this.advance(); "
-                + visitQuotedContent(orig, quoted.substring(0, quoted.length() - 1))
+                + visitQuotedContent(orig, quoted.substring(
+            0, quoted.length() - 1))
                 + " }";
 
         return result;
@@ -321,21 +353,34 @@ public final class Interpreter {
                         + "') || ";
             }
             if (conditionString.length() > 4) {
-                conditionString = conditionString.substring(0, conditionString.length() - 4);
+                conditionString = conditionString.substring(
+                    0,
+                    conditionString.length() - 4
+                );
             }
-            result = "while(this.currentChar != null && (" + conditionString + ")) {\n";
+            result =
+                "while(this.currentChar != null && ("
+                + conditionString
+                + ")) {\n";
             for (AST expr : node.childs()) {
                 result += visit(expr);
             }
             result += "\n}\n";
         } else if (termOrNonterm == 2) {
-            List<String> conditions = nontermVisitor.getStartTermsForNontermSubnode(node);
+            List<String> conditions =
+                nontermVisitor.getStartTermsForNontermSubnode(node);
             String conditionString = "";
             for (String condition : conditions) {
-                conditionString += "this.currentToken.type == TokenType." + condition + " || ";
+                conditionString +=
+                    "this.currentToken.type == TokenType."
+                    + condition
+                    + " || ";
             }
             if (conditionString.length() > 4) {
-                conditionString = conditionString.substring(0, conditionString.length() - 4);
+                conditionString = conditionString.substring(
+                    0,
+                    conditionString.length() - 4
+                );
             }
 
             result = "while(" + conditionString + ") {\n";
@@ -417,7 +462,10 @@ public final class Interpreter {
      * @return result substring
      */
     private String visitASTDef(final ASTASTDef node) {
-        generatorData.getAstNodes().put(node.name(), (LinkedList<String>) node.childs());
+        generatorData.getAstNodes().put(
+            node.name(),
+            (LinkedList<String>) node.childs()
+        );
         return "";
     }
 
@@ -432,8 +480,11 @@ public final class Interpreter {
         if (tree == null) {
             return "";
         }
-        Map<String, String> terminalsCanStartsWith = termVisitor.getTerminalsCanStartsWith(tree);
-        generatorData.setNonterminalsCanStartsWith(nontermVisitor.getResult(tree));
+        Map<String, String> terminalsCanStartsWith =
+            termVisitor.getTerminalsCanStartsWith(tree);
+        generatorData.setNonterminalsCanStartsWith(
+            nontermVisitor.getResult(tree)
+        );
         generatorData.setTerminalsCanStartsWith(terminalsCanStartsWith);
         return visit(tree);
     }

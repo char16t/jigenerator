@@ -23,7 +23,13 @@
  */
 package translator;
 
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Nonterminals visitor.
@@ -33,10 +39,12 @@ import java.util.*;
  * @since 0.1
  */
 public final class NontermVisitor {
-    int isGetStartTermsForNontermSubnodeWorks = 0;
+    private int isGetStartTermsForNontermSubnodeWorks = 0;
     private String currentNonterm = "";
-    private Map<String, LinkedList<String>> nonterminalsCanStartsWith = new HashMap<String, LinkedList<String>>();
-    private Map<String, LinkedList<String>> nonterminalsStartsWithTerminals = new HashMap<String, LinkedList<String>>();
+    private Map<String, LinkedList<String>> nonterminalsCanStartsWith
+        = new HashMap<String, LinkedList<String>>();
+    private Map<String, LinkedList<String>> nonterminalsStartsWithTerminals
+        = new HashMap<String, LinkedList<String>>();
     private List<String> termsForNontermSubnode = new LinkedList<String>();
     private List<String> nontermsForNontermSubnode = new LinkedList<String>();
 
@@ -47,7 +55,8 @@ public final class NontermVisitor {
 
     // todo: rename me
     private Map<String, LinkedList<String>> getResultMap() {
-        Map<String, LinkedList<String>> result = new HashMap<String, LinkedList<String>>();
+        Map<String, LinkedList<String>> result
+            = new HashMap<String, LinkedList<String>>();
 
         for (String nonterm : nonterminalsStartsWithTerminals.keySet()) {
             final LinkedList<String> ret = getChildsTerms(nonterm);
@@ -60,7 +69,7 @@ public final class NontermVisitor {
     }
 
     // todo: rename me
-    private LinkedList<String> getChildsTerms(String nonterm) {
+    private LinkedList<String> getChildsTerms(final String nonterm) {
         LinkedList<String> result = new LinkedList<String>();
         LinkedList<String> list = nonterminalsStartsWithTerminals.get(nonterm);
         for (String s : list) {
@@ -119,13 +128,15 @@ public final class NontermVisitor {
         if (isGetStartTermsForNontermSubnodeWorks == 0) {
             if (nonterminalsCanStartsWith.containsKey(currentNonterm)) {
                 boolean termAlreadyAdded = false;
-                for (String item : nonterminalsCanStartsWith.get(currentNonterm)) {
+                for (String item
+                    : nonterminalsCanStartsWith.get(currentNonterm)) {
                     if (item.equals(node.value())) {
                         termAlreadyAdded = true;
                     }
                 }
                 if (!termAlreadyAdded) {
-                    nonterminalsCanStartsWith.get(currentNonterm).add(node.value());
+                    nonterminalsCanStartsWith.get(currentNonterm)
+                        .add(node.value());
                 }
             }
         }
@@ -144,14 +155,17 @@ public final class NontermVisitor {
         if (isGetStartTermsForNontermSubnodeWorks == 0) {
             if (nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
                 boolean nontermAlreadyAdded = false;
-                if (nonterminalsStartsWithTerminals.get(currentNonterm) != null) {
-                    for (String item : nonterminalsStartsWithTerminals.get(currentNonterm)) {
+                if (nonterminalsStartsWithTerminals
+                    .get(currentNonterm) != null) {
+                    for (String item
+                        : nonterminalsStartsWithTerminals.get(currentNonterm)) {
                         if (item.equals(node.value())) {
                             nontermAlreadyAdded = true;
                         }
                     }
                     if (!nontermAlreadyAdded) {
-                        nonterminalsStartsWithTerminals.get(currentNonterm).add(node.value());
+                        nonterminalsStartsWithTerminals.get(currentNonterm)
+                            .add(node.value());
                     }
                 }
             }
@@ -171,7 +185,10 @@ public final class NontermVisitor {
     private void visitNonermDef(final ASTNonermDef node) {
         currentNonterm = node.name();
         nonterminalsCanStartsWith.put(node.name(), new LinkedList<String>());
-        nonterminalsStartsWithTerminals.put(currentNonterm, new LinkedList<String>());
+        nonterminalsStartsWithTerminals.put(
+            currentNonterm,
+            new LinkedList<String>()
+        );
         visit(node.expr());
     }
 

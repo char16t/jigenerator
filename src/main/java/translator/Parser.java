@@ -313,7 +313,9 @@ public final class Parser {
             this.eat(TokenType.NAME);
         }
 
-        return !localVariableName.equals("") ? new ASTNonterm(value, localVariableName) : new ASTNonterm(value);
+        return !localVariableName.equals("")
+            ? new ASTNonterm(value, localVariableName)
+            : new ASTNonterm(value);
     }
 
     /**
@@ -521,11 +523,16 @@ public final class Parser {
      * Эти действия выполняются после построения AST-дерева в Parser:
      * 0. Наткнулись на узел factor, который уже существует
      * 1. Создать узел Or
-     * 1-а. Если первый узел в старом Or является Expression, перененести его в новый создаваемый узел
-     * 1-б. Если первый узел в старом Or является Or, перенести все его дочерние Expression в новый узел
-     * 2-а. Если первый узел в новом Or является Expression, добавить его в новый создаваемый узел
-     * 2-б. Если первый узел в новом Or является Or, добавить все его дочерние Expression в новый узел
-     * 3. Добавить новый узел factor и добавить его в Program, старые использованные удалить
+     * 1-а. Если первый узел в старом Or является Expression, перененести его
+     *      в новый создаваемый узел
+     * 1-б. Если первый узел в старом Or является Or, перенести все его дочерние
+     *      Expression в новый узел
+     * 2-а. Если первый узел в новом Or является Expression, добавить его в
+     *      новый создаваемый узел
+     * 2-б. Если первый узел в новом Or является Or, добавить все его дочерние
+     *      Expression в новый узел
+     * 3. Добавить новый узел factor и добавить его в Program, старые
+     *    использованные удалить
     **/
     private AST unionDoubleProductions(final ASTProgram node) {
         Map<String, List<AST>> nonterms = new HashMap<String, List<AST>>();

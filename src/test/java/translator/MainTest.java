@@ -40,7 +40,9 @@ public class MainTest {
     public void execTest() throws Exception {
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             final Path directory = Files.createTempDirectory("aaa_");
-            final String file = this.getClass().getResource("/translator/source9.grammar").getPath();
+            final String file = this.getClass()
+                .getResource("/translator/source9.grammar")
+                .getPath();
             new Main(System.out, file, directory.toString()).exec();
             // TODO: Check generated sources
         }

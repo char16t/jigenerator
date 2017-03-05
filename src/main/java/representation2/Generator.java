@@ -50,7 +50,8 @@ public final class Generator {
     /**
      * Templates path.
      */
-    private static final String TEMPLATES_PATH = "src/main/resources/representation2/";
+    private static final String TEMPLATES_PATH
+        = "src/main/resources/representation2/";
 
     /**
      * Output path.
@@ -65,7 +66,8 @@ public final class Generator {
     /**
      * Generated source code for nonterminals.
      */
-    private Map<String, String> nonterminalsSourceCode = new HashMap<String, String>();
+    private Map<String, String> nonterminalsSourceCode
+        = new HashMap<String, String>();
 
     /**
      * Set of terminals.
@@ -139,7 +141,11 @@ public final class Generator {
      * @param name File name
      * @param template Template name
      */
-    public static void createFile(final String path, final String name, final String template) {
+    public static void createFile(
+        final String path,
+        final String name,
+        final String template
+    ) {
         new File(OUTPUT_PATH + path).mkdirs();
         String data = null;
         try {
@@ -174,9 +180,18 @@ public final class Generator {
      * @param name File name
      * @param string Content
      */
-    public static void appendFile(final String path, final String name, final String string) {
+    public static void appendFile(
+        final String path,
+        final String name,
+        final String string
+    ) {
         try {
-            FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
+            FileUtils.writeStringToFile(
+                new File(OUTPUT_PATH + path + name),
+                string,
+                Charset.defaultCharset(),
+                true
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -189,10 +204,18 @@ public final class Generator {
      * @param name File name
      * @param template Template name
      */
-    public static void appendFileWithTemplate(final String path, final String name, final String template) {
+    public static void appendFileWithTemplate(
+        final String path,
+        final String name,
+        final String template
+    ) {
         String string = null;
         try {
-            string = IOUtils.toString(new FileReader(TEMPLATES_PATH + template + ".template"));
+            string = IOUtils.toString(
+                new FileReader(
+                    TEMPLATES_PATH + template + ".template"
+                )
+            );
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -200,7 +223,12 @@ public final class Generator {
         }
 
         try {
-            FileUtils.writeStringToFile(new File(OUTPUT_PATH + path + name), string, Charset.defaultCharset(), true);
+            FileUtils.writeStringToFile(
+                new File(OUTPUT_PATH + path + name),
+                string,
+                Charset.defaultCharset(),
+                true
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -234,7 +262,8 @@ public final class Generator {
         String visitMethodContent = "";
         for (String node : astNodes.keySet()) {
             visitMethodContent += "if (node instanceof AST" + node + ") {\n";
-            visitMethodContent += "    return visit" + node + "((AST" + node + ") node);\n";
+            visitMethodContent += "    return visit"
+                + node + "((AST" + node + ") node);\n";
             visitMethodContent += "}\n";
         }
         if (!visitMethodContent.equals("")) {
@@ -245,18 +274,27 @@ public final class Generator {
 
         String visitMethodsStubs = "";
         for (String node : astNodes.keySet()) {
-            visitMethodsStubs += "public String visit" + node + "(AST" + node + " node) {\n";
+            visitMethodsStubs += "public String visit" + node
+                + "(AST" + node + " node) {\n";
             visitMethodsStubs += "    String result = \"\";\n";
             visitMethodsStubs += "    return result;\n";
             visitMethodsStubs += "}\n\n";
         }
 
         createFile("src/main/java/", "Interpreter.java", "InterpreterHeader");
-        appendFile("src/main/java/", "Interpreter.java", "public String visit(AST node) {\n");
+        appendFile(
+            "src/main/java/",
+            "Interpreter.java",
+            "public String visit(AST node) {\n"
+        );
         appendFile("src/main/java/", "Interpreter.java", visitMethodContent);
         appendFile("src/main/java/", "Interpreter.java", "}\n");
         appendFile("src/main/java/", "Interpreter.java", visitMethodsStubs);
-        appendFileWithTemplate("src/main/java/", "Interpreter.java", "InterpreterFooter");
+        appendFileWithTemplate(
+            "src/main/java/",
+            "Interpreter.java",
+            "InterpreterFooter"
+        );
     }
 
     /**
@@ -270,7 +308,9 @@ public final class Generator {
             // constructor args
             String argsString = "";
             for (int i = 0; i < numArguments; i++) {
-                argsString += types.get(i).equals("n") ? "AST node" + i + ", " : "Token node" + i + ", ";
+                argsString += types.get(i).equals("n")
+                    ? "AST node" + i + ", "
+                    : "Token node" + i + ", ";
             }
             if (argsString.length() > 2) {
                 argsString = argsString.substring(0, argsString.length() - 2);
@@ -292,9 +332,17 @@ public final class Generator {
 
             String filename = "AST" + node + ".java";
             createFile("src/main/java/", filename, "Empty");
-            appendFile("src/main/java/", filename, "public class AST" + node + " implements AST {\n");
+            appendFile(
+                "src/main/java/",
+                filename,
+                "public class AST" + node + " implements AST {\n"
+            );
             appendFile("src/main/java/", filename, fieldsString);
-            appendFile("src/main/java/", filename, "public AST" + node + "(" + argsString + ") {\n");
+            appendFile(
+                "src/main/java/",
+                filename,
+                "public AST" + node + "(" + argsString + ") {\n"
+            );
             appendFile("src/main/java/", filename, constructorContent);
             appendFile("src/main/java/", filename, "}\n");
             appendFile("src/main/java/", filename, "}\n");
@@ -328,30 +376,52 @@ public final class Generator {
                             "    }\n\n";
             appendFile("src/main/java/", "Lexer.java", line);
         }
-        appendFile("src/main/java/", "Lexer.java",
-                "    public Token getNextToken() throws Exception {\n" +
-                        "        while (this.currentChar != null) {\n" +
-                        "             if (Character.isWhitespace(this.currentChar)) {\n" +
-                        "                 this.skipWhitespace();\n" +
-                        "                 continue;\n" +
-                        "             }\n");
+        appendFile(
+            "src/main/java/",
+            "Lexer.java",
+            "    public Token getNextToken() throws Exception {\n"
+            + "        while (this.currentChar != null) {\n"
+            + "             if (Character.isWhitespace(this.currentChar)) {\n"
+            + "                 this.skipWhitespace();\n"
+            + "                 continue;\n"
+            + "             }\n"
+        );
 
         for (String terminal : terminals) {
             String orExpr = "";
 
             String cases = terminalsCanStartsWith.get(terminal);
             for (int i = 0; i < cases.length(); i++) {
-                orExpr += "this.currentChar.equals('" + cases.charAt(i) + "') || ";
+                orExpr += "this.currentChar.equals('" + cases.charAt(i)
+                    + "') || ";
             }
             orExpr = orExpr.substring(0, orExpr.length() - 4);
-            appendFile("src/main/java/", "Lexer.java", "if (" + orExpr + ") {\n");
-            appendFile("src/main/java/", "Lexer.java",
-                    "    return new Token(TokenType." + terminal + ", this." + terminal.toLowerCase() + "());\n");
+            appendFile(
+                "src/main/java/",
+                "Lexer.java",
+                "if (" + orExpr + ") {\n"
+            );
+            appendFile(
+                "src/main/java/", "Lexer.java",
+                "    return new Token(TokenType."
+                    + terminal
+                    + ", this."
+                    + terminal.toLowerCase()
+                    + "());\n"
+            );
             appendFile("src/main/java/", "Lexer.java", "}\n\n");
         }
 
-        appendFile("src/main/java/", "Lexer.java", "            this.error();\n        }\n");
-        appendFile("src/main/java/", "Lexer.java", "        return new Token(TokenType.EOF, null);\n");
+        appendFile(
+            "src/main/java/",
+            "Lexer.java",
+            "            this.error();\n        }\n"
+        );
+        appendFile(
+            "src/main/java/",
+            "Lexer.java",
+            "        return new Token(TokenType.EOF, null);\n"
+        );
         appendFile("src/main/java/", "Lexer.java", "    }\n");
         appendFileWithTemplate("src/main/java/", "Lexer.java", "LexerFooter");
     }
@@ -364,7 +434,8 @@ public final class Generator {
 
         appendFile("src/main/java/", "Parser.java",
             "    public AST parse() throws Exception {\n"
-            + "        AST node = this." + nonterminals.iterator().next() + "();\n"
+            + "        AST node = this."
+            + nonterminals.iterator().next() + "();\n"
             + "        if (this.currentToken.type != TokenType.EOF) {\n"
             + "            this.error();\n"
             + "        }\n"

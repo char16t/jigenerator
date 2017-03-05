@@ -74,7 +74,9 @@ public final class Main {
      */
     public void exec() throws Exception {
         if (args.length == 2) {
-            final String program = Files.readAllLines(new File(args[0]).toPath()).stream().collect(Collectors.joining("\n"));
+            final String program = Files.readAllLines(
+                new File(args[0]).toPath()
+            ).stream().collect(Collectors.joining("\n"));
 
             Lexer lexer = new Lexer(program);
             Parser parser = new Parser(lexer);
@@ -82,13 +84,13 @@ public final class Main {
             String result = interpreter.interpret();
 
             GeneratorData generatorData = new GeneratorData(
-                    interpreter.getGeneratorData().getNonterminals(),
-                    interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
-                    interpreter.getGeneratorData().getNonterminalsSourceCode(),
-                    interpreter.getGeneratorData().getTerminals(),
-                    interpreter.getGeneratorData().getTerminalsCanStartsWith(),
-                    interpreter.getGeneratorData().getTerminalsSourceCode(),
-                    interpreter.getGeneratorData().getAstNodes());
+                interpreter.getGeneratorData().getNonterminals(),
+                interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
+                interpreter.getGeneratorData().getNonterminalsSourceCode(),
+                interpreter.getGeneratorData().getTerminals(),
+                interpreter.getGeneratorData().getTerminalsCanStartsWith(),
+                interpreter.getGeneratorData().getTerminalsSourceCode(),
+                interpreter.getGeneratorData().getAstNodes());
 
             Generator generator = new Generator(args[1] + "/", generatorData);
             generator.generate();

@@ -80,7 +80,8 @@ public final class GeneratorData {
      */
     public GeneratorData() {
         this.nonterminals = new LinkedHashSet<String>();
-        this.nonterminalsCanStartsWith = new LinkedHashMap<String, LinkedList<String>>();
+        this.nonterminalsCanStartsWith
+            = new LinkedHashMap<String, LinkedList<String>>();
         this.nonterminalsSourceCode = new HashMap<String, String>();
         this.terminals = new LinkedHashSet<String>();
         this.terminalsCanStartsWith = new HashMap<String, String>();
@@ -99,13 +100,15 @@ public final class GeneratorData {
      * @param terminalsSourceCode Generated source code for terminals
      * @param astNodes AST nodes and their constructor arguments
      */
-    public GeneratorData(final Set<String> nonterminals,
-                         final Map<String, LinkedList<String>> nonterminalsCanStartsWith,
-                         final Map<String, String> nonterminalsSourceCode,
-                         final Set<String> terminals,
-                         final Map<String, String> terminalsCanStartsWith,
-                         final Map<String, String> terminalsSourceCode,
-                         final Map<String, LinkedList<String>> astNodes) {
+    public GeneratorData(
+        final Set<String> nonterminals,
+        final Map<String, LinkedList<String>> nonterminalsCanStartsWith,
+        final Map<String, String> nonterminalsSourceCode,
+        final Set<String> terminals,
+        final Map<String, String> terminalsCanStartsWith,
+        final Map<String, String> terminalsSourceCode,
+        final Map<String, LinkedList<String>> astNodes
+    ) {
         this.nonterminals = nonterminals;
         this.nonterminalsCanStartsWith = nonterminalsCanStartsWith;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
@@ -147,7 +150,9 @@ public final class GeneratorData {
      *
      * @param nonterminalsSourceCode Generated source code for terminals
      */
-    public void setNonterminalsSourceCode(final Map<String, String> nonterminalsSourceCode) {
+    public void setNonterminalsSourceCode(
+        final Map<String, String> nonterminalsSourceCode
+    ) {
         this.nonterminalsSourceCode = nonterminalsSourceCode;
     }
 
@@ -181,9 +186,12 @@ public final class GeneratorData {
     /**
      * Setter.
      *
-     * @param terminalsCanStartsWith List (string) of symbols, which can begin a terminals.
+     * @param terminalsCanStartsWith List (string) of symbols, which can begin
+     *                               a terminals.
      */
-    public void setTerminalsCanStartsWith(final Map<String, String> terminalsCanStartsWith) {
+    public void setTerminalsCanStartsWith(
+        final Map<String, String> terminalsCanStartsWith
+    ) {
         this.terminalsCanStartsWith = terminalsCanStartsWith;
     }
 
@@ -201,7 +209,9 @@ public final class GeneratorData {
      *
      * @param terminalsSourceCode Generated source code for terminals
      */
-    public void setTerminalsSourceCode(final Map<String, String> terminalsSourceCode) {
+    public void setTerminalsSourceCode(
+        final Map<String, String> terminalsSourceCode
+    ) {
         this.terminalsSourceCode = terminalsSourceCode;
     }
 
@@ -217,9 +227,12 @@ public final class GeneratorData {
     /**
      * Setter.
      *
-     * @param nonterminalsCanStartsWith List of tokens, which can begin a nonterminals.
+     * @param nonterminalsCanStartsWith List of tokens, which can begin
+     *                                  a nonterminals.
      */
-    public void setNonterminalsCanStartsWith(final Map<String, LinkedList<String>> nonterminalsCanStartsWith) {
+    public void setNonterminalsCanStartsWith(
+        final Map<String, LinkedList<String>> nonterminalsCanStartsWith
+    ) {
         this.nonterminalsCanStartsWith = nonterminalsCanStartsWith;
     }
 
