@@ -69,12 +69,12 @@ public final class Interpreter {
     /**
      * Token variable names.
      */
-    private Set<String> tokenVariableNames = new HashSet<String>();
+    private Set<String> tokenVariableNames = new HashSet<>();
 
     /**
      * Nonterm variable names.
      */
-    private Set<String> nontermVariableNames = new HashSet<String>();
+    private Set<String> nontermVariableNames = new HashSet<>();
 
     /**
      * Constructor.
@@ -92,7 +92,7 @@ public final class Interpreter {
      * @return generatorData
      */
     public GeneratorData getGeneratorData() {
-        return generatorData;
+        return this.generatorData;
     }
 
     /**
@@ -112,29 +112,29 @@ public final class Interpreter {
      */
     private String visit(final AST node) {
         if (node instanceof ASTExpression) {
-            return visitExpression((ASTExpression) node);
+            return this.visitExpression((ASTExpression) node);
         } else if (node instanceof ASTNonermDef) {
-            return visitNonermDef((ASTNonermDef) node);
+            return this.visitNonermDef((ASTNonermDef) node);
         } else if (node instanceof ASTNonterm) {
-            return visitNonterm((ASTNonterm) node);
+            return this.visitNonterm((ASTNonterm) node);
         } else if (node instanceof ASTOr) {
-            return visitOr((ASTOr) node);
+            return this.visitOr((ASTOr) node);
         } else if (node instanceof ASTProgram) {
-            return visitProgram((ASTProgram) node);
+            return this.visitProgram((ASTProgram) node);
         } else if (node instanceof ASTQuoted) {
-            return visitQuoted((ASTQuoted) node);
+            return this.visitQuoted((ASTQuoted) node);
         } else if (node instanceof ASTRepeat) {
-            return visitRepeat((ASTRepeat) node);
+            return this.visitRepeat((ASTRepeat) node);
         } else if (node instanceof ASTTerm) {
-            return visitTerm((ASTTerm) node);
+            return this.visitTerm((ASTTerm) node);
         } else if (node instanceof ASTTermDef) {
-            return visitTermDef((ASTTermDef) node);
+            return this.visitTermDef((ASTTermDef) node);
         } else if (node instanceof ASTASTDef) {
-            return visitASTDef((ASTASTDef) node);
+            return this.visitASTDef((ASTASTDef) node);
         } else if (node instanceof ASTNewNode) {
-            return visitASTNewNode((ASTNewNode) node);
+            return this.visitASTNewNode((ASTNewNode) node);
         } else if (node instanceof ASTReturn) {
-            return visitASTReturn((ASTReturn) node);
+            return this.visitASTReturn((ASTReturn) node);
         } else {
             return "";
         }
@@ -148,8 +148,8 @@ public final class Interpreter {
      */
     private String visitExpression(final ASTExpression node) {
         String result = "";
-        for (AST child : node.childs()) {
-            result += visit(child);
+        for (final AST child : node.childs()) {
+            result += this.visit(child);
         }
         return result;
     }
@@ -161,26 +161,26 @@ public final class Interpreter {
      * @return result substring
      */
     private String visitNonermDef(final ASTNonermDef node) {
-        tokenVariableNames.clear();
-        nontermVariableNames.clear();
+        this.tokenVariableNames.clear();
+        this.nontermVariableNames.clear();
 
-        termOrNonterm = 2;
+        this.termOrNonterm = 2;
         final String result = visit(node.expr());
-        generatorData.getNonterminals().add(node.name());
+        this.generatorData.getNonterminals().add(node.name());
 
         String tokenVariableNamesString = "";
-        for (String tokenVariableName : tokenVariableNames) {
+        for (final String tokenVariableName : this.tokenVariableNames) {
             tokenVariableNamesString += "Token "
                     + tokenVariableName
                     + " = null;\n";
         }
 
         String nontermVariableNamesString = "";
-        for (String nontermVariableName : nontermVariableNames) {
+        for (final String nontermVariableName : this.nontermVariableNames) {
             nontermVariableNamesString += "AST "
                 + nontermVariableName + " = null;\n";
         }
-        generatorData.getNonterminalsSourceCode().put(node.name(),
+        this.generatorData.getNonterminalsSourceCode().put(node.name(),
                 tokenVariableNamesString + nontermVariableNamesString + result);
         return result;
     }
@@ -193,10 +193,10 @@ public final class Interpreter {
      */
     private String visitNonterm(final ASTNonterm node) {
         String result = "";
-        if (termOrNonterm == 2) {
+        if (this.termOrNonterm == 2) {
             result = "this." + node.value() + "();\n";
             if (node.localVariableName() != null) {
-                nontermVariableNames.add(node.localVariableName());
+                this.nontermVariableNames.add(node.localVariableName());
                 result = node.localVariableName() + " = " + result;
             }
         }
@@ -211,9 +211,9 @@ public final class Interpreter {
      */
     private String visitOr(final ASTOr node) {
         String result = "";
-        if (termOrNonterm == 1) {
+        if (this.termOrNonterm == 1) {
             String nodeConditions =
-                termVisitor.getStartSymbolsForTermSubnode(node);
+                this.termVisitor.getStartSymbolsForTermSubnode(node);
             String nodeConditionsString = "";
             for (int i = 0; i < nodeConditions.length(); ++i) {
                 nodeConditionsString += "this.currentChar.equals('"
@@ -230,10 +230,10 @@ public final class Interpreter {
             for (final AST child : node.expressions()) {
                 if (child instanceof ASTQuoted
                     || child instanceof ASTExpression) {
-                    result += visit(child);
+                    result += this.visit(child);
                 } else {
                     String conditions =
-                        termVisitor.getStartSymbolsForTermSubnode(child);
+                        this.termVisitor.getStartSymbolsForTermSubnode(child);
                     String conditionString = "";
                     for (int i = 0; i < conditions.length(); ++i) {
                         conditionString += "this.currentChar.equals('"
@@ -248,7 +248,7 @@ public final class Interpreter {
                         + " (this.currentChar != null && ("
                         + conditionString
                         + ")) {\n"
-                        + visit(child)
+                        + this.visit(child)
                         + "\n}\n";
                     ifDefention = "else if";
                     //result += "if (...) {\n" + visit(child) + "\n}\n";
@@ -261,13 +261,13 @@ public final class Interpreter {
                 + result
                 + " } else { this.error(); }";
         }
-        if (termOrNonterm == 2) {
+        if (this.termOrNonterm == 2) {
             String ifDefention = "if";
-            for (AST child : node.expressions()) {
-                List<String> conditions =
-                    nontermVisitor.getStartTermsForNontermSubnode(child);
+            for (final AST child : node.expressions()) {
+                final List<String> conditions =
+                    this.nontermVisitor.getStartTermsForNontermSubnode(child);
                 String conditionString = "";
-                for (String condition : conditions) {
+                for (final String condition : conditions) {
                     conditionString += "this.currentToken.type == TokenType."
                         + condition + " || ";
                 }
@@ -281,7 +281,7 @@ public final class Interpreter {
                     + " ("
                     + conditionString
                     + ") {\n"
-                    + visit(child)
+                    + this.visit(child)
                     + "\n}\n";
                 ifDefention = "else if";
             }
@@ -298,8 +298,8 @@ public final class Interpreter {
      */
     private String visitProgram(final ASTProgram node) {
         String result = "ASTProgram:\n";
-        for (AST child : node.childs()) {
-            result += "    " + visit(child);
+        for (final AST child : node.childs()) {
+            result += "    " + this.visit(child);
         }
         return result;
     }
@@ -312,7 +312,7 @@ public final class Interpreter {
      */
     private String visitQuoted(final ASTQuoted node) {
         String result = "";
-        if (termOrNonterm == 1) {
+        if (this.termOrNonterm == 1) {
             result = visitQuotedContent(node.value(), node.value());
         }
         return result;
@@ -325,7 +325,7 @@ public final class Interpreter {
         if (quoted.length() == 0) {
             return "result += \"" + orig + "\";";
         }
-        String result =
+        final String result =
             "if (this.currentChar != null && this.currentChar.equals('"
                 + quoted.charAt(quoted.length() - 1) + "')) {"
                 + "this.advance(); "
@@ -344,8 +344,8 @@ public final class Interpreter {
      */
     private String visitRepeat(final ASTRepeat node) {
         String result = "";
-        if (termOrNonterm == 1) {
-            String conditions = termVisitor.getStartSymbolsForTermSubnode(node);
+        if (this.termOrNonterm == 1) {
+            final String conditions = this.termVisitor.getStartSymbolsForTermSubnode(node);
             String conditionString = "";
             for (int i = 0; i < conditions.length(); ++i) {
                 conditionString += "this.currentChar.equals('"
@@ -362,13 +362,13 @@ public final class Interpreter {
                 "while(this.currentChar != null && ("
                 + conditionString
                 + ")) {\n";
-            for (AST expr : node.childs()) {
-                result += visit(expr);
+            for (final AST expr : node.childs()) {
+                result += this.visit(expr);
             }
             result += "\n}\n";
-        } else if (termOrNonterm == 2) {
+        } else if (this.termOrNonterm == 2) {
             List<String> conditions =
-                nontermVisitor.getStartTermsForNontermSubnode(node);
+                this.nontermVisitor.getStartTermsForNontermSubnode(node);
             String conditionString = "";
             for (String condition : conditions) {
                 conditionString +=
@@ -384,8 +384,8 @@ public final class Interpreter {
             }
 
             result = "while(" + conditionString + ") {\n";
-            for (AST expr : node.childs()) {
-                result += visit(expr);
+            for (final AST expr : node.childs()) {
+                result += this.visit(expr);
             }
             result += "\n}\n";
         }
@@ -400,10 +400,10 @@ public final class Interpreter {
      */
     private String visitTerm(final ASTTerm node) {
         String result = "";
-        if (termOrNonterm == 2) {
+        if (this.termOrNonterm == 2) {
             result = "this.eat(TokenType." + node.value() + ");\n";
             if (node.localVariableName() != null) {
-                tokenVariableNames.add(node.localVariableName());
+                this.tokenVariableNames.add(node.localVariableName());
                 result = node.localVariableName()
                         + " = this.currentToken;\n"
                         + result;
@@ -419,11 +419,11 @@ public final class Interpreter {
      * @return result substring
      */
     private String visitTermDef(final ASTTermDef node) {
-        termOrNonterm = 1;
-        generatorData.getTerminals().add(node.head());
+        this.termOrNonterm = 1;
+        this.generatorData.getTerminals().add(node.head());
 
-        String result = visit(node.expr());
-        generatorData.getTerminalsSourceCode().put(node.head(), result);
+        final String result = this.visit(node.expr());
+        this.generatorData.getTerminalsSourceCode().put(node.head(), result);
 
         return result;
     }
@@ -435,7 +435,7 @@ public final class Interpreter {
      * @return result substring
      */
     private String visitASTReturn(final ASTReturn node) {
-        String result = "return " + node.value() + ";\n";
+        final String result = "return " + node.value() + ";\n";
         return result;
     }
 
@@ -446,11 +446,11 @@ public final class Interpreter {
      * @return result substring
      */
     private String visitASTNewNode(final ASTNewNode node) {
-        String result = node.localVariableName() == null
+        final String result = node.localVariableName() == null
                 ? "new " + node.value() + ";\n"
                 : node.localVariableName() + " = new " + node.value() + ";\n";
         if (node.localVariableName() != null) {
-            nontermVariableNames.add(node.localVariableName());
+            this.nontermVariableNames.add(node.localVariableName());
         }
         return result;
     }
@@ -462,7 +462,7 @@ public final class Interpreter {
      * @return result substring
      */
     private String visitASTDef(final ASTASTDef node) {
-        generatorData.getAstNodes().put(
+        this.generatorData.getAstNodes().put(
             node.name(),
             (LinkedList<String>) node.childs()
         );
@@ -476,16 +476,16 @@ public final class Interpreter {
      * @throws Exception when parsing error
      */
     public String interpret() throws Exception {
-        AST tree = parser.parse();
+        final AST tree = parser.parse();
         if (tree == null) {
             return "";
         }
-        Map<String, String> terminalsCanStartsWith =
-            termVisitor.getTerminalsCanStartsWith(tree);
-        generatorData.setNonterminalsCanStartsWith(
-            nontermVisitor.getResult(tree)
+        final Map<String, String> terminalsCanStartsWith =
+            this.termVisitor.getTerminalsCanStartsWith(tree);
+        this.generatorData.setNonterminalsCanStartsWith(
+            this.nontermVisitor.getResult(tree)
         );
-        generatorData.setTerminalsCanStartsWith(terminalsCanStartsWith);
-        return visit(tree);
+        this.generatorData.setTerminalsCanStartsWith(terminalsCanStartsWith);
+        return this.visit(tree);
     }
 }
