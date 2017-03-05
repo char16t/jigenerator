@@ -53,6 +53,6 @@ public final class ASTExpression implements AST {
      * @return List of node childs
      */
     public List<AST> childs() {
-        return childs;
+        return this.childs;
     }
 }

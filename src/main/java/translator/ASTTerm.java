@@ -68,7 +68,7 @@ public final class ASTTerm implements AST {
      * @return Term name
      */
     public String value() {
-        return value;
+        return this.value;
     }
 
     /**
@@ -77,6 +77,6 @@ public final class ASTTerm implements AST {
      * @return Associated variable name
      */
     public String localVariableName() {
-        return localVariableName;
+        return this.localVariableName;
     }
 }

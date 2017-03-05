@@ -67,7 +67,7 @@ public final class ASTNewNode implements AST {
      * @return Variable value
      */
     public String value() {
-        return value;
+        return this.value;
     }
 
     /**
@@ -76,6 +76,6 @@ public final class ASTNewNode implements AST {
      * @return Local variable name
      */
     public String localVariableName() {
-        return localVariableName;
+        return this.localVariableName;
     }
 }

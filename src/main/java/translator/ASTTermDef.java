@@ -59,7 +59,7 @@ public final class ASTTermDef implements AST {
      * @return Term name
      */
     public String head() {
-        return head;
+        return this.head;
     }
 
     /**
@@ -68,6 +68,6 @@ public final class ASTTermDef implements AST {
      * @return Term body associated with the name
      */
     public AST expr() {
-        return expr;
+        return this.expr;
     }
 }

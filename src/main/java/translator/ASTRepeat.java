@@ -53,6 +53,6 @@ public final class ASTRepeat implements AST {
      * @return Available child expressions
      */
     public List<AST> childs() {
-        return childs;
+        return this.childs;
     }
 }

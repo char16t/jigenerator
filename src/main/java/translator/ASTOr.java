@@ -53,6 +53,6 @@ public final class ASTOr implements AST {
      * @return Available child expressions
      */
     public List<AST> expressions() {
-        return expressions;
+        return this.expressions;
     }
 }

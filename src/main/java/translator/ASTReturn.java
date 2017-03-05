@@ -51,6 +51,6 @@ public final class ASTReturn implements AST {
      * @return Generated value
      */
     public String value() {
-        return value;
+        return this.value;
     }
 }

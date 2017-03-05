@@ -58,7 +58,7 @@ public final class ASTNonermDef implements AST {
      * @return Nonterm name
      */
     public String name() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -67,6 +67,6 @@ public final class ASTNonermDef implements AST {
      * @return Nonterm body associated with the name
      */
     public AST expr() {
-        return expr;
+        return this.expr;
     }
 }

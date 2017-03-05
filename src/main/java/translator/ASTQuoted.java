@@ -51,6 +51,6 @@ public final class ASTQuoted implements AST {
      * @return Quoted value
      */
     public String value() {
-        return value;
+        return this.value;
     }
 }

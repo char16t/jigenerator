@@ -67,7 +67,7 @@ public final class ASTNonterm implements AST {
      * @return Nonterm name
      */
     public String value() {
-        return value;
+        return this.value;
     }
 
     /**
@@ -76,6 +76,6 @@ public final class ASTNonterm implements AST {
      * @return Associated variable name
      */
     public String localVariableName() {
-        return localVariableName;
+        return this.localVariableName;
     }
 }

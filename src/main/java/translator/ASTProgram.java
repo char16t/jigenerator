@@ -53,6 +53,6 @@ public final class ASTProgram implements AST {
      * @return Expressions, like a terms, nonterms etc
      */
     public List<AST> childs() {
-        return childs;
+        return this.childs;
     }
 }
