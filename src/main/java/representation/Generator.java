@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package representation2;
+package representation;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -51,7 +51,7 @@ public final class Generator {
      * Templates path.
      */
     private static final String TEMPLATES_PATH
-        = "src/main/resources/representation2/";
+        = "src/main/resources/representation/";
 
     /**
      * Output path.

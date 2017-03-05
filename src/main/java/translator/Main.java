@@ -23,8 +23,8 @@
  */
 package translator;
 
-import representation2.Generator;
-import representation2.GeneratorData;
+import representation.Generator;
+import representation.GeneratorData;
 
 import java.io.File;
 import java.io.PrintStream;

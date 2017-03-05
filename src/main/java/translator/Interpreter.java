@@ -23,7 +23,7 @@
  */
 package translator;
 
-import representation2.GeneratorData;
+import representation.GeneratorData;
 
 import java.util.HashSet;
 import java.util.LinkedList;

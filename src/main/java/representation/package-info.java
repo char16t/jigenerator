@@ -25,4 +25,4 @@
 /**
  * Java representation classes.
  */
-package representation2;
+package representation;
