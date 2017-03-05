@@ -59,7 +59,7 @@ public final class Token {
      * @return Token type
      */
     public TokenType type() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -68,6 +68,6 @@ public final class Token {
      * @return Token value.
      */
     public String value() {
-        return value;
+        return this.value;
     }
 }

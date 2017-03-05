@@ -23,19 +23,24 @@
  */
 package translator;
 
-import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.Test;
 
 /**
- * Test case for {@link Main}
+ * Test case for {@link Main}.
  *
  * @author Valeriy Manenkov (v.manenkov@gmail.com)
  * @version $Id$
  * @since 0.1
  */
-public class MainTest {
+public final class MainTest {
+    /**
+     * Program can create interpreter project.
+     * @// TODO Check generated sources.
+     * @throws Exception when something is wrong
+     */
     @Test
     public void execTest() throws Exception {
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -44,7 +49,6 @@ public class MainTest {
                 .getResource("/translator/source9.grammar")
                 .getPath();
             new Main(System.out, file, directory.toString()).exec();
-            // TODO: Check generated sources
         }
     }
 }

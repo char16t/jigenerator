@@ -23,13 +23,12 @@
  */
 package translator;
 
-import representation.Generator;
-import representation.GeneratorData;
-
 import java.io.File;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.stream.Collectors;
+import representation.Generator;
+import representation.GeneratorData;
 
 /**
  * Main.
@@ -53,7 +52,7 @@ public final class Main {
      * Entry point.
      *
      * @param stdout Output stream
-     * @param args   Input arguments
+     * @param args Input arguments
      */
     public Main(final PrintStream stdout, final String... args) {
         this.stdout = stdout;
@@ -64,6 +63,7 @@ public final class Main {
      * Entry point.
      *
      * @param args Input arguments
+     * @throws Exception when something is wrong
      */
     public static void main(final String... args) throws Exception {
         new Main(System.out, args).exec();
@@ -71,28 +71,28 @@ public final class Main {
 
     /**
      * Entry point.
+     *
+     * @throws Exception when something is wrong
      */
     public void exec() throws Exception {
-        if (args.length == 2) {
+        if (this.args.length == 2) {
             final String program = Files.readAllLines(
-                new File(args[0]).toPath()
+                new File(this.args[0]).toPath()
             ).stream().collect(Collectors.joining("\n"));
-
-            Lexer lexer = new Lexer(program);
-            Parser parser = new Parser(lexer);
-            Interpreter interpreter = new Interpreter(parser);
-            String result = interpreter.interpret();
-
-            GeneratorData generatorData = new GeneratorData(
+            final Lexer lexer = new Lexer(program);
+            final Parser parser = new Parser(lexer);
+            final Interpreter interpreter = new Interpreter(parser);
+            interpreter.interpret();
+            final GeneratorData data = new GeneratorData(
                 interpreter.getGeneratorData().getNonterminals(),
                 interpreter.getGeneratorData().getNonterminalsCanStartsWith(),
                 interpreter.getGeneratorData().getNonterminalsSourceCode(),
                 interpreter.getGeneratorData().getTerminals(),
                 interpreter.getGeneratorData().getTerminalsCanStartsWith(),
                 interpreter.getGeneratorData().getTerminalsSourceCode(),
-                interpreter.getGeneratorData().getAstNodes());
-
-            Generator generator = new Generator(args[1] + "/", generatorData);
+                interpreter.getGeneratorData().getAstNodes()
+            );
+            Generator generator = new Generator(this.args[1] + "/", data);
             generator.generate();
         }
     }

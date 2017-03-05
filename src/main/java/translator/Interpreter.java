@@ -165,7 +165,7 @@ public final class Interpreter {
         nontermVariableNames.clear();
 
         termOrNonterm = 2;
-        String result = visit(node.expr());
+        final String result = visit(node.expr());
         generatorData.getNonterminals().add(node.name());
 
         String tokenVariableNamesString = "";
@@ -227,7 +227,7 @@ public final class Interpreter {
             }
 
             String ifDefention = "if";
-            for (AST child : node.expressions()) {
+            for (final AST child : node.expressions()) {
                 if (child instanceof ASTQuoted
                     || child instanceof ASTExpression) {
                     result += visit(child);

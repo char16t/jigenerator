@@ -34,29 +34,61 @@ import java.util.Map;
  * @since 0.1
  */
 public final class TermVisitor {
+
+    /**
+     * Flag. '1' if method getStartSymbolsForTermSubnode works. Else 0.
+     * @// @checkstyle MemberName (3 lines)
+     * @// @checkstyle ExplicitInitialization (2 lines)
+     */
     private int isGetStartSymbolsForTermSubnodeWorks = 0;
-    private String currentTerm = "";
-    private Map<String, String> terminalsCanStartsWith
-        = new HashMap<String, String>();
+
+    /**
+     * Current terminal.
+     */
+    private String term = "";
+
+    /**
+     * A strings of characters which can starts a terminals.
+     * @// @checkstyle MemberName (2 lines)
+     */
+    private Map<String, String> terminalsCanStartsWith = new HashMap<>();
+
+    /**
+     * A string of characters which can start a nonterminal.
+     * @// @checkstyle MemberName (2 lines)
+     */
     private String startSymbolsForNontermSubnode = "";
 
-    public Map<String, String> getTerminalsCanStartsWith(AST tree) {
-        visit(tree);
-        return terminalsCanStartsWith;
+    /**
+     * Ctor.
+     * @param tree Subtree node
+     * @return Map. Keys is a terminals. Values is a strings consisting
+     *  of characters from which you can start the terminal.
+     */
+    public Map<String, String> getTerminalsCanStartsWith(final AST tree) {
+        this.visit(tree);
+        return this.terminalsCanStartsWith;
     }
 
-    // run this method only after visiting all AST tree
-    public String getStartSymbolsForTermSubnode(AST tree) {
+    /**
+     * Notice: run this method only after visiting all AST tree.
+     * @param tree Subtree node
+     * @return The string consisting of characters from which you can start
+     *  the terminal
+     */
+    public String getStartSymbolsForTermSubnode(final AST tree) {
         this.startSymbolsForNontermSubnode = "";
-
-        isGetStartSymbolsForTermSubnodeWorks = 1;
-        visit(tree);
-        isGetStartSymbolsForTermSubnodeWorks = 0;
-
-        return startSymbolsForNontermSubnode;
+        this.isGetStartSymbolsForTermSubnodeWorks = 1;
+        this.visit(tree);
+        this.isGetStartSymbolsForTermSubnodeWorks = 0;
+        return this.startSymbolsForNontermSubnode;
     }
 
-    public void visit(AST node) {
+    /**
+     * Visit abstract node.
+     * @param node AST-tree node.
+     */
+    public void visit(final AST node) {
         if (node instanceof ASTExpression) {
             this.visitExpression((ASTExpression) node);
         } else if (node instanceof ASTOr) {
@@ -72,52 +104,76 @@ public final class TermVisitor {
         }
     }
 
+    /**
+     * Visit 'expression' node.
+     * @param node AST-tree node.
+     */
     public void visitExpression(final ASTExpression node) {
-        visit(node.childs().get(0));
+        this.visit(node.childs().get(0));
     }
 
+    /**
+     * Visit 'or' node.
+     * @param node AST-tree node.
+     */
     public void visitOr(final ASTOr node) {
-        for (AST expr : node.expressions()) {
-            visit(expr);
+        for (final AST expr : node.expressions()) {
+            this.visit(expr);
         }
     }
 
+    /**
+     * Visit 'program' node.
+     * @param node AST-tree node.
+     */
     public void visitProgram(final ASTProgram node) {
-        for (AST child : node.childs()) {
+        for (final AST child : node.childs()) {
             if (child instanceof ASTTermDef) {
-                visit(child);
+                this.visit(child);
             }
         }
     }
 
+    /**
+     * Visit 'quoted' node.
+     * @// TODO 3/5/17 This TODO has been moved from 'else' branch. See it.
+     * @param node AST-tree node
+     */
     public void visitQuoted(final ASTQuoted node) {
-        if (isGetStartSymbolsForTermSubnodeWorks == 0) {
-            String firstChar = ((Character) node.value().charAt(0)).toString();
-            if (terminalsCanStartsWith.containsKey(currentTerm)
-                && !terminalsCanStartsWith.get(currentTerm)
-                    .contains(firstChar)) {
-                String old = terminalsCanStartsWith.get(currentTerm);
-                old += firstChar;
-                terminalsCanStartsWith.put(currentTerm, old);
+        if (this.isGetStartSymbolsForTermSubnodeWorks == 0) {
+            final String first =
+                ((Character) node.value().charAt(0)).toString();
+            if (this.terminalsCanStartsWith.containsKey(this.term)
+                && !this.terminalsCanStartsWith.get(this.term)
+                    .contains(first)) {
+                String old = this.terminalsCanStartsWith.get(this.term);
+                old += first;
+                this.terminalsCanStartsWith.put(this.term, old);
             }
         } else {
-            // TODO
-            String firstChar = ((Character) node.value().charAt(0)).toString();
-            if (!startSymbolsForNontermSubnode.contains(firstChar)) {
-                startSymbolsForNontermSubnode += firstChar;
+            final String first =
+                ((Character) node.value().charAt(0)).toString();
+            if (!this.startSymbolsForNontermSubnode.contains(first)) {
+                this.startSymbolsForNontermSubnode += first;
             }
         }
-
-
     }
 
+    /**
+     * Visit 'repeat' node.
+     * @param node AST-tree node.
+     */
     public void visitRepeat(final ASTRepeat node) {
-        visit(node.childs().get(0));
+        this.visit(node.childs().get(0));
     }
 
+    /**
+     * Visit term definition.
+     * @param node AST-tree node.
+     */
     public void visitTermDef(final ASTTermDef node) {
-        currentTerm = node.head();
-        terminalsCanStartsWith.put(node.head(), "");
-        visit(node.expr());
+        this.term = node.head();
+        this.terminalsCanStartsWith.put(node.head(), "");
+        this.visit(node.expr());
     }
 }

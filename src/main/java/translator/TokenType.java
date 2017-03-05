@@ -57,12 +57,12 @@ public enum TokenType {
     RPAREN,
 
     /**
-     * Star symbol '*'
+     * Star symbol '*'.
      */
     STAR,
 
     /**
-     * Vertical line '|'
+     * Vertical line '|'.
      */
     LINE,
 
@@ -107,7 +107,7 @@ public enum TokenType {
     CALL,
 
     /**
-     * Type of ast node constructor's argument
+     * Type of ast node constructor's argument.
      */
     ASTARGTYPE,
 
