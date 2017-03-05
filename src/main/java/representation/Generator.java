@@ -78,19 +78,19 @@ public final class Generator {
      * List (string) of symbols, which can begin a terminals.
      */
     private Map<String, String> terminalsCanStartsWith
-            = new HashMap<String, String>();
+            = new HashMap<>();
 
     /**
      * Generated source code for terminals.
      */
     private Map<String, String> terminalsSourceCode
-            = new HashMap<String, String>();
+            = new HashMap<>();
 
     /**
      * AST nodes and their constructor arguments
      */
     private Map<String, LinkedList<String>> astNodes
-            = new HashMap<String, LinkedList<String>>();
+            = new HashMap<>();
 
     /**
      * Ctor.
@@ -123,7 +123,10 @@ public final class Generator {
      * @param outputPath Output path
      * @param generatorData Generator data
      */
-    public Generator(final String outputPath, final GeneratorData generatorData) {
+    public Generator(
+        final String outputPath,
+        final GeneratorData generatorData
+    ) {
         this.nonterminals = generatorData.getNonterminals();
         this.nonterminalsSourceCode = generatorData.getNonterminalsSourceCode();
         this.terminals = generatorData.getTerminals();
@@ -387,10 +390,10 @@ public final class Generator {
             + "             }\n"
         );
 
-        for (String terminal : terminals) {
+        for (final String terminal : terminals) {
             String orExpr = "";
 
-            String cases = terminalsCanStartsWith.get(terminal);
+            final String cases = terminalsCanStartsWith.get(terminal);
             for (int i = 0; i < cases.length(); i++) {
                 orExpr += "this.currentChar.equals('" + cases.charAt(i)
                     + "') || ";

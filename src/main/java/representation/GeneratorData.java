@@ -79,14 +79,14 @@ public final class GeneratorData {
      * Ctor.
      */
     public GeneratorData() {
-        this.nonterminals = new LinkedHashSet<String>();
+        this.nonterminals = new LinkedHashSet<>();
         this.nonterminalsCanStartsWith
-            = new LinkedHashMap<String, LinkedList<String>>();
-        this.nonterminalsSourceCode = new HashMap<String, String>();
-        this.terminals = new LinkedHashSet<String>();
-        this.terminalsCanStartsWith = new HashMap<String, String>();
-        this.terminalsSourceCode = new HashMap<String, String>();
-        this.astNodes = new HashMap<String, LinkedList<String>>();
+            = new LinkedHashMap<>();
+        this.nonterminalsSourceCode = new HashMap<>();
+        this.terminals = new LinkedHashSet<>();
+        this.terminalsCanStartsWith = new HashMap<>();
+        this.terminalsSourceCode = new HashMap<>();
+        this.astNodes = new HashMap<>();
     }
 
     /**

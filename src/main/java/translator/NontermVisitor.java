@@ -42,23 +42,23 @@ public final class NontermVisitor {
     private int isGetStartTermsForNontermSubnodeWorks = 0;
     private String currentNonterm = "";
     private Map<String, LinkedList<String>> nonterminalsCanStartsWith
-        = new HashMap<String, LinkedList<String>>();
+        = new HashMap<>();
     private Map<String, LinkedList<String>> nonterminalsStartsWithTerminals
-        = new HashMap<String, LinkedList<String>>();
-    private List<String> termsForNontermSubnode = new LinkedList<String>();
-    private List<String> nontermsForNontermSubnode = new LinkedList<String>();
+        = new HashMap<>();
+    private List<String> termsForNontermSubnode = new LinkedList<>();
+    private List<String> nontermsForNontermSubnode = new LinkedList<>();
 
-    public Map<String, LinkedList<String>> getResult(AST tree) {
-        visit(tree);
+    public Map<String, LinkedList<String>> getResult(final AST tree) {
+        this.visit(tree);
         return getResultMap();
     }
 
     // todo: rename me
     private Map<String, LinkedList<String>> getResultMap() {
-        Map<String, LinkedList<String>> result
-            = new HashMap<String, LinkedList<String>>();
+        final Map<String, LinkedList<String>> result
+            = new HashMap<>();
 
-        for (String nonterm : nonterminalsStartsWithTerminals.keySet()) {
+        for (String nonterm : this.nonterminalsStartsWithTerminals.keySet()) {
             final LinkedList<String> ret = getChildsTerms(nonterm);
             result.put(nonterm, new LinkedList<String>() {{
                 addAll(ret);
@@ -70,150 +70,182 @@ public final class NontermVisitor {
 
     // todo: rename me
     private LinkedList<String> getChildsTerms(final String nonterm) {
-        LinkedList<String> result = new LinkedList<String>();
-        LinkedList<String> list = nonterminalsStartsWithTerminals.get(nonterm);
+        final LinkedList<String> result = new LinkedList<>();
+        final LinkedList<String> list =
+            this.nonterminalsStartsWithTerminals.get(nonterm);
         for (String s : list) {
-            result.addAll(nonterminalsCanStartsWith.get(s));
+            result.addAll(this.nonterminalsCanStartsWith.get(s));
             result.addAll(getChildsTerms(s));
         }
-        result.addAll(nonterminalsCanStartsWith.get(nonterm));
-
+        result.addAll(this.nonterminalsCanStartsWith.get(nonterm));
         // clear double values
-        Set<String> hs = new HashSet<String>(result);
+        Set<String> hs = new HashSet<>(result);
         result.clear();
         result.addAll(hs);
-
         return result;
     }
 
     // run this method only after visiting all AST tree
-    public List<String> getStartTermsForNontermSubnode(AST tree) {
-        termsForNontermSubnode.clear();
-        nontermsForNontermSubnode.clear();
-
-        isGetStartTermsForNontermSubnodeWorks = 1;
-        visit(tree);
-        isGetStartTermsForNontermSubnodeWorks = 0;
-        for (String nonterminal : nontermsForNontermSubnode) {
-            LinkedList<String> ret = getChildsTerms(nonterminal);
-            termsForNontermSubnode.addAll(ret);
+    public List<String> getStartTermsForNontermSubnode(final AST tree) {
+        this.termsForNontermSubnode.clear();
+        this.nontermsForNontermSubnode.clear();
+        this.isGetStartTermsForNontermSubnodeWorks = 1;
+        this.visit(tree);
+        this.isGetStartTermsForNontermSubnodeWorks = 0;
+        for (final String nonterminal : this.nontermsForNontermSubnode) {
+            final LinkedList<String> ret = getChildsTerms(nonterminal);
+            this.termsForNontermSubnode.addAll(ret);
         }
-
         // clear double values
-        Set<String> hs = new HashSet<String>(termsForNontermSubnode);
-        termsForNontermSubnode.clear();
-        termsForNontermSubnode.addAll(hs);
-        return termsForNontermSubnode;
+        final Set<String> hs = new HashSet<>(this.termsForNontermSubnode);
+        this.termsForNontermSubnode.clear();
+        this.termsForNontermSubnode.addAll(hs);
+        return this.termsForNontermSubnode;
     }
 
-    public void visit(AST node) {
+    /**
+     * Visit abstract node.
+     * @param node AST-tree node
+     */
+    public void visit(final AST node) {
         if (node instanceof ASTExpression) {
-            visitExpression((ASTExpression) node);
+            this.visitExpression((ASTExpression) node);
         } else if (node instanceof ASTNonermDef) {
-            visitNonermDef((ASTNonermDef) node);
+            this.visitNonermDef((ASTNonermDef) node);
         } else if (node instanceof ASTNonterm) {
-            visitNonterm((ASTNonterm) node);
+            this.visitNonterm((ASTNonterm) node);
         } else if (node instanceof ASTOr) {
-            visitOr((ASTOr) node);
+            this.visitOr((ASTOr) node);
         } else if (node instanceof ASTProgram) {
-            visitProgram((ASTProgram) node);
+            this.visitProgram((ASTProgram) node);
         } else if (node instanceof ASTRepeat) {
-            visitRepeat((ASTRepeat) node);
+            this.visitRepeat((ASTRepeat) node);
         } else if (node instanceof ASTTerm) {
-            visitTerm((ASTTerm) node);
+            this.visitTerm((ASTTerm) node);
         }
     }
 
+    /**
+     * Visit 'term' node.
+     * @param node AST-tree 'term' node
+     */
     private void visitTerm(final ASTTerm node) {
-        if (isGetStartTermsForNontermSubnodeWorks == 0) {
-            if (nonterminalsCanStartsWith.containsKey(currentNonterm)) {
+        if (this.isGetStartTermsForNontermSubnodeWorks == 0) {
+            if (this.nonterminalsCanStartsWith
+                .containsKey(this.currentNonterm)) {
                 boolean termAlreadyAdded = false;
-                for (String item
-                    : nonterminalsCanStartsWith.get(currentNonterm)) {
+                for (final String item
+                    : this.nonterminalsCanStartsWith.get(this.currentNonterm)) {
                     if (item.equals(node.value())) {
                         termAlreadyAdded = true;
                     }
                 }
                 if (!termAlreadyAdded) {
-                    nonterminalsCanStartsWith.get(currentNonterm)
+                    this.nonterminalsCanStartsWith.get(this.currentNonterm)
                         .add(node.value());
                 }
             }
         }
         boolean termAlreadyAdded2 = false;
-        for (String item : this.termsForNontermSubnode) {
+        for (final String item : this.termsForNontermSubnode) {
             if (item.equals(node.value())) {
                 termAlreadyAdded2 = true;
             }
         }
         if (!termAlreadyAdded2) {
-            termsForNontermSubnode.add(node.value());
+            this.termsForNontermSubnode.add(node.value());
         }
     }
 
+    /**
+     * Visit 'nonterm' node.
+     * @param node AST-tree 'nonterm' node
+     */
     private void visitNonterm(final ASTNonterm node) {
-        if (isGetStartTermsForNontermSubnodeWorks == 0) {
-            if (nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
+        if (this.isGetStartTermsForNontermSubnodeWorks == 0) {
+            if (this.nonterminalsStartsWithTerminals.containsKey(currentNonterm)) {
                 boolean nontermAlreadyAdded = false;
-                if (nonterminalsStartsWithTerminals
-                    .get(currentNonterm) != null) {
-                    for (String item
-                        : nonterminalsStartsWithTerminals.get(currentNonterm)) {
+                if (this.nonterminalsStartsWithTerminals
+                    .get(this.currentNonterm) != null) {
+                    for (final String item
+                        : this.nonterminalsStartsWithTerminals
+                        .get(this.currentNonterm)) {
                         if (item.equals(node.value())) {
                             nontermAlreadyAdded = true;
                         }
                     }
                     if (!nontermAlreadyAdded) {
-                        nonterminalsStartsWithTerminals.get(currentNonterm)
+                        this.nonterminalsStartsWithTerminals
+                            .get(this.currentNonterm)
                             .add(node.value());
                     }
                 }
             }
         }
         boolean termAlreadyAdded2 = false;
-        for (String item : this.nontermsForNontermSubnode) {
+        for (final String item : this.nontermsForNontermSubnode) {
             if (item.equals(node.value())) {
                 termAlreadyAdded2 = true;
             }
         }
         if (!termAlreadyAdded2) {
-            nontermsForNontermSubnode.add(node.value());
+            this.nontermsForNontermSubnode.add(node.value());
         }
 
     }
 
+    /**
+     * Visit 'nonterm definition' node.
+     * @param node AST-tree node
+     */
     private void visitNonermDef(final ASTNonermDef node) {
-        currentNonterm = node.name();
-        nonterminalsCanStartsWith.put(node.name(), new LinkedList<String>());
-        nonterminalsStartsWithTerminals.put(
-            currentNonterm,
+        this.currentNonterm = node.name();
+        this.nonterminalsCanStartsWith.put(node.name(), new LinkedList<String>());
+        this.nonterminalsStartsWithTerminals.put(
+            this.currentNonterm,
             new LinkedList<String>()
         );
-        visit(node.expr());
+        this.visit(node.expr());
     }
 
+    /**
+     * Visit 'expression' node.
+     * @param node AST-tree 'expression' node
+     */
     public void visitExpression(final ASTExpression node) {
         if (node.childs().size() > 0) {
-            visit(node.childs().get(0));
+            this.visit(node.childs().get(0));
         }
     }
 
+    /**
+     * Visit 'or' node.
+     * @param node AST-tree 'or' node
+     */
     public void visitOr(final ASTOr node) {
-        for (AST expr : node.expressions()) {
-            visit(expr);
+        for (final AST expr : node.expressions()) {
+            this.visit(expr);
         }
     }
 
+    /**
+     * Visit 'program' node.
+     * @param node AST-tree 'program' node
+     */
     public void visitProgram(final ASTProgram node) {
-        for (AST child : node.childs()) {
+        for (final AST child : node.childs()) {
             if (child instanceof ASTNonermDef) {
-                visit(child);
+                this.visit(child);
             }
         }
     }
 
+    /**
+     * Visit 'repeat' node.
+     * @param node AST-tree 'repeat' node
+     */
     public void visitRepeat(final ASTRepeat node) {
-        visit(node.childs().get(0));
+        this.visit(node.childs().get(0));
     }
 
 }
