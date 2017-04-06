@@ -61,36 +61,33 @@ public final class Generator {
     /**
      * Set of nonterminals.
      */
-    private Set<String> nonterminals = new LinkedHashSet<String>();
+    private Set<String> nonterminals = new LinkedHashSet<>();
 
     /**
      * Generated source code for nonterminals.
      */
     private Map<String, String> nonterminalsSourceCode
-        = new HashMap<String, String>();
+        = new HashMap<>();
 
     /**
      * Set of terminals.
      */
-    private Set<String> terminals = new LinkedHashSet<String>();
+    private Set<String> terminals = new LinkedHashSet<>();
 
     /**
      * List (string) of symbols, which can begin a terminals.
      */
-    private Map<String, String> terminalsCanStartsWith
-            = new HashMap<>();
+    private Map<String, String> terminalsCanStartsWith = new HashMap<>();
 
     /**
      * Generated source code for terminals.
      */
-    private Map<String, String> terminalsSourceCode
-            = new HashMap<>();
+    private Map<String, String> terminalsSourceCode = new HashMap<>();
 
     /**
      * AST nodes and their constructor arguments
      */
-    private Map<String, LinkedList<String>> astNodes
-            = new HashMap<>();
+    private Map<String, LinkedList<String>> astNodes = new HashMap<>();
 
     /**
      * Ctor.
@@ -103,12 +100,14 @@ public final class Generator {
      * @param terminalsSourceCode Generated source code for terminals
      * @param astNodes AST nodes and their constructor arguments
      */
-    public Generator(final Set<String> nonterminals,
-                     final Map<String, String> nonterminalsSourceCode,
-                     final Set<String> terminals,
-                     final Map<String, String> terminalsCanStartsWith,
-                     final Map<String, String> terminalsSourceCode,
-                     final Map<String, LinkedList<String>> astNodes) {
+    public Generator(
+        final Set<String> nonterminals,
+        final Map<String, String> nonterminalsSourceCode,
+        final Set<String> terminals,
+        final Map<String, String> terminalsCanStartsWith,
+        final Map<String, String> terminalsSourceCode,
+        final Map<String, LinkedList<String>> astNodes
+    ) {
         this.nonterminals = nonterminals;
         this.nonterminalsSourceCode = nonterminalsSourceCode;
         this.terminals = terminals;
@@ -153,11 +152,11 @@ public final class Generator {
         String data = null;
         try {
             data = IOUtils.toString(
-                    new FileReader(
-                            TEMPLATES_PATH
-                                    + template
-                                    + ".template"
-                    )
+                new FileReader(
+                    TEMPLATES_PATH
+                        + template
+                        + ".template"
+                )
             );
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -167,7 +166,7 @@ public final class Generator {
 
         try {
             new File(OUTPUT_PATH + path + name).createNewFile();
-            FileOutputStream out = new FileOutputStream(OUTPUT_PATH + path + name);
+            final FileOutputStream out = new FileOutputStream(OUTPUT_PATH + path + name);
             out.write(data.getBytes());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -304,9 +303,9 @@ public final class Generator {
      * Generate AST*.java files.
      */
     private void createASTTreeNodeFiles() {
-        for (String node : astNodes.keySet()) {
-            Integer numArguments = astNodes.get(node).size();
-            LinkedList<String> types = astNodes.get(node);
+        for (final String node : astNodes.keySet()) {
+            final Integer numArguments = astNodes.get(node).size();
+            final LinkedList<String> types = astNodes.get(node);
 
             // constructor args
             String argsString = "";
@@ -321,19 +320,19 @@ public final class Generator {
 
             // fields
             String fieldsString = "";
-            for (int i = 0; i < numArguments; i++) {
-                fieldsString += types.get(i).equals("n") ?
-                        "private AST node" + i + ";\n" :
-                        "private Token node" + i + ";\n";
+            for (int i = 0; i < numArguments; i += 1) {
+                fieldsString += types.get(i).equals("n")
+                    ? "private AST node" + i + ";\n"
+                    : "private Token node" + i + ";\n";
             }
 
             // constructor content
             String constructorContent = "";
-            for (int i = 0; i < numArguments; i++) {
+            for (int i = 0; i < numArguments; i += 1) {
                 constructorContent += "this.node" + i + " = node" + i + ";\n";
             }
 
-            String filename = "AST" + node + ".java";
+            final String filename = "AST" + node + ".java";
             createFile("src/main/java/", filename, "Empty");
             appendFile(
                 "src/main/java/",
@@ -356,27 +355,42 @@ public final class Generator {
      * Generate TokenType.java file.
      */
     public void createTokenTypeFile() {
-        createFile("src/main/java/", "TokenType.java", "TokenTypeHeader");
-        for (String t : terminals) {
-            appendFile("src/main/java/", "TokenType.java", "    " + t + ",\n");
+        createFile(
+            "src/main/java/",
+            "TokenType.java",
+            "TokenTypeHeader"
+        );
+        for (String terminal : terminals) {
+            appendFile(
+                "src/main/java/",
+                "TokenType.java",
+                "    " + terminal + ",\n"
+            );
         }
-        appendFile("src/main/java/", "TokenType.java", "    EOF\n}");
+        appendFile(
+            "src/main/java/",
+            "TokenType.java",
+            "    EOF\n}");
     }
 
     /**
      * Generate Lexer.java file.
      */
     public void createLexerFile() {
-        createFile("src/main/java/", "Lexer.java", "LexerHeader");
-        for (String terminal : terminals) {
-            String line =
-                    "    public String " +
-                            terminal.toLowerCase() +
-                            "() throws Exception {\n" +
-                            "    String result = \"\";\n" +
-                            terminalsSourceCode.get(terminal) + "\n" +
-                            "    return result;" +
-                            "    }\n\n";
+        createFile(
+            "src/main/java/",
+            "Lexer.java",
+            "LexerHeader"
+        );
+        for (final String terminal : terminals) {
+            final String line = "    public String "
+                + terminal.toLowerCase()
+                + "() throws Exception {\n"
+                + "    String result = \"\";\n"
+                + terminalsSourceCode.get(terminal)
+                + "\n"
+                + "    return result;"
+                + "    }\n\n";
             appendFile("src/main/java/", "Lexer.java", line);
         }
         appendFile(
@@ -412,7 +426,11 @@ public final class Generator {
                     + terminal.toLowerCase()
                     + "());\n"
             );
-            appendFile("src/main/java/", "Lexer.java", "}\n\n");
+            appendFile(
+                "src/main/java/",
+                "Lexer.java",
+                "}\n\n"
+            );
         }
 
         appendFile(
@@ -425,16 +443,27 @@ public final class Generator {
             "Lexer.java",
             "        return new Token(TokenType.EOF, null);\n"
         );
-        appendFile("src/main/java/", "Lexer.java", "    }\n");
-        appendFileWithTemplate("src/main/java/", "Lexer.java", "LexerFooter");
+        appendFile(
+            "src/main/java/",
+            "Lexer.java",
+            "    }\n"
+        );
+        appendFileWithTemplate(
+            "src/main/java/",
+            "Lexer.java",
+            "LexerFooter"
+        );
     }
 
     /**
      * Generate parser.java file.
      */
     public void createParserFile() {
-        createFile("src/main/java/", "Parser.java", "ParserHeader");
-
+        createFile(
+            "src/main/java/",
+            "Parser.java",
+            "ParserHeader"
+        );
         appendFile("src/main/java/", "Parser.java",
             "    public AST parse() throws Exception {\n"
             + "        AST node = this."
@@ -445,7 +474,7 @@ public final class Generator {
             + "        return node;\n"
             + "    }\n");
         for (String nonterminal : nonterminals) {
-            String str = "public AST "
+            final String str = "public AST "
                 + nonterminal
                 + "() throws Exception {\n"
                 + nonterminalsSourceCode.get(nonterminal)
@@ -453,6 +482,10 @@ public final class Generator {
                 + "}\n\n";
             appendFile("src/main/java/", "Parser.java", str);
         }
-        appendFileWithTemplate("src/main/java/", "Parser.java", "ParserFooter");
+        appendFileWithTemplate(
+            "src/main/java/",
+            "Parser.java",
+            "ParserFooter"
+        );
     }
 }

@@ -212,7 +212,7 @@ public final class Interpreter {
     private String visitOr(final ASTOr node) {
         String result = "";
         if (this.termOrNonterm == 1) {
-            String nodeConditions =
+            final String nodeConditions =
                 this.termVisitor.getStartSymbolsForTermSubnode(node);
             String nodeConditionsString = "";
             for (int i = 0; i < nodeConditions.length(); ++i) {
@@ -232,7 +232,7 @@ public final class Interpreter {
                     || child instanceof ASTExpression) {
                     result += this.visit(child);
                 } else {
-                    String conditions =
+                    final String conditions =
                         this.termVisitor.getStartSymbolsForTermSubnode(child);
                     String conditionString = "";
                     for (int i = 0; i < conditions.length(); ++i) {
@@ -367,10 +367,10 @@ public final class Interpreter {
             }
             result += "\n}\n";
         } else if (this.termOrNonterm == 2) {
-            List<String> conditions =
+            final List<String> conditions =
                 this.nontermVisitor.getStartTermsForNontermSubnode(node);
             String conditionString = "";
-            for (String condition : conditions) {
+            for (final String condition : conditions) {
                 conditionString +=
                     "this.currentToken.type == TokenType."
                     + condition

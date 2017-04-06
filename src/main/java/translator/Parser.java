@@ -151,12 +151,12 @@ public final class Parser {
         final List<AST> childs = new LinkedList<>();
         final List<AST> childsGroup = new LinkedList<>();
         while (this.currentToken.type() == TokenType.STAR
-                || this.currentToken.type() == TokenType.NONTERM
-                || this.currentToken.type() == TokenType.TERM
-                || this.currentToken.type() == TokenType.LPAREN
-                || this.currentToken.type() == TokenType.CALL
-                || this.currentToken.type() == TokenType.RET) {
-
+            || this.currentToken.type() == TokenType.NONTERM
+            || this.currentToken.type() == TokenType.TERM
+            || this.currentToken.type() == TokenType.LPAREN
+            || this.currentToken.type() == TokenType.CALL
+            || this.currentToken.type() == TokenType.RET
+        ) {
             childsGroup.add(this.expr2());
         }
         childs.add(new ASTExpression(childsGroup));
@@ -164,7 +164,7 @@ public final class Parser {
             this.eat(TokenType.LINE);
             final AST exprNode = this.expr();
             if (exprNode instanceof ASTOr) {
-                for (AST expression : ((ASTOr) exprNode).expressions()) {
+                for (final AST expression : ((ASTOr) exprNode).expressions()) {
                     childs.add(expression);
                 }
             } else {
@@ -185,7 +185,7 @@ public final class Parser {
      * @throws Exception when something is wrong
      */
     private AST expr2() throws Exception {
-        List<AST> childs = new LinkedList<AST>();
+        final List<AST> childs = new LinkedList<>();
         if (this.currentToken.type() == TokenType.NONTERM
                 || this.currentToken.type() == TokenType.TERM
                 || this.currentToken.type() == TokenType.CALL
@@ -321,10 +321,10 @@ public final class Parser {
      * @throws Exception when something is wrong
      */
     private AST termdef() throws Exception {
-        String head = this.currentToken.value();
+        final String head = this.currentToken.value();
         this.term();
         this.eat(TokenType.EQ);
-        AST node = this.termexpr();
+        final AST node = this.termexpr();
         this.eat(TokenType.SEMI);
         return new ASTTermDef(head, node);
     }
@@ -336,8 +336,8 @@ public final class Parser {
      * @throws Exception when something is wrong
      */
     private AST termexpr() throws Exception {
-        List<AST> childs = new LinkedList<AST>();
-        List<AST> childsGroup = new LinkedList<AST>();
+        final List<AST> childs = new LinkedList<>();
+        final List<AST> childsGroup = new LinkedList<>();
         while (
             this.currentToken.type() == TokenType.STAR
             || this.currentToken.type() == TokenType.QUOTED
@@ -376,14 +376,15 @@ public final class Parser {
             return this.termexpr3();
         }
         if (this.currentToken.type() == TokenType.STAR) {
-            final List<AST> childs = new LinkedList<AST>();
+            final List<AST> childs = new LinkedList<>();
             this.eat(TokenType.STAR);
             this.eat(TokenType.LPAREN);
             childs.add(this.termexpr3());
             if (this.currentToken.type() == TokenType.QUOTED
-                    || this.currentToken.type() == TokenType.LPAREN
-                    || this.currentToken.type() == TokenType.STAR
-                    || this.currentToken.type() == TokenType.LINE) {
+                || this.currentToken.type() == TokenType.LPAREN
+                || this.currentToken.type() == TokenType.STAR
+                || this.currentToken.type() == TokenType.LINE
+            ) {
                 childs.add(this.termexpr());
             }
             this.eat(TokenType.RPAREN);
@@ -403,7 +404,7 @@ public final class Parser {
     }
 
     /**
-     * Is a 'termexpr3' nonterm implementation
+     * Is a 'termexpr3' nonterm implementation.
      *
      * @return The 'termexpr3' node
      * @throws Exception when something is wrong
@@ -421,7 +422,7 @@ public final class Parser {
     }
 
     /**
-     * Is a 'termatom' nonterm implementation
+     * Is a 'termatom' nonterm implementation.
      *
      * @return The 'termatom' node
      * @throws Exception when something is wrong
@@ -453,7 +454,7 @@ public final class Parser {
             this.eat(TokenType.NAME);
         }
         // @checkstyle AvoidInlineConditionals (3 lines)
-        return !localVariableName.equals("")
+        return !"".equals(localVariableName)
             ? new ASTTerm(value, localVariableName)
             : new ASTTerm(value);
     }

@@ -73,13 +73,13 @@ public final class NontermVisitor {
         final LinkedList<String> result = new LinkedList<>();
         final LinkedList<String> list =
             this.nonterminalsStartsWithTerminals.get(nonterm);
-        for (String s : list) {
+        for (final String s : list) {
             result.addAll(this.nonterminalsCanStartsWith.get(s));
             result.addAll(getChildsTerms(s));
         }
         result.addAll(this.nonterminalsCanStartsWith.get(nonterm));
         // clear double values
-        Set<String> hs = new HashSet<>(result);
+        final Set<String> hs = new HashSet<>(result);
         result.clear();
         result.addAll(hs);
         return result;

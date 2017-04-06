@@ -165,7 +165,7 @@ public final class Lexer {
      *                   the current position
      */
     private String eq() throws Exception {
-        String result = "";
+        final String result = "";
         if (this.currentChar.equals(':')) {
             this.advance();
             if (this.currentChar.equals('=')) {

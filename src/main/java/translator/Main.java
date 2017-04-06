@@ -92,7 +92,7 @@ public final class Main {
                 interpreter.getGeneratorData().getTerminalsSourceCode(),
                 interpreter.getGeneratorData().getAstNodes()
             );
-            Generator generator = new Generator(this.args[1] + "/", data);
+            final Generator generator = new Generator(this.args[1] + "/", data);
             generator.generate();
         }
     }
