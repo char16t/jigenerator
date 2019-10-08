@@ -2,7 +2,7 @@
 
 It generates lexer, LL(1)-parser and interpreter's stub on Java. It's 
 not serious, but it works. I am not actively maintaining this project,
-but if you submit a PR with these changes I will happily merge your
+but if you submit a PR with any changes I will happily merge your
 code. Also you can send you patches to valeriy@manenkov.com. In production use
 ANTLR.
 
